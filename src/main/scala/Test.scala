@@ -5,9 +5,23 @@ import org.eclipse.swt.layout._
 import org.eclipse.swt.events._
 import org.eclipse.swt.graphics._
 import org.eclipse.swt.custom.StyledText
+import org.eclipse.swt.custom.StackLayout
 
 import org.eclipse.swt._
 
+class JustinSetting(parent: Composite) extends Composite(parent, SWT.NONE)
+{
+    this.setLayout(new FillLayout)
+    val button = new Button(this, SWT.PUSH)
+    button.setText("Hello Justin")
+}
+
+class IRCSetting(parent: Composite) extends Composite(parent, SWT.NONE)
+{
+    this.setLayout(new FillLayout)
+    val button = new Button(this, SWT.PUSH)
+    button.setText("Hello IRC")
+}
 
 object Main
 {
@@ -15,34 +29,79 @@ object Main
     val shell = new Shell(display)
     var notification: NotificationBlock = null
 
-    def initWidget() =
+    val stackLayout = new StackLayout
+
+    val logginType = createLogginType()
+    val ircButton = createIRCButton()
+    val justinButton = createJustinButton()
+    val settingPages = createSettingPages()
+    val ircSetting = new IRCSetting(settingPages)
+    val justinSetting = new JustinSetting(settingPages)
+
+    def switchSettingPages()
     {
-        val button1 = new Button(shell, SWT.PUSH)
-        button1.setText("開視窗")
-        button1.addSelectionListener(new SelectionAdapter() {
+        (ircButton.getSelection, justinButton.getSelection) match {
+            case (true, _) => stackLayout.topControl = ircSetting
+            case (_, true) => stackLayout.topControl = justinSetting
+        }
+
+        settingPages.layout()
+    }
+
+    def createSettingPages() = 
+    {
+        val composite = new Composite(shell, SWT.NONE)
+        val spanLayout = new GridData(SWT.FILL, SWT.FILL, true, true)
+        spanLayout.horizontalSpan = 3
+        composite.setLayoutData(spanLayout)
+        composite.setLayout(stackLayout)
+        composite
+    }
+
+    def createLogginType() = 
+    {
+        val label = new Label(shell, SWT.LEFT|SWT.BORDER)
+        label.setText("設定方式：")
+        label
+    }
+
+    def createIRCButton() =
+    {
+        val button = new Button(shell, SWT.RADIO)
+        button.setText("IRC")
+        button.setSelection(true)
+        button.addSelectionListener(new SelectionAdapter() {
             override def widgetSelected(e: SelectionEvent) {
-                println("Clicked")
-                Main.this.notification = new NotificationBlock
-                Main.this.notification.open()
+                switchSettingPages()
             }
         })
-
-        val button2 = new Button(shell, SWT.PUSH)
-        button2.setText("關視窗")
-        button2.addSelectionListener(new SelectionAdapter() {
+        button
+    }
+    
+    def createJustinButton() = 
+    {
+        val button = new Button(shell, SWT.RADIO)
+        button.setText("Justin / Twitch")
+        button.addSelectionListener(new SelectionAdapter() {
             override def widgetSelected(e: SelectionEvent) {
-                println("Close Clicked")
-                Main.this.notification.close()
+                switchSettingPages()
             }
         })
+        button
+    }
 
+    def setupLayout()
+    {
+        val gridLayout = new GridLayout(3,  false)
+        shell.setLayout(gridLayout)
     }
 
     def main(args: Array[String])
     {
-        initWidget()
-        shell.setText("Testing")
-        shell.setLayout(new RowLayout)
+        setupLayout()
+        switchSettingPages()
+
+        shell.setText("IRC 聊天通知")
         shell.pack()
         shell.open()
 
