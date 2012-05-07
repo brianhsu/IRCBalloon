@@ -9,18 +9,41 @@ import org.eclipse.swt.custom.StackLayout
 
 import org.eclipse.swt._
 
-class JustinSetting(parent: Composite) extends Composite(parent, SWT.NONE)
+trait SWTHelper
 {
-    this.setLayout(new FillLayout)
-    val button = new Button(this, SWT.PUSH)
-    button.setText("Hello Justin")
+
+    def createText(parent: Composite, title: String, style: Int = SWT.NONE) = 
+    {
+        val layoutData = new GridData(SWT.FILL, SWT.NONE, true, false)
+        val label = new Label(parent, SWT.LEFT)
+        val text = new Text(parent, SWT.BORDER|style)
+
+        label.setText(title)
+        text.setLayoutData(layoutData)
+
+        text
+    }
+
 }
 
-class IRCSetting(parent: Composite) extends Composite(parent, SWT.NONE)
+class JustinSetting(parent: Composite) extends Composite(parent, SWT.NONE) with SWTHelper
 {
-    this.setLayout(new FillLayout)
-    val button = new Button(this, SWT.PUSH)
-    button.setText("Hello IRC")
+    val gridLayout = new GridLayout(2,  false)
+    val username = createText(this, "帳號：")
+    val password = createText(this, "密碼：")
+
+    this.setLayout(gridLayout)
+}
+
+class IRCSetting(parent: Composite) extends Composite(parent, SWT.NONE) with SWTHelper
+{
+    val gridLayout = new GridLayout(2,  false)
+    val hostText = createText(this, "IRC 伺服器主機：")
+    val portText = createText(this, "IRC 伺服器Port：")
+    val password = createText(this, "IRC 伺服器密碼：", SWT.PASSWORD)
+    val nickname = createText(this, "暱稱：")
+
+    this.setLayout(gridLayout)
 }
 
 object Main
