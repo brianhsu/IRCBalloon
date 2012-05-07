@@ -61,6 +61,43 @@ object Main
     val ircSetting = new IRCSetting(settingPages)
     val justinSetting = new JustinSetting(settingPages)
 
+    val displayType = createDisplayType()
+    val displayGroup = createDisplayGroup()
+    val blockButton = createBlockButton()
+    val balloonButton = createBalloonButton()
+
+    def createDisplayGroup() =
+    {
+        val group = new Group(shell, SWT.SHADOW_NONE)
+        val spanLayout = new GridData(SWT.FILL, SWT.NONE, true, false)
+        spanLayout.horizontalSpan = 2
+        group.setLayoutData(spanLayout)
+        group.setLayout(new RowLayout)
+        group
+    }
+
+    def createDisplayType() = 
+    {
+        val label = new Label(shell, SWT.LEFT)
+        label.setText("顯示方式：")
+        label
+    }
+
+    def createBlockButton() = 
+    {
+        val button = new Button(displayGroup, SWT.RADIO)
+        button.setText("固定區塊")
+        button.setSelection(true)
+        button
+    }
+
+    def createBalloonButton() = 
+    {
+        val button = new Button(displayGroup, SWT.RADIO)
+        button.setText("泡泡通知")
+        button
+    }
+
     def switchSettingPages()
     {
         (ircButton.getSelection, justinButton.getSelection) match {
