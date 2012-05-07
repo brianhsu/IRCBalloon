@@ -3,12 +3,13 @@ package org.bone.ircballoon
 import org.jibble.pircbot.PircBot
 
 class IRCBot(hostname: String, port: Int, nickname: String, 
-             password: Option[String], channel: String) extends PircBot
+             password: Option[String], channel: String, callback: String => Any) extends PircBot
 {
     override def onMessage(channel: String, sender: String, login: String, 
                            hostname: String, message: String) 
     {
         println("[%s] %s(%s @ %s): %s" format(channel, sender, login, hostname, message))
+        callback("%s: %s" format(sender, message))
     }
 
     private def connect()
@@ -21,6 +22,7 @@ class IRCBot(hostname: String, port: Int, nickname: String,
 
     def startLogging()
     {
+        this.setAutoNickChange(true)
         this.setVerbose(true)
         this.setName(nickname)
         this.connect()
