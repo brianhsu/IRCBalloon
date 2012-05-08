@@ -11,6 +11,13 @@ import org.eclipse.swt._
 
 trait SWTHelper
 {
+    implicit def convertToVerifyAdapter(action: VerifyEvent => Any) = {
+        new VerifyListener() {
+            override def verifyText(e: VerifyEvent) {
+                action(e)
+            }
+        }
+    }
     implicit def convertToSelectionaAdapter(action: SelectionEvent => Any) = {
         new SelectionAdapter() {
             override def widgetSelected(e: SelectionEvent) {

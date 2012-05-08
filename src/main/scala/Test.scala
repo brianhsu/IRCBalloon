@@ -45,9 +45,39 @@ class BlockSetting(parent: Composite) extends Composite(parent, SWT.NONE) with S
     val (fontLabel, fontButton) = createFontChooser(this, "訊息字型：", messageFont = _)
     val (transparentLabel, transparentScale) = createScaleChooser(this, "透明度：")
     val (messageSizeLabel, messageSizeSpinner) = createSpinner(this, "訊息數量：", 1, 50)
+    val previewButton = createPreviewButton()
 
+    def setupDefaultValue()
+    {
+        locationX.setText("100")
+        locationY.setText("100")
+        width.setText("300")
+        height.setText("500")
+        messageSizeSpinner.setSelection(10)
+    }
+
+    def setupTextVerify()
+    {
+        locationX.addVerifyListener { e: VerifyEvent => e.doit = e.text.forall(_.isDigit) }
+        locationY.addVerifyListener { e: VerifyEvent => e.doit = e.text.forall(_.isDigit) }
+        width.addVerifyListener { e: VerifyEvent => e.doit = e.text.forall(_.isDigit) }
+        height.addVerifyListener { e: VerifyEvent => e.doit = e.text.forall(_.isDigit) }
+    }
+
+    def createPreviewButton() =
+    {
+        val layoutData = new GridData(SWT.FILL, SWT.NONE, true, false)
+        val button = new Button(this, SWT.PUSH)
+
+        layoutData.horizontalSpan = 2
+        button.setLayoutData(layoutData)
+        button.setText("預覽")
+        button
+    }
 
     this.setLayout(gridLayout)
+    this.setupDefaultValue()
+    this.setupTextVerify()
 }
 
 class BalloonSetting(parent: Composite) extends Composite(parent, SWT.NONE) with SWTHelper
