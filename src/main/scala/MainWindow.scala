@@ -13,7 +13,6 @@ object MainWindow extends SWTHelper
 {
     val display = new Display
     val shell = new Shell(display)
-    var notification: NotificationBlock = null
 
     val stackLayout = new StackLayout
     val displayStackLayout = new StackLayout
@@ -81,7 +80,7 @@ object MainWindow extends SWTHelper
     def setConnectButtonListener()
     {
         var ircBot: Option[IRCBot] = None
-        var notification: Option[NotificationBlock] = None
+        var notification: Option[Notification] = None
 
         def toggleConnectButton()
         {

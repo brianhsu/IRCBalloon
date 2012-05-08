@@ -72,7 +72,8 @@ trait BlockTheme {
 
 case class NotificationBlock(size: (Int, Int), location: (Int, Int), 
                              borderColor: Color, backgroundColor: Color, alpha: Int,
-                             fontColor: Color, font: Font, messageSize: Int) extends BlockTheme
+                             fontColor: Color, font: Font, 
+                             messageSize: Int) extends Notification with BlockTheme
 {
     val display = Display.getDefault
     val shell = new Shell(display, SWT.NO_TRIM|SWT.ON_TOP|SWT.RESIZE)
