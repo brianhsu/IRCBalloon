@@ -11,6 +11,8 @@ import org.eclipse.swt._
 
 object MainWindow extends SWTHelper
 {
+    Display.setAppName("IRCBalloon")
+
     val display = new Display
     val shell = new Shell(display)
 
@@ -36,6 +38,14 @@ object MainWindow extends SWTHelper
 
     val connectButton = createConnectButton()
     val logTextArea = createLogTextArea()
+
+    private var ircBot: Option[IRCBot] = None
+    private var notification: Option[Notification] = None
+
+    def getAppIcon() =
+    {
+        new Image(display, getClass().getResourceAsStream("/appIcon.png"));
+    }
 
     def appendLog(message: String)
     {
@@ -79,9 +89,6 @@ object MainWindow extends SWTHelper
 
     def setConnectButtonListener()
     {
-        var ircBot: Option[IRCBot] = None
-        var notification: Option[Notification] = None
-
         def toggleConnectButton()
         {
             connectButton.setSelection(!connectButton.getSelection)
@@ -309,6 +316,7 @@ object MainWindow extends SWTHelper
         setConnectButtonListener()
 
         shell.setText("IRC 聊天通知")
+        shell.setImage(getAppIcon)
         shell.pack()
         shell.open()
 

@@ -80,6 +80,11 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
     val label = new StyledText(shell, SWT.MULTI|SWT.READ_ONLY|SWT.WRAP|SWT.NO_FOCUS)
     var messages: List[String] = Nil
 
+    override def onTrayIconClicked(): Unit =
+    {
+        shell.setVisible(!shell.isVisible)
+    }
+
     def addMessage(newMessage: String)
     {
         messages = (newMessage :: messages).take(messageSize)

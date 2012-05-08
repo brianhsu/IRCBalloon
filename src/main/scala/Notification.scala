@@ -14,4 +14,6 @@ trait Notification
     def addMessage(newMessage: String): Unit
     def open(): Unit
     def close(): Unit
+    def onTrayIconClicked(): Unit = {
+    }
 }
