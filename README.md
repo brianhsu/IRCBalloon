@@ -23,4 +23,7 @@ IRCBallon 是一套 IRC / JustinTV / Twitch 聊天室擷取軟體，他可以把
 下載
 =======
 
- - 還沒完成，盡請期待
+ - [Windows 32 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBallon-win32-0.1.jar)
+ - [Windows 64 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBallon-win64-0.1.jar)
+ - [Linux 32 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBallon-linux64-0.1.jar)
+
