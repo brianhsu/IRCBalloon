@@ -99,7 +99,7 @@ trait SWTHelper
         button.setLayoutData(layoutData)
         button.setText(Display.getDefault.getSystemFont)
         button.addSelectionListener { e: SelectionEvent =>
-            val fontDialog = new FontDialog(Main.shell)
+            val fontDialog = new FontDialog(MainWindow.shell)
             val fontData = fontDialog.open()
 
             if (fontData != null) {
@@ -123,7 +123,7 @@ trait SWTHelper
         button.setLayoutData(layoutData)
         button.setText(defaultColor)
         button.addSelectionListener{ e: SelectionEvent =>
-            val colorDialog = new ColorDialog(Main.shell)
+            val colorDialog = new ColorDialog(MainWindow.shell)
             val rgb = colorDialog.open()
 
             if (rgb != null) {

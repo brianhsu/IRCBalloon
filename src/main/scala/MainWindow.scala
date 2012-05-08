@@ -9,7 +9,7 @@ import org.eclipse.swt.custom.StackLayout
 
 import org.eclipse.swt._
 
-object Main extends SWTHelper
+object MainWindow extends SWTHelper
 {
     val display = new Display
     val shell = new Shell(display)
@@ -126,7 +126,7 @@ object Main extends SWTHelper
     {
         display.syncExec(new Runnable() {
             override def run() {
-                val dialog = new MessageBox(Main.shell, SWT.ICON_ERROR)
+                val dialog = new MessageBox(MainWindow.shell, SWT.ICON_ERROR)
                 dialog.setMessage("錯誤：" + exception.getMessage)
                 dialog.open()
                 callback()
