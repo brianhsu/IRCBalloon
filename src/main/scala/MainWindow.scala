@@ -47,6 +47,19 @@ object MainWindow extends SWTHelper
         new Image(display, getClass().getResourceAsStream("/appIcon.png"));
     }
 
+    def setTrayIcon()
+    {
+        val tray = display.getSystemTray()
+
+        if (tray != null) {
+            val trayIcon = new TrayItem (tray, SWT.NONE)
+            trayIcon.setImage(getAppIcon)
+            trayIcon.addSelectionListener { e: SelectionEvent =>
+                notification.foreach(_.onTrayIconClicked())
+            }
+        }
+    }
+
     def appendLog(message: String)
     {
         display.asyncExec(new Runnable() {
@@ -170,7 +183,7 @@ object MainWindow extends SWTHelper
         balloonButton.setEnabled(isEnabled)
 
         blockSetting.setUIEnabled(isEnabled)
-        balloonSetting.setUIEnabled(isEnabled)
+        balloonSetting.setUIEnabled(false)
     }
 
     def createConnectButton() =
@@ -276,7 +289,7 @@ object MainWindow extends SWTHelper
 
     def createLogginType() = 
     {
-        val label = new Label(shell, SWT.LEFT|SWT.BORDER)
+        val label = new Label(shell, SWT.LEFT)
         label.setText("設定方式：")
         label
     }
@@ -314,7 +327,9 @@ object MainWindow extends SWTHelper
         switchSettingPages()
         switchDisplayPages()
         setConnectButtonListener()
+        setTrayIcon()
 
+        balloonButton.setEnabled(false)
         shell.setText("IRC 聊天通知")
         shell.setImage(getAppIcon)
         shell.pack()
