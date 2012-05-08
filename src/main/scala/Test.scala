@@ -13,7 +13,18 @@ class JustinSetting(parent: Composite) extends Composite(parent, SWT.NONE) with 
 {
     val gridLayout = new GridLayout(2,  false)
     val username = createText(this, "帳號：")
-    val password = createText(this, "密碼：")
+    val password = createText(this, "密碼：", SWT.PASSWORD)
+
+    def createIRCBot(callback: String => Any) =
+    {
+        val hostname = "%s.jtvirc.com" format(username.getText)
+        val password = Some(this.password.getText.trim)
+        val channel = "#%s" format(username.getText)
+        new IRCBot(
+            hostname, 6667, username.getText, 
+            password, channel, callback
+        )
+    }
 
     this.setLayout(gridLayout)
 }
@@ -25,6 +36,21 @@ class IRCSetting(parent: Composite) extends Composite(parent, SWT.NONE) with SWT
     val portText = createText(this, "IRC 伺服器Port：")
     val password = createText(this, "IRC 伺服器密碼：", SWT.PASSWORD)
     val nickname = createText(this, "暱稱：")
+    val channel = createText(this, "聊天頻道：")
+
+    def getPassword = password.getText.trim match {
+        case ""    => None
+        case value => Some(value)
+    }
+
+    def createIRCBot(callback: String => Any) = {
+        new IRCBot(
+            hostText.getText, portText.getText.toInt, nickname.getText, 
+            getPassword, channel.getText, callback
+        )
+    }
+
+
 
     this.setLayout(gridLayout)
 }
@@ -184,6 +210,86 @@ object Main extends SWTHelper
     val blockSetting = new BlockSetting(displayPages)
     val balloonSetting = new BalloonSetting(displayPages)
 
+    val connectButton = createConnectButton()
+
+    def createIRCBot(callback: String => Any) =
+    {
+        (ircButton.getSelection, justinButton.getSelection) match {
+            case (true, false) => ircSetting.createIRCBot(callback)
+            case (false, true) => justinSetting.createIRCBot(callback)
+        }
+    }
+
+    def setupConnectButtonListener()
+    {
+        var ircBot: Option[IRCBot] = None
+        var notification: Option[NotificationBlock] = None
+
+        def startBot()
+        {
+            def updateNotification(message: String)
+            {
+                notification.foreach(_.addMessage(message))
+            }
+
+            notification = Some(blockSetting.createNotificationBlock)
+            notification.foreach { block =>
+                ircBot = Some(createIRCBot(updateNotification _))
+                ircBot.foreach(_.startLogging())
+                block.open()
+            }
+        }
+
+        def stopBot()
+        {
+            ircBot.foreach(_.dispose)
+            notification.foreach(_.close)
+            ircBot = None
+            notification = None
+        }
+
+        def updateTitle() {
+            connectButton.getSelection match {
+                case true  => connectButton.setText("連線")
+                case false => connectButton.setText("中斷")
+            }
+        }
+
+        connectButton.addSelectionListener { e: SelectionEvent =>
+            try {
+                updateTitle()
+                connectButton.getSelection match {
+                    case true => startBot()
+                    case false => stopBot()
+                }
+            } catch {
+                case e: Exception => displayError(e)
+            }
+        }
+    }
+
+    def displayError(exception: Exception)
+    {
+        display.syncExec(new Runnable() {
+            override def run() {
+                val dialog = new MessageBox(Main.shell, SWT.ICON_ERROR)
+                dialog.setMessage("錯誤：" + exception.getMessage)
+                dialog.open()
+            }
+        })
+    }
+
+    def createConnectButton() =
+    {
+        val layoutData = new GridData(SWT.FILL, SWT.NONE, true, false)
+        val button = new Button(shell, SWT.TOGGLE)
+
+        layoutData.horizontalSpan = 2
+        button.setLayoutData(layoutData)
+        button.setText("連線")
+        button
+    }
+
     def switchDisplayPages()
     {
         (blockButton.getSelection, balloonButton.getSelection) match {
@@ -310,6 +416,7 @@ object Main extends SWTHelper
         setupLayout()
         switchSettingPages()
         switchDisplayPages()
+        setupConnectButtonListener()
 
         shell.setText("IRC 聊天通知")
         shell.pack()

@@ -75,18 +75,20 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
                              fontColor: Color, font: Font, messageSize: Int) extends BlockTheme
 {
     val display = Display.getDefault
-    val shell = new Shell(display, SWT.NO_TRIM|SWT.ON_TOP)
-    val label = new StyledText(shell, SWT.MULTI|SWT.READ_ONLY|SWT.WRAP)
+    val shell = new Shell(display, SWT.NO_TRIM|SWT.ON_TOP|SWT.RESIZE)
+    val label = new StyledText(shell, SWT.MULTI|SWT.READ_ONLY|SWT.WRAP|SWT.NO_FOCUS)
     var messages: List[String] = Nil
 
     def addMessage(newMessage: String)
     {
+        println("addMessage(%s)" format(newMessage))
         messages = (newMessage :: messages).take(messageSize)
         updateMessages()
     }
     
     def updateMessages()
     {
+        println("updateMessage:" + messages)
         display.syncExec (new Runnable {
             override def run () {
                 label.setText(messages.take(messageSize).reverse.mkString("\n"))
