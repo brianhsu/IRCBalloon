@@ -70,6 +70,7 @@ class IRCBot(hostname: String, port: Int, nickname: String,
                     IRCBot.this.setAutoNickChange(true)
                     IRCBot.this.setVerbose(true)
                     IRCBot.this.setName(nickname)
+                    IRCBot.this.setEncoding("UTF-8")
                     IRCBot.this.connect()
                     IRCBot.this.joinChannel(channel)
                 } catch {
