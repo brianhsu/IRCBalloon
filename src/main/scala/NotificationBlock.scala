@@ -75,7 +75,7 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
                              fontColor: Color, font: Font, messageSize: Int) extends BlockTheme
 {
     val display = Display.getDefault
-    val shell = new Shell(display, SWT.NO_TRIM|SWT.NO_FOCUS|SWT.ON_TOP)
+    val shell = new Shell(display, SWT.NO_TRIM|SWT.ON_TOP)
     val label = new StyledText(shell, SWT.MULTI|SWT.READ_ONLY|SWT.WRAP)
     var messages: List[String] = Nil
 

@@ -11,13 +11,28 @@ import org.eclipse.swt._
 
 trait SWTHelper
 {
+    implicit def convertToSelectionaAdapter(action: SelectionEvent => Any) = {
+        new SelectionAdapter() {
+            override def widgetSelected(e: SelectionEvent) {
+                action(e)
+            }
+        }
+    }
+
     implicit def convertFromFont(font: Font): String = {
         val fontData = (font.getFontData)
         "%s / %d" format(fontData(0).getName, fontData(0).getHeight)
     }
 
     implicit def convertFromColor(color: Color): String = {
-        "(%d, %d, %d)".format(color.getRed, color.getGreen, color.getBlue)
+        def paddingHex(x: Int) = x.toHexString match {
+            case hex if hex.length >= 2 => hex
+            case hex if hex.length <= 1 => "0" + hex
+        }
+
+        "#%s%s%s".format(paddingHex(color.getRed), 
+                         paddingHex(color.getGreen), 
+                         paddingHex(color.getBlue)).toUpperCase
     }
 
     def createText(parent: Composite, title: String, style: Int = SWT.NONE) = 
@@ -30,6 +45,94 @@ trait SWTHelper
         text.setLayoutData(layoutData)
 
         text
+    }
+
+    def createScaleChooser(parent: Composite, title: String) =
+    {
+        val layoutData = new GridData(SWT.FILL, SWT.CENTER, true, false)
+        val layoutData2 = new GridData(SWT.FILL, SWT.CENTER, false, false)
+        val label = new Label(parent, SWT.LEFT)
+        val scale = new Scale(parent, SWT.HORIZONTAL)
+
+        def updateLabel()
+        {
+            label.setText(title + scale.getSelection + "%")
+        }
+
+        label.setLayoutData(layoutData2)
+        label.setText(title)
+        scale.setMaximum(100)
+        scale.setMinimum(0)
+        scale.setLayoutData(layoutData)
+        scale.setSelection(20)
+        scale.addSelectionListener { e: SelectionEvent =>
+            updateLabel()
+        }
+
+        updateLabel()
+
+        (label, scale)
+    }
+
+    def createFontChooser(parent: Composite, title: String, action: Font => Any) =
+    {
+        val layoutData = new GridData(SWT.FILL, SWT.NONE, true, false)
+        val label = new Label(parent, SWT.LEFT)
+        val button = new Button(parent, SWT.PUSH)
+
+        label.setText(title)
+        button.setLayoutData(layoutData)
+        button.setText(Display.getDefault.getSystemFont)
+        button.addSelectionListener { e: SelectionEvent =>
+            val fontDialog = new FontDialog(Main.shell)
+            val fontData = fontDialog.open()
+
+            if (fontData != null) {
+                val font = new Font(Display.getDefault, fontData)
+                action(font)
+                button.setText(font)
+            }
+        }
+
+        (label, button)
+    }
+
+    def createColorChooser(parent: Composite, title: String, 
+                           defaultColor: Color, action: Color => Any) = 
+    {
+        val layoutData = new GridData(SWT.FILL, SWT.NONE, true, false)
+        val label = new Label(parent, SWT.LEFT)
+        val button = new Button(parent, SWT.PUSH)
+
+        label.setText(title)
+        button.setLayoutData(layoutData)
+        button.setText(defaultColor)
+        button.addSelectionListener{ e: SelectionEvent =>
+            val colorDialog = new ColorDialog(Main.shell)
+            val rgb = colorDialog.open()
+
+            if (rgb != null) {
+                val color = new Color(Display.getDefault, rgb)
+                action(color)
+                button.setText(color)
+            }
+        }
+
+        (label, button)
+    }
+
+    def createSpinner(parent: Composite, title: String, min: Int, max:Int) =
+    {
+        val layoutData = new GridData(SWT.FILL, SWT.NONE, true, false)
+        val label = new Label(parent, SWT.LEFT)
+        val spinner = new Spinner(parent, SWT.NONE)
+
+        label.setText(title)
+        spinner.setLayoutData(layoutData)
+        spinner.setMaximum(max)
+        spinner.setMinimum(min)
+
+        (label, spinner)
     }
 
 }
@@ -56,8 +159,8 @@ class IRCSetting(parent: Composite) extends Composite(parent, SWT.NONE) with SWT
 
 class BlockSetting(parent: Composite) extends Composite(parent, SWT.NONE) with SWTHelper
 {
-    var backgroundColor: Color = MyColor.Black
-    var fontColor: Color = MyColor.White
+    var bgColor: Color = MyColor.Black
+    var fgColor: Color = MyColor.White
     var messageFont: Font = Display.getDefault.getSystemFont
 
     val gridLayout = new GridLayout(4, false)
@@ -65,88 +168,12 @@ class BlockSetting(parent: Composite) extends Composite(parent, SWT.NONE) with S
     val locationY = createText(this, "視窗位址 Y：")
     val width = createText(this, "視窗寬度：")
     val height = createText(this, "視窗高度：")
-    val (bgLabel, bgButton) = createColorChooser("背景顏色：", backgroundColor = _)
-    val (fgLabel, fgButton) = createColorChooser("文字顏色：", fontColor = _)
-    val (fontLabel, fontButton) = createFontChooser("訊息字型：", messageFont = _)
-    val (aa, bb) = createTransparentChooser("透明度：")
+    val (bgLabel, bgButton) = createColorChooser(this, "背景顏色：", bgColor, bgColor = _)
+    val (fgLabel, fgButton) = createColorChooser(this, "文字顏色：", fgColor, fgColor = _)
+    val (fontLabel, fontButton) = createFontChooser(this, "訊息字型：", messageFont = _)
+    val (transparentLabel, transparentScale) = createScaleChooser(this, "透明度：")
+    val (messageSizeLabel, messageSizeSpinner) = createSpinner(this, "訊息數量：", 1, 50)
 
-    def createTransparentChooser(title: String) =
-    {
-        val layoutData = new GridData(SWT.FILL, SWT.CENTER, true, false)
-        val layoutData2 = new GridData(SWT.FILL, SWT.CENTER, false, false)
-        val label = new Label(this, SWT.LEFT)
-        val slider = new Scale(this, SWT.HORIZONTAL)
-
-        def updateLabel()
-        {
-            label.setText(title + slider.getSelection + "%")
-        }
-
-        label.setLayoutData(layoutData2)
-        label.setText("透明度：")
-        slider.setMaximum(100)
-        slider.setMinimum(0)
-        slider.setLayoutData(layoutData)
-        slider.setSelection(20)
-        slider.addSelectionListener(new SelectionAdapter() {
-            override def widgetSelected(e: SelectionEvent) {
-                updateLabel()
-            }
-        })
-
-        updateLabel()
-
-        (label, slider)
-    }
-
-    def createFontChooser(title: String, action: Font => Any) =
-    {
-        val layoutData = new GridData(SWT.FILL, SWT.NONE, true, false)
-        val label = new Label(this, SWT.LEFT)
-        val button = new Button(this, SWT.PUSH)
-
-        label.setText(title)
-        button.setLayoutData(layoutData)
-        button.setText(messageFont)
-        button.addSelectionListener(new SelectionAdapter() {
-            override def widgetSelected(e: SelectionEvent) {
-                val fontDialog = new FontDialog(Main.shell)
-                val fontData = fontDialog.open()
-
-                if (fontData != null) {
-                    val font = new Font(Display.getDefault, fontData)
-                    action(font)
-                    button.setText(font)
-                }
-            }
-        })
-
-        (label, button)
-    }
-
-    def createColorChooser(title: String, action: Color => Any) = {
-        val layoutData = new GridData(SWT.FILL, SWT.NONE, true, false)
-        val label = new Label(this, SWT.LEFT)
-        val button = new Button(this, SWT.PUSH)
-
-        label.setText(title)
-        button.setLayoutData(layoutData)
-        button.setText(backgroundColor)
-        button.addSelectionListener(new SelectionAdapter() {
-            override def widgetSelected(e: SelectionEvent) {
-                val colorDialog = new ColorDialog(Main.shell)
-                val rgb = colorDialog.open()
-
-                if (rgb != null) {
-                    val color = new Color(Display.getDefault, rgb)
-                    action(color)
-                    button.setText(color)
-                }
-            }
-        })
-
-        (label, button)
-    }
 
     this.setLayout(gridLayout)
 }
@@ -162,7 +189,7 @@ class BalloonSetting(parent: Composite) extends Composite(parent, SWT.NONE) with
 }
 
 
-object Main
+object Main extends SWTHelper
 {
     val display = new Display
     val shell = new Shell(display)
@@ -239,11 +266,9 @@ object Main
         val button = new Button(displayGroup, SWT.RADIO)
         button.setText("固定區塊")
         button.setSelection(true)
-        button.addSelectionListener(new SelectionAdapter() {
-            override def widgetSelected(e: SelectionEvent) {
-                switchDisplayPages()
-            }
-        })
+        button.addSelectionListener { e:SelectionEvent =>
+            switchDisplayPages()
+        }
         button
     }
 
@@ -251,11 +276,9 @@ object Main
     {
         val button = new Button(displayGroup, SWT.RADIO)
         button.setText("泡泡通知")
-        button.addSelectionListener(new SelectionAdapter() {
-            override def widgetSelected(e: SelectionEvent) {
-                switchDisplayPages()
-            }
-        })
+        button.addSelectionListener { e: SelectionEvent =>
+            switchDisplayPages()
+        }
         button
     }
 
@@ -291,11 +314,9 @@ object Main
         val button = new Button(settingGroup, SWT.RADIO)
         button.setText("IRC")
         button.setSelection(true)
-        button.addSelectionListener(new SelectionAdapter() {
-            override def widgetSelected(e: SelectionEvent) {
-                switchSettingPages()
-            }
-        })
+        button.addSelectionListener{ e: SelectionEvent =>
+            switchSettingPages()
+        }
         button
     }
     
@@ -303,11 +324,9 @@ object Main
     {
         val button = new Button(settingGroup, SWT.RADIO)
         button.setText("Justin / Twitch")
-        button.addSelectionListener(new SelectionAdapter() {
-            override def widgetSelected(e: SelectionEvent) {
-                switchSettingPages()
-            }
-        })
+        button.addSelectionListener { e: SelectionEvent =>
+            switchSettingPages()
+        }
         button
     }
 
