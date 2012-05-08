@@ -15,6 +15,12 @@ class BalloonSetting(parent: Composite) extends Composite(parent, SWT.NONE) with
     val locationX = createText(this, "視窗位址 X：")
     val locationY = createText(this, "視窗位址 Y：")
 
+    def setUIEnabled(isEnabled: Boolean)
+    {
+        locationX.setEnabled(isEnabled)
+        locationY.setEnabled(isEnabled)
+    }
+
     this.setLayout(gridLayout)
 }
 

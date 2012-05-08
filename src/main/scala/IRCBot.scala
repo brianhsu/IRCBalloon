@@ -5,12 +5,17 @@ import org.jibble.pircbot.PircBot
 object IRCBot
 {
     def doNothing(message: String) {}
+    def doNothing(exception: Exception) {
+        println("From IRCBot.doNothing:")
+        exception.printStackTrace()
+    }
 }
 
 class IRCBot(hostname: String, port: Int, nickname: String, 
              password: Option[String], channel: String, 
              callback: String => Any = IRCBot.doNothing,
-             onLog: String => Any = IRCBot.doNothing) extends PircBot
+             onLog: String => Any = IRCBot.doNothing,
+             onError: Exception => Any = IRCBot.doNothing) extends PircBot
 {
     override def onMessage(channel: String, sender: String, login: String, 
                            hostname: String, message: String) 
@@ -61,11 +66,15 @@ class IRCBot(hostname: String, port: Int, nickname: String,
     {
         val thread = new Thread() {
             override def run() {
-                IRCBot.this.setAutoNickChange(true)
-                IRCBot.this.setVerbose(true)
-                IRCBot.this.setName(nickname)
-                IRCBot.this.connect()
-                IRCBot.this.joinChannel(channel)
+                try {
+                    IRCBot.this.setAutoNickChange(true)
+                    IRCBot.this.setVerbose(true)
+                    IRCBot.this.setName(nickname)
+                    IRCBot.this.connect()
+                    IRCBot.this.joinChannel(channel)
+                } catch {
+                    case e: Exception => onError(e)
+                }
             }
         }
 

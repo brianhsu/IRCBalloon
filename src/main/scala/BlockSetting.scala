@@ -137,6 +137,20 @@ class BlockSetting(parent: Composite, onModify: ModifyEvent => Any) extends
         height.addModifyListener(onModify)
     }
 
+    def setUIEnabled(isEnabled: Boolean)
+    {
+        locationX.setEnabled(isEnabled)
+        locationY.setEnabled(isEnabled)
+        width.setEnabled(isEnabled)
+        height.setEnabled(isEnabled)
+        bgButton.setEnabled(isEnabled)
+        fgButton.setEnabled(isEnabled)
+        fontButton.setEnabled(isEnabled)
+        transparentScale.setEnabled(isEnabled)
+        messageSizeSpinner.setEnabled(isEnabled)
+        previewButton.setEnabled(isEnabled)
+    }
+
     this.setLayout(gridLayout)
     this.setDefaultValue()
     this.setTextVerify()

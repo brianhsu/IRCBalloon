@@ -24,7 +24,7 @@ class IRCSetting(parent: Composite, onModify: ModifyEvent => Any) extends
         case value => Some(value)
     }
 
-    def createIRCBot(callback: String => Any, onLog: String => Any) = {
+    def createIRCBot(callback: String => Any, onLog: String => Any, onError: Exception => Any) = {
 
         if (!isSettingOK) {
             throw new Exception("IRC 設定不完整")
@@ -32,7 +32,7 @@ class IRCSetting(parent: Composite, onModify: ModifyEvent => Any) extends
 
         new IRCBot(
             hostText.getText, portText.getText.toInt, nickname.getText, 
-            getPassword, channel.getText, callback, onLog
+            getPassword, channel.getText, callback, onLog, onError
         )
     }
 
@@ -69,13 +69,13 @@ class IRCSetting(parent: Composite, onModify: ModifyEvent => Any) extends
 
     def setUIEnabled(isEnabled: Boolean)
     {
-        println("isEnabled:" + isEnabled)
         this.hostText.setEnabled(isEnabled)
         this.portText.setEnabled(isEnabled)
         this.password.setEnabled(isEnabled)
         this.nickname.setEnabled(isEnabled)
         this.channel.setEnabled(isEnabled)
     }
+
 
     this.setDefaultValue()
     this.setTextVerify()

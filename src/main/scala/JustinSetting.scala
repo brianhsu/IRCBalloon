@@ -16,14 +16,14 @@ class JustinSetting(parent: Composite, onModify: ModifyEvent => Any) extends
     val username = createText(this, "帳號：")
     val password = createText(this, "密碼：", SWT.PASSWORD)
 
-    def createIRCBot(callback: String => Any, onLog: String => Any) =
+    def createIRCBot(callback: String => Any, onLog: String => Any, onError: Exception => Any) =
     {
         val hostname = "%s.jtvirc.com" format(username.getText)
         val password = Some(this.password.getText.trim)
         val channel = "#%s" format(username.getText)
         new IRCBot(
             hostname, 6667, username.getText, 
-            password, channel, callback, onLog
+            password, channel, callback, onLog, onError
         )
     }
 
@@ -39,6 +39,13 @@ class JustinSetting(parent: Composite, onModify: ModifyEvent => Any) extends
         username.addModifyListener(onModify)
         password.addModifyListener(onModify)
     }
+
+    def setUIEnabled(isEnabled: Boolean)
+    {
+        this.username.setEnabled(isEnabled)
+        this.password.setEnabled(isEnabled)
+    }
+
 
     this.setLayout(gridLayout)
     this.setModifyListener()

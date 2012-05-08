@@ -70,11 +70,11 @@ object MainWindow extends SWTHelper
         connectButton.setEnabled(connectSettingOK && displayStettingOK)
     }
 
-    def createIRCBot(callback: String => Any) =
+    def createIRCBot(callback: String => Any, onError: Exception => Any) =
     {
         (ircButton.getSelection, justinButton.getSelection) match {
-            case (true, false) => ircSetting.createIRCBot(callback, appendLog _)
-            case (false, true) => justinSetting.createIRCBot(callback, appendLog _)
+            case (true, false) => ircSetting.createIRCBot(callback, appendLog _, onError)
+            case (false, true) => justinSetting.createIRCBot(callback, appendLog _, onError)
         }
     }
 
@@ -83,19 +83,32 @@ object MainWindow extends SWTHelper
         var ircBot: Option[IRCBot] = None
         var notification: Option[NotificationBlock] = None
 
+        def toggleConnectButton()
+        {
+            connectButton.setSelection(!connectButton.getSelection)
+        }
+
+        def onError(exception: Exception) = {
+            println("===> From MainWindow.onError")
+            exception.printStackTrace()
+            displayError(exception, () => { stopBot(); toggleConnectButton()})
+        }
+
+        def updateNotification(message: String)
+        {
+            notification.foreach(_.addMessage(message))
+        }
+
         def startBot()
         {
-            def updateNotification(message: String)
-            {
-                notification.foreach(_.addMessage(message))
-            }
 
+            setUIEnabled(false)
             logTextArea.setText("開始連線至 IRC 伺服器，請稍候……\n")
             notification = Some(blockSetting.createNotificationBlock)
             notification.foreach { block =>
                 block.open()
                 block.addMessage("開始連線至 IRC 伺服器，請稍候……")
-                ircBot = Some(createIRCBot(updateNotification _))
+                ircBot = Some(createIRCBot(updateNotification _, onError _))
                 ircBot.foreach(_.start())
             }
         }
@@ -106,18 +119,13 @@ object MainWindow extends SWTHelper
             notification.foreach(_.close)
             ircBot = None
             notification = None
+            setUIEnabled(true)
         }
 
         connectButton.addSelectionListener { e: SelectionEvent =>
-            try {
-                connectButton.getSelection match {
-                    case true => startBot()
-                    case false => stopBot()
-                }
-            } catch {
-                case e: Exception => 
-                    connectButton.setSelection(!connectButton.getSelection)
-                    displayError(e, stopBot _)
+            connectButton.getSelection match {
+                case true => startBot()
+                case false => stopBot()
             }
         }
     }
@@ -125,14 +133,55 @@ object MainWindow extends SWTHelper
     def displayError(exception: Exception, callback: () => Any)
     {
         display.syncExec(new Runnable() {
+            def outputToLogTextArea()
+            {
+                logTextArea.append(exception.toString + "\n")
+                exception.getStackTrace.foreach { trace =>
+                    logTextArea.append("\t at " + trace.toString + "\n")
+                }
+            }
+
             override def run() {
                 val dialog = new MessageBox(MainWindow.shell, SWT.ICON_ERROR)
+
+                outputToLogTextArea()
                 dialog.setMessage("錯誤：" + exception.getMessage)
                 dialog.open()
                 callback()
+                setUIEnabled(true)
             }
         })
     }
+
+    def setUIEnabled(isEnabled: Boolean)
+    {
+        ircButton.setEnabled(isEnabled)
+        justinButton.setEnabled(isEnabled)
+        ircSetting.setUIEnabled(isEnabled)
+        justinSetting.setUIEnabled(isEnabled)
+        
+        blockButton.setEnabled(isEnabled)
+        balloonButton.setEnabled(isEnabled)
+
+        blockSetting.setUIEnabled(isEnabled)
+        balloonSetting.setUIEnabled(isEnabled)
+    }
+
+    /*
+    def createTestButton() =
+    {
+        val layoutData = new GridData(SWT.FILL, SWT.NONE, true, false)
+        val button = new Button(shell, SWT.TOGGLE)
+
+        layoutData.horizontalSpan = 2
+        button.setLayoutData(layoutData)
+        button.setText("測試")
+        button.addSelectionListener { e: SelectionEvent =>
+            setUIEnabled(!button.getSelection)
+        }
+        button
+    }
+    */
 
     def createConnectButton() =
     {
@@ -221,7 +270,7 @@ object MainWindow extends SWTHelper
             case (_, true) => stackLayout.topControl = justinSetting
         }
 
-        settingPages.layout()
+        settingPages.layout(true)
         updateConnectButtonState()
     }
 
