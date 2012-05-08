@@ -9,7 +9,8 @@ import org.eclipse.swt.custom.StackLayout
 
 import org.eclipse.swt._
 
-class JustinSetting(parent: Composite) extends Composite(parent, SWT.NONE) with SWTHelper
+class JustinSetting(parent: Composite, onModify: ModifyEvent => Any) extends 
+       Composite(parent, SWT.NONE) with SWTHelper
 {
     val gridLayout = new GridLayout(2,  false)
     val username = createText(this, "帳號：")
@@ -26,10 +27,25 @@ class JustinSetting(parent: Composite) extends Composite(parent, SWT.NONE) with 
         )
     }
 
+    def isSettingOK = {
+        val username = this.username.getText.trim
+        val password = this.password.getText.trim
+
+        username.length > 0 && password.length > 0
+    }
+
+    def setModifyListener()
+    {
+        username.addModifyListener(onModify)
+        password.addModifyListener(onModify)
+    }
+
     this.setLayout(gridLayout)
+    this.setModifyListener()
 }
 
-class IRCSetting(parent: Composite) extends Composite(parent, SWT.NONE) with SWTHelper
+class IRCSetting(parent: Composite, onModify: ModifyEvent => Any) extends 
+      Composite(parent, SWT.NONE) with SWTHelper
 {
     val gridLayout = new GridLayout(2,  false)
     val hostText = createText(this, "IRC 伺服器主機：")
@@ -44,18 +60,56 @@ class IRCSetting(parent: Composite) extends Composite(parent, SWT.NONE) with SWT
     }
 
     def createIRCBot(callback: String => Any) = {
+
+        if (!isSettingOK) {
+            throw new Exception("IRC 設定不完整")
+        }
+
         new IRCBot(
             hostText.getText, portText.getText.toInt, nickname.getText, 
             getPassword, channel.getText, callback
         )
     }
 
+    def isSettingOK = {
+        val hostname = this.hostText.getText.trim
+        val port = this.portText.getText.trim
+        val nickname = this.nickname.getText.trim
+        val channel = this.channel.getText.trim
 
+        hostname.length > 0 &&
+        port.length > 0 &&
+        nickname.length > 0 &&
+        channel.length > 0 && channel.startsWith("#")
+    }
 
+    def setDefaultValue()
+    {
+        portText.setText("6667")
+    }
+
+    def setTextVerify()
+    {
+        portText.addVerifyListener { e: VerifyEvent => e.doit = e.text.forall(_.isDigit) }
+    }
+
+    def setModifyListener()
+    {
+        hostText.addModifyListener(onModify)
+        portText.addModifyListener(onModify)
+        password.addModifyListener(onModify)
+        nickname.addModifyListener(onModify)
+        channel.addModifyListener(onModify)
+    }
+
+    this.setDefaultValue()
+    this.setTextVerify()
+    this.setModifyListener()
     this.setLayout(gridLayout)
 }
 
-class BlockSetting(parent: Composite) extends Composite(parent, SWT.NONE) with SWTHelper
+class BlockSetting(parent: Composite, onModify: ModifyEvent => Any) extends 
+      Composite(parent, SWT.NONE) with SWTHelper
 {
     var bgColor: Color = MyColor.Black
     var fgColor: Color = MyColor.White
@@ -109,7 +163,7 @@ class BlockSetting(parent: Composite) extends Composite(parent, SWT.NONE) with S
         )
     }
 
-    def setupDefaultValue()
+    def setDefaultValue()
     {
         locationX.setText("100")
         locationY.setText("100")
@@ -118,7 +172,7 @@ class BlockSetting(parent: Composite) extends Composite(parent, SWT.NONE) with S
         messageSizeSpinner.setSelection(10)
     }
 
-    def setupTextVerify()
+    def setTextVerify()
     {
         locationX.addVerifyListener { e: VerifyEvent => e.doit = e.text.forall(_.isDigit) }
         locationY.addVerifyListener { e: VerifyEvent => e.doit = e.text.forall(_.isDigit) }
@@ -168,9 +222,24 @@ class BlockSetting(parent: Composite) extends Composite(parent, SWT.NONE) with S
         button
     }
 
+    def isSettingOK = {
+        locationX.getText.trim.length > 0 &&
+        locationY.getText.trim.length > 0 &&
+        width.getText.trim.length > 0 &&
+        height.getText.trim.length > 0
+    }
+
+    def setModifyListener() {
+        locationX.addModifyListener(onModify)
+        locationY.addModifyListener(onModify)
+        width.addModifyListener(onModify)
+        height.addModifyListener(onModify)
+    }
+
     this.setLayout(gridLayout)
-    this.setupDefaultValue()
-    this.setupTextVerify()
+    this.setDefaultValue()
+    this.setTextVerify()
+    this.setModifyListener()
 }
 
 class BalloonSetting(parent: Composite) extends Composite(parent, SWT.NONE) with SWTHelper
@@ -198,8 +267,8 @@ object Main extends SWTHelper
     val ircButton = createIRCButton()
     val justinButton = createJustinButton()
     val settingPages = createSettingPages()
-    val ircSetting = new IRCSetting(settingPages)
-    val justinSetting = new JustinSetting(settingPages)
+    val ircSetting = new IRCSetting(settingPages, e => updateConnectButtonState())
+    val justinSetting = new JustinSetting(settingPages, e => updateConnectButtonState())
 
     val displayType = createDisplayType()
     val displayGroup = createDisplayGroup()
@@ -207,10 +276,23 @@ object Main extends SWTHelper
     val balloonButton = createBalloonButton()
 
     val displayPages = createDisplayPages()
-    val blockSetting = new BlockSetting(displayPages)
+    val blockSetting = new BlockSetting(displayPages, e => updateConnectButtonState())
     val balloonSetting = new BalloonSetting(displayPages)
 
     val connectButton = createConnectButton()
+
+    def updateConnectButtonState()
+    {
+        val connectSettingOK = 
+            (ircButton.getSelection == true && ircSetting.isSettingOK) ||
+            (justinButton.getSelection == true && justinSetting.isSettingOK)
+
+        val displayStettingOK = 
+            (blockButton.getSelection == true && blockSetting.isSettingOK) &&
+            (balloonButton.getSelection == false)
+
+        connectButton.setEnabled(connectSettingOK && displayStettingOK)
+    }
 
     def createIRCBot(callback: String => Any) =
     {
@@ -220,7 +302,7 @@ object Main extends SWTHelper
         }
     }
 
-    def setupConnectButtonListener()
+    def setConnectButtonListener()
     {
         var ircBot: Option[IRCBot] = None
         var notification: Option[NotificationBlock] = None
@@ -234,15 +316,15 @@ object Main extends SWTHelper
 
             notification = Some(blockSetting.createNotificationBlock)
             notification.foreach { block =>
+                block.open()
                 ircBot = Some(createIRCBot(updateNotification _))
                 ircBot.foreach(_.startLogging())
-                block.open()
             }
         }
 
         def stopBot()
         {
-            ircBot.foreach(_.dispose)
+            ircBot.foreach{ bot => if(bot.isConnected) bot.dispose }
             notification.foreach(_.close)
             ircBot = None
             notification = None
@@ -257,24 +339,27 @@ object Main extends SWTHelper
 
         connectButton.addSelectionListener { e: SelectionEvent =>
             try {
-                updateTitle()
                 connectButton.getSelection match {
                     case true => startBot()
                     case false => stopBot()
                 }
+                updateTitle()
             } catch {
-                case e: Exception => displayError(e)
+                case e: Exception => 
+                    connectButton.setSelection(!connectButton.getSelection)
+                    displayError(e, stopBot _)
             }
         }
     }
 
-    def displayError(exception: Exception)
+    def displayError(exception: Exception, callback: () => Any)
     {
         display.syncExec(new Runnable() {
             override def run() {
                 val dialog = new MessageBox(Main.shell, SWT.ICON_ERROR)
                 dialog.setMessage("錯誤：" + exception.getMessage)
                 dialog.open()
+                callback()
             }
         })
     }
@@ -287,6 +372,7 @@ object Main extends SWTHelper
         layoutData.horizontalSpan = 2
         button.setLayoutData(layoutData)
         button.setText("連線")
+        button.setEnabled(false)
         button
     }
 
@@ -298,6 +384,7 @@ object Main extends SWTHelper
         }
 
         displayPages.layout()
+        updateConnectButtonState()
     }
 
     def createDisplayPages() =
@@ -365,6 +452,7 @@ object Main extends SWTHelper
         }
 
         settingPages.layout()
+        updateConnectButtonState()
     }
 
     def createSettingPages() = 
@@ -405,7 +493,7 @@ object Main extends SWTHelper
         button
     }
 
-    def setupLayout()
+    def setLayout()
     {
         val gridLayout = new GridLayout(2,  false)
         shell.setLayout(gridLayout)
@@ -413,10 +501,10 @@ object Main extends SWTHelper
 
     def main(args: Array[String])
     {
-        setupLayout()
+        setLayout()
         switchSettingPages()
         switchDisplayPages()
-        setupConnectButtonListener()
+        setConnectButtonListener()
 
         shell.setText("IRC 聊天通知")
         shell.pack()

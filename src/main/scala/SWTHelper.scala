@@ -11,6 +11,14 @@ import org.eclipse.swt._
 
 trait SWTHelper
 {
+    implicit def convertToModifyAdapter(action: ModifyEvent => Any) = {
+        new ModifyListener() {
+            override def modifyText(e: ModifyEvent) {
+                action(e)
+            }
+        }
+    }
+
     implicit def convertToVerifyAdapter(action: VerifyEvent => Any) = {
         new VerifyListener() {
             override def verifyText(e: VerifyEvent) {
