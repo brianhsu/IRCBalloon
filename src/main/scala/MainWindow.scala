@@ -167,22 +167,6 @@ object MainWindow extends SWTHelper
         balloonSetting.setUIEnabled(isEnabled)
     }
 
-    /*
-    def createTestButton() =
-    {
-        val layoutData = new GridData(SWT.FILL, SWT.NONE, true, false)
-        val button = new Button(shell, SWT.TOGGLE)
-
-        layoutData.horizontalSpan = 2
-        button.setLayoutData(layoutData)
-        button.setText("測試")
-        button.addSelectionListener { e: SelectionEvent =>
-            setUIEnabled(!button.getSelection)
-        }
-        button
-    }
-    */
-
     def createConnectButton() =
     {
         val layoutData = new GridData(SWT.FILL, SWT.NONE, true, false)
