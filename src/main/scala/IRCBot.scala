@@ -29,6 +29,12 @@ class IRCBot(hostname: String, port: Int, nickname: String,
         callback("[系統] %s 離開聊天室" format(sourceNick))
     }
 
+    override def log(line: String)
+    {
+        super.log(line)
+        onLog(line)
+    }
+
     private def connect()
     {
         password match {
@@ -36,14 +42,21 @@ class IRCBot(hostname: String, port: Int, nickname: String,
             case Some(password) => super.connect(hostname, port, password)
         }
     }
+    
 
     def startLogging()
     {
-        this.setAutoNickChange(true)
-        this.setVerbose(true)
-        this.setName(nickname)
-        this.connect()
-        this.joinChannel(channel)
+        val thread = new Thread() {
+            override def run() {
+                IRCBot.this.setAutoNickChange(true)
+                IRCBot.this.setVerbose(true)
+                IRCBot.this.setName(nickname)
+                IRCBot.this.connect()
+                IRCBot.this.joinChannel(channel)
+            }
+        }
+
+        thread.start()
     }
 }
 

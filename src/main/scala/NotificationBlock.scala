@@ -81,14 +81,12 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
 
     def addMessage(newMessage: String)
     {
-        println("addMessage(%s)" format(newMessage))
         messages = (newMessage :: messages).take(messageSize)
         updateMessages()
     }
     
     def updateMessages()
     {
-        println("updateMessage:" + messages)
         display.syncExec (new Runnable {
             override def run () {
                 label.setText(messages.take(messageSize).reverse.mkString("\n"))
