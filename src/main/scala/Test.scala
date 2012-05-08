@@ -47,6 +47,42 @@ class BlockSetting(parent: Composite) extends Composite(parent, SWT.NONE) with S
     val (messageSizeLabel, messageSizeSpinner) = createSpinner(this, "訊息數量：", 1, 50)
     val previewButton = createPreviewButton()
 
+    class TestThread(notificationBlock: NotificationBlock) extends Thread
+    {
+        private var shouldStop = false
+
+        def setStop(shouldStop: Boolean)
+        {
+            this.shouldStop = shouldStop
+        }
+        
+        override def run ()
+        {
+            var count = 1
+
+            while (!shouldStop) {
+                val message = MessageSample.random(1).head
+                notificationBlock.addMessage("[%d] %s" format(count, message))
+                count = (count + 1)
+                Thread.sleep(1000)
+            }
+        }
+    }
+
+    def createNotificationBlock() = 
+    {
+        val size = (width.getText.toInt, height.getText.toInt)
+        val location = (locationX.getText.toInt, locationY.getText.toInt)
+        val messageSize = messageSizeSpinner.getSelection
+        val alpha = 255 - (255 * (transparentScale.getSelection / 100.0)).toInt
+
+        NotificationBlock(
+            size, location, 
+            MyColor.White, bgColor, alpha, 
+            fgColor, messageFont, messageSize
+        )
+    }
+
     def setupDefaultValue()
     {
         locationX.setText("100")
@@ -66,12 +102,43 @@ class BlockSetting(parent: Composite) extends Composite(parent, SWT.NONE) with S
 
     def createPreviewButton() =
     {
+        var notificationBlock: Option[NotificationBlock] = None
+        var testThread: Option[TestThread] = None
+
         val layoutData = new GridData(SWT.FILL, SWT.NONE, true, false)
         val button = new Button(this, SWT.PUSH)
 
+        def startPreview ()
+        {
+            notificationBlock = Some(createNotificationBlock)
+            notificationBlock.foreach{ block => 
+                block.open()
+                testThread = Some(new TestThread(block))
+                testThread.foreach(_.start)
+            }
+            button.setText("停止預覽")
+        }
+
+        def stopPreview()
+        {
+            button.setText("開始預覽")
+            notificationBlock.foreach{ block =>
+                testThread.foreach{_.setStop(true)}
+                testThread = None
+                block.close()
+            }
+            notificationBlock = None
+        }
+
         layoutData.horizontalSpan = 2
         button.setLayoutData(layoutData)
-        button.setText("預覽")
+        button.setText("開始預覽")
+        button.addSelectionListener { e: SelectionEvent =>
+            notificationBlock match {
+                case None    => startPreview()
+                case Some(x) => stopPreview()
+            }
+        }
         button
     }
 
