@@ -1,3 +1,7 @@
+import AssemblyKeys._
+
+seq(assemblySettings: _*)
+
 name := "IRCBalloon"
 
 version := "0.1"
