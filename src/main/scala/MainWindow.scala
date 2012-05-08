@@ -50,7 +50,7 @@ object MainWindow extends SWTHelper
     def createLogTextArea() =
     {
         val layoutData = new GridData(SWT.FILL, SWT.FILL, true, true)
-        val text = new Text(shell, SWT.MULTI|SWT.WRAP|SWT.V_SCROLL|SWT.READ_ONLY)
+        val text = new Text(shell, SWT.BORDER|SWT.MULTI|SWT.WRAP|SWT.V_SCROLL|SWT.READ_ONLY)
         layoutData.horizontalSpan = 2
         text.setLayoutData(layoutData)
         text

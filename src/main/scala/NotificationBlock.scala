@@ -19,9 +19,9 @@ trait BlockTheme {
 
         val rgb = backgroundColor.getRGB
 
-        val red = min(255, rgb.red + 20)
-        val green = min(255, rgb.green + 20)
-        val blue = min(255, rgb.blue + 20)
+        val red = min(255, rgb.red + 50)
+        val green = min(255, rgb.green + 50)
+        val blue = min(255, rgb.blue + 50)
 
         val startColor = new Color(display, red, green, blue)
         val endColor = backgroundColor
