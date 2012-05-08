@@ -43,8 +43,21 @@ class IRCBot(hostname: String, port: Int, nickname: String,
         }
     }
     
+    def stop()
+    {
+        val thread = new Thread() {
+            override def run() {
+                if (IRCBot.this.isConnected) {
+                    IRCBot.this.disconnect()
+                    IRCBot.this.dispose()
+                }
+            }
+        }
 
-    def startLogging()
+        thread.start()
+    }
+
+    def start()
     {
         val thread = new Thread() {
             override def run() {

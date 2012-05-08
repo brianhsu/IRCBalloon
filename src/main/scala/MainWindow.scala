@@ -96,13 +96,13 @@ object MainWindow extends SWTHelper
                 block.open()
                 block.addMessage("開始連線至 IRC 伺服器，請稍候……")
                 ircBot = Some(createIRCBot(updateNotification _))
-                ircBot.foreach(_.startLogging())
+                ircBot.foreach(_.start())
             }
         }
 
         def stopBot()
         {
-            ircBot.foreach{ bot => if(bot.isConnected) bot.dispose }
+            ircBot.foreach(_.stop())
             notification.foreach(_.close)
             ircBot = None
             notification = None

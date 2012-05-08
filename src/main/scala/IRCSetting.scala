@@ -67,6 +67,16 @@ class IRCSetting(parent: Composite, onModify: ModifyEvent => Any) extends
         channel.addModifyListener(onModify)
     }
 
+    def setUIEnabled(isEnabled: Boolean)
+    {
+        println("isEnabled:" + isEnabled)
+        this.hostText.setEnabled(isEnabled)
+        this.portText.setEnabled(isEnabled)
+        this.password.setEnabled(isEnabled)
+        this.nickname.setEnabled(isEnabled)
+        this.channel.setEnabled(isEnabled)
+    }
+
     this.setDefaultValue()
     this.setTextVerify()
     this.setModifyListener()
