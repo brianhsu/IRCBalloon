@@ -1,0 +1,1 @@
+rm -rvf target/ src_managed/ project/boot/ project/build/target project/plugins/project/ project/plugins/src_managed project/plugins/lib_managed project/plugins/target project/project project/target bin/
