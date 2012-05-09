@@ -44,7 +44,7 @@ object MainWindow extends SWTHelper
     def createTabFolder() = 
     {
         val layoutData = new GridData(SWT.FILL, SWT.NONE, true, false)
-        val tabFolder = new TabFolder(shell, SWT.BORDER)
+        val tabFolder = new TabFolder(shell, SWT.NONE)
         tabFolder.setLayoutData(layoutData)
         tabFolder
     }
