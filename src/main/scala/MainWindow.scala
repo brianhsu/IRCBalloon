@@ -34,7 +34,7 @@ object MainWindow extends SWTHelper
 
     val displayPages = createDisplayPages()
     val blockSetting = new BlockSetting(displayPages, e => updateConnectButtonState())
-    val balloonSetting = new BalloonSetting(displayPages)
+    val balloonSetting = new BalloonSetting(displayPages, e => updateConnectButtonState())
 
     val connectButton = createConnectButton()
     val logTextArea = createLogTextArea()
@@ -86,8 +86,8 @@ object MainWindow extends SWTHelper
             (justinButton.getSelection == true && justinSetting.isSettingOK)
 
         val displayStettingOK = 
-            (blockButton.getSelection == true && blockSetting.isSettingOK) &&
-            (balloonButton.getSelection == false)
+            (blockButton.getSelection == true && blockSetting.isSettingOK) ||
+            (balloonButton.getSelection == true && blockSetting.isSettingOK)
 
         connectButton.setEnabled(connectSettingOK && displayStettingOK)
     }
@@ -97,6 +97,13 @@ object MainWindow extends SWTHelper
         (ircButton.getSelection, justinButton.getSelection) match {
             case (true, false) => ircSetting.createIRCBot(callback, appendLog _, onError)
             case (false, true) => justinSetting.createIRCBot(callback, appendLog _, onError)
+        }
+    }
+
+    def createNotificationService() = {
+        (blockButton.getSelection, balloonButton.getSelection) match {
+            case (true, false) => blockSetting.createNotificationBlock
+            case (false, true) => balloonSetting.createBalloonController
         }
     }
 
@@ -123,7 +130,7 @@ object MainWindow extends SWTHelper
 
             setUIEnabled(false)
             logTextArea.setText("開始連線至 IRC 伺服器，請稍候……\n")
-            notification = Some(blockSetting.createNotificationBlock)
+            notification = Some(createNotificationService)
             notification.foreach { block =>
                 block.open()
                 block.addMessage("開始連線至 IRC 伺服器，請稍候……")
@@ -183,7 +190,7 @@ object MainWindow extends SWTHelper
         balloonButton.setEnabled(isEnabled)
 
         blockSetting.setUIEnabled(isEnabled)
-        balloonSetting.setUIEnabled(false)
+        balloonSetting.setUIEnabled(isEnabled)
     }
 
     def createConnectButton() =
@@ -329,7 +336,6 @@ object MainWindow extends SWTHelper
         setConnectButtonListener()
         setTrayIcon()
 
-        balloonButton.setEnabled(false)
         shell.setText("IRC 聊天通知")
         shell.setImage(getAppIcon)
         shell.pack()
