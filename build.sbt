@@ -1,5 +1,7 @@
 import AssemblyKeys._
 
+scalacOptions ++= Seq("-unchecked", "-deprecation")
+
 seq(assemblySettings: _*)
 
 name := "IRCBalloon"

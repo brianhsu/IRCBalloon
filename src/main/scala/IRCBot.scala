@@ -25,7 +25,9 @@ class IRCBot(hostname: String, port: Int, nickname: String,
 
     override def onJoin(channel: String, sender: String, login: String, hostname: String)
     {
-        callback("[系統] %s 加入聊天室" format(sender))
+        if (sender == nickname) {
+            callback("[系統] %s 加入聊天室" format(sender))
+        }
     }
 
     override def onQuit(sourceNick: String, sourceLogin: String, sourceHostname: String,
