@@ -9,31 +9,38 @@ import org.eclipse.swt.custom.StyledText
 import org.eclipse.swt._
 import scala.math._
 
-class BalloonController extends Notification with NotificationBalloon
+case class BalloonController(size: (Int, Int), location: (Int, Int), 
+                             borderColor: Color, bgColor: Color, alpha: Int,
+                             fontColor: Color, font: Font,
+                             displayTime: Int, fadeTime: Int) extends 
+            Notification with NotificationBalloon
 {
     private var currentNotification: List[BalloonWindow] = Nil
 
     def count = currentNotification.size
-    def isFull: Boolean = {
-        currentNotification match {
-            case Nil => false
-            case xs  => xs.last.bottomY >= 300
-        }
-    }
+    private var isFull = false
 
     def addNotification(notification: BalloonWindow)
     {
         currentNotification = notification :: currentNotification
+
+        if (notification.bottomY > (size._2 + location._2)) {
+            isFull = true
+        }
     }
 
     def removeNotification(finished: BalloonWindow) {
         currentNotification = currentNotification.filterNot(_.uid == finished.uid)
         finished.shell.dispose()
+
+        if (currentNotification == Nil) {
+            isFull = false
+        }
     }
 
     def calculateLocationY = {
         currentNotification.map(_.bottomY) match {
-            case Nil => 100
+            case Nil => location._2
             case xs  => xs.max + 10
         }
     }
@@ -45,12 +52,7 @@ class BalloonController extends Notification with NotificationBalloon
                 
                 Display.getDefault.syncExec(new Runnable() {
                     
-                    println("prepare insert:" + message)
-                    println("isFull:" + isFull)
-                    println("xs:" + currentNotification.map(_.sn))
-
                     while (isFull) {
-                        println("睡 0.2 秒")
                         Thread.sleep(200)
                     }
 
@@ -71,6 +73,7 @@ class BalloonController extends Notification with NotificationBalloon
 
     def close()
     {
+        currentNotification.foreach(_.shell.dispose())
     }
 }
 

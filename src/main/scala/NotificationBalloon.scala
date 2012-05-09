@@ -13,25 +13,25 @@ trait NotificationBalloon
 {
     this: BalloonController =>
 
+    val FadeStep = 5
+    val FadeTick = fadeTime / (alpha / 5)
+
     trait BalloonTheme {
         this: BalloonWindow =>
-    
-        val backgroundColor = MyColor.Black
-        val borderColor = MyColor.White
     
         val (startColor, endColor) = gradientColor
         var oldImage: Option[Image] = None
     
         protected def gradientColor = {
     
-            val rgb = backgroundColor.getRGB
+            val rgb = bgColor.getRGB
     
             val red = min(255, rgb.red + 50)
             val green = min(255, rgb.green + 50)
             val blue = min(255, rgb.blue + 50)
     
             val startColor = new Color(display, red, green, blue)
-            val endColor = backgroundColor
+            val endColor = bgColor
     
             (startColor, endColor)
         }
@@ -77,41 +77,18 @@ trait NotificationBalloon
         }
     }
 
-    object BalloonWindow
+    case class BalloonWindow(message: String) extends BalloonTheme
     {
-        private var sn: Int = 0
-        private def createSN() = {
-            sn = sn + 1
-            sn
-        }
-    }
-
-    case class BalloonWindow(message: String, width: Int = 200) extends BalloonTheme
-    {
-        val sn = BalloonWindow.createSN()
-        val locationX = 100
-        val uid = System.identityHashCode(this)
         val display = Display.getDefault
+
+        val uid = System.identityHashCode(this)
         val shell = new Shell(display, SWT.NO_TRIM|SWT.ON_TOP|SWT.RESIZE)
         val label = new StyledText(shell, SWT.MULTI|SWT.READ_ONLY|SWT.WRAP|SWT.NO_FOCUS)
-
-    
-        def windowHeight = shell.isDisposed match {
-            case true  => 0
-            case fasle => shell.getSize.y
-        }
-    
         var bottomY: Int = 0
-        /*
-        def bottomY = shell.isDisposed match {
-            case true  => 0
-            case false => shell.getLocation.y + shell.getSize.y
-        }
-        */
     
         def calculateSize() =
         {
-            val labelSize = label.computeSize(width, SWT.DEFAULT, true)
+            val labelSize = label.computeSize(size._1, SWT.DEFAULT, true)
             (labelSize.x, labelSize.y)
         }
     
@@ -122,13 +99,14 @@ trait NotificationBalloon
             layout.marginTop = 6
             shell.setLayout(layout)
             label.setLayoutData(layoutData)
-            label.setForeground(MyColor.White)
+            label.setForeground(fontColor)
+            label.setFont(font)
             label.setLineSpacing(5)
             label.setEnabled(false)
             label.setText(message)
             val (width, height) = calculateSize()
             shell.setSize(width, height + 20)
-            shell.setLocation(locationX, calculateLocationY)
+            shell.setLocation(location._1, calculateLocationY)
             bottomY = calculateLocationY + height + 20
         }
     
@@ -144,12 +122,7 @@ trait NotificationBalloon
             shell.open()
             fadeIn()
         }
-    
-        val FadeStep = 5
-        val FadeTick = 25
-        val DisplayTime = 5000
-        val MaxAlpha = 200
-    
+        
         class FadeIn extends Runnable
         {
             override def run() 
@@ -160,10 +133,10 @@ trait NotificationBalloon
     
                 shell.setAlpha(nextAlpha)
     
-                if (nextAlpha < MaxAlpha) {
+                if (nextAlpha < alpha) {
                     Display.getDefault.timerExec(FadeTick, this)
                 } else {
-                    Display.getDefault.timerExec(DisplayTime, new FadeOut())
+                    Display.getDefault.timerExec(displayTime, new FadeOut())
                 }
             }
         }
