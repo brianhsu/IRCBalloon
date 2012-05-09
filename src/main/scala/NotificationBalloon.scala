@@ -73,11 +73,57 @@ trait BalloonTheme {
     }
 }
 
+object NotificationBalloon
+{
+    var currentNotification: List[NotificationBalloon] = Nil
+
+    def count = currentNotification.size
+    var isFull = false
+
+    def addNotification(notification: NotificationBalloon)
+    {
+        currentNotification = notification :: currentNotification
+        isFull = isFull || currentNotification.size >= 5
+        println("isFull:" + isFull)
+    }
+
+    def removeNotification(finished: NotificationBalloon) {
+        currentNotification = currentNotification.filterNot(_.uid == finished.uid)
+        finished.shell.dispose()
+
+        if (currentNotification.size == 0) {
+            isFull = false
+        }
+    }
+
+    def calculateLocationY = {
+        currentNotification.map(_.bottomY) match {
+            case Nil => 100
+            case xs  => xs.max + 10
+        }
+    }
+
+}
+
 case class NotificationBalloon(message: String, width: Int = 200) extends BalloonTheme
 {
+    val locationX = 100
+    val uid = System.identityHashCode(this)
     val display = Display.getDefault
     val shell = new Shell(display, SWT.NO_TRIM|SWT.ON_TOP|SWT.RESIZE)
     val label = new StyledText(shell, SWT.MULTI|SWT.READ_ONLY|SWT.WRAP|SWT.NO_FOCUS)
+
+    def windowHeight = shell.isDisposed match {
+        case true  => 0
+        case fasle => shell.getSize.y
+    }
+
+    override def toString = "[%d] %s" format(uid, message)
+
+    def bottomY = shell.isDisposed match {
+        case true  => 0
+        case false => shell.getLocation.y + shell.getSize.y
+    }
 
     def calculateSize() =
     {
@@ -98,16 +144,98 @@ case class NotificationBalloon(message: String, width: Int = 200) extends Balloo
         label.setText(message)
         val (width, height) = calculateSize()
         shell.setSize(width, height + 20)
+        shell.setLocation(locationX, NotificationBalloon.calculateLocationY)
+        NotificationBalloon.addNotification(this)
     }
+
 
     def open()
     {
         setupBackground()
         setupLayout()
 
-        shell.setLocation(100, 100)
+        shell.setAlpha(0)
         shell.open()
+        fadeIn()
     }
 
+    val FadeStep = 5
+    val FadeTick = 25
+    val DisplayTime = 5000
+    val MaxAlpha = 200
+
+    class FadeIn extends Runnable
+    {
+        override def run() 
+        {
+            if (shell.isDisposed) { return }
+
+            val nextAlpha = min(255, shell.getAlpha + FadeStep)
+
+            shell.setAlpha(nextAlpha)
+
+            if (nextAlpha < MaxAlpha) {
+                Display.getDefault.timerExec(FadeTick, this)
+            } else {
+                Display.getDefault.timerExec(DisplayTime, new FadeOut())
+            }
+        }
+    }
+
+    class FadeOut extends Runnable
+    {
+        override def run() {
+
+            if (!shell.isDisposed) {
+                val nextAlpha = max(0, shell.getAlpha - FadeStep)
+
+                shell.setAlpha(nextAlpha)
+
+                if (nextAlpha > 0) {
+                    Display.getDefault.timerExec(FadeTick, this)
+                } else {
+                    NotificationBalloon.removeNotification(NotificationBalloon.this)
+                }
+            }
+        }
+    }
+
+    def fadeIn()
+    {
+        Display.getDefault.timerExec(FadeTick, new FadeIn)
+    }
+}
+
+class BalloonControler extends Notification
+{
+    def addMessage(message: String)
+    {
+        val thread = new Thread() {
+            override def run() {
+                
+                while (NotificationBalloon.isFull) {
+                    println("睡 0.5 秒")
+                    Thread.sleep(500)
+                }
+
+                Display.getDefault.syncExec(new Runnable() {
+                    override def run() {
+                        val balloon = new NotificationBalloon(message)
+                        balloon.open()
+                    }
+                })
+            }
+        }
+
+        thread.start()
+    }
+
+    def open()
+    {
+    }
+
+    def close()
+    {
+    }
 }
 

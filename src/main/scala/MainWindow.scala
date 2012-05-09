@@ -51,10 +51,18 @@ object MainWindow extends SWTHelper
         layoutData.horizontalSpan = 2
         button.setLayoutData(layoutData)
         button.setText("連線")
+        var count = 0
+        val balloonControl = new BalloonControler
+        balloonControl.open()
+
         button.addSelectionListener { e: SelectionEvent =>
-            println("Hello World")
-            val balloon = new NotificationBalloon("這是簡單的測試")
-            balloon.open()
+            
+            val message = "[%d] %s" format(count, MessageSample.random(1).head)
+            balloonControl.addMessage(message)
+            println(message)
+
+            count += 1
+
         }
         button
     }
