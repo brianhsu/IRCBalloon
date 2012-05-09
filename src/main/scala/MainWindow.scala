@@ -38,9 +38,26 @@ object MainWindow extends SWTHelper
 
     val connectButton = createConnectButton()
     val logTextArea = createLogTextArea()
+    val testButton = createTestButton()
 
     private var ircBot: Option[IRCBot] = None
     private var notification: Option[Notification] = None
+
+    def createTestButton() =
+    {
+        val layoutData = new GridData(SWT.FILL, SWT.NONE, true, false)
+        val button = new Button(shell, SWT.PUSH)
+
+        layoutData.horizontalSpan = 2
+        button.setLayoutData(layoutData)
+        button.setText("連線")
+        button.addSelectionListener { e: SelectionEvent =>
+            println("Hello World")
+            val balloon = new NotificationBalloon("這是簡單的測試")
+            balloon.open()
+        }
+        button
+    }
 
     def getAppIcon() =
     {
