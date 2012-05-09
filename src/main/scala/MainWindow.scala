@@ -52,12 +52,12 @@ object MainWindow extends SWTHelper
         button.setLayoutData(layoutData)
         button.setText("連線")
         var count = 0
-        val balloonControl = new BalloonControler
+        val balloonControl = new BalloonController
         balloonControl.open()
 
         button.addSelectionListener { e: SelectionEvent =>
             
-            val message = "[%d] %s" format(count, MessageSample.random(1).head)
+            val message = "[%d] %s" format(count, "This is a test.")
             balloonControl.addMessage(message)
             println(message)
 
