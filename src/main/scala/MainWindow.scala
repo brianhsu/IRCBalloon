@@ -16,31 +16,38 @@ object MainWindow extends SWTHelper
     val display = new Display
     val shell = new Shell(display)
 
-    val stackLayout = new StackLayout
     val displayStackLayout = new StackLayout
 
-    val logginType = createLogginType()
-    val settingGroup = createSettingGroup()
-    val ircButton = createIRCButton()
-    val justinButton = createJustinButton()
-    val settingPages = createSettingPages()
-    val ircSetting = new IRCSetting(settingPages, e => updateConnectButtonState())
-    val justinSetting = new JustinSetting(settingPages, e => updateConnectButtonState())
+    val logginLabel = createLabel("登入方式：")
+    val logginTab = createTabFolder()
+    val ircSetting = new IRCSetting(logginTab, e => updateConnectButtonState())
+    val justinSetting = new JustinSetting(logginTab, e => updateConnectButtonState())
 
-    val displayType = createDisplayType()
-    val displayGroup = createDisplayGroup()
-    val blockButton = createBlockButton()
-    val balloonButton = createBalloonButton()
-
-    val displayPages = createDisplayPages()
-    val blockSetting = new BlockSetting(displayPages, e => updateConnectButtonState())
-    val balloonSetting = new BalloonSetting(displayPages, e => updateConnectButtonState())
+    val displayLabel = createLabel("顯示方式：")
+    val displayTab = createTabFolder()
+    val blockSetting = new BlockSetting(displayTab, e => updateConnectButtonState())
+    val balloonSetting = new BalloonSetting(displayTab, e => updateConnectButtonState())
 
     val connectButton = createConnectButton()
     val logTextArea = createLogTextArea()
 
     private var ircBot: Option[IRCBot] = None
     private var notification: Option[Notification] = None
+
+    def createLabel(title: String)
+    {
+        val label = new Label(shell, SWT.LEFT)
+        label.setText(title)
+        label
+    }
+
+    def createTabFolder() = 
+    {
+        val layoutData = new GridData(SWT.FILL, SWT.NONE, true, false)
+        val tabFolder = new TabFolder(shell, SWT.BORDER)
+        tabFolder.setLayoutData(layoutData)
+        tabFolder
+    }
 
     def getAppIcon() =
     {
@@ -82,28 +89,28 @@ object MainWindow extends SWTHelper
     def updateConnectButtonState()
     {
         val connectSettingOK = 
-            (ircButton.getSelection == true && ircSetting.isSettingOK) ||
-            (justinButton.getSelection == true && justinSetting.isSettingOK)
+            (logginTab.getSelectionIndex == 0 && ircSetting.isSettingOK) ||
+            (logginTab.getSelectionIndex == 1 && justinSetting.isSettingOK)
 
         val displayStettingOK = 
-            (blockButton.getSelection == true && blockSetting.isSettingOK) ||
-            (balloonButton.getSelection == true && blockSetting.isSettingOK)
+            (displayTab.getSelectionIndex == 0 && blockSetting.isSettingOK) ||
+            (displayTab.getSelectionIndex == 1 && blockSetting.isSettingOK)
 
         connectButton.setEnabled(connectSettingOK && displayStettingOK)
     }
 
     def createIRCBot(callback: String => Any, onError: Exception => Any) =
     {
-        (ircButton.getSelection, justinButton.getSelection) match {
-            case (true, false) => ircSetting.createIRCBot(callback, appendLog _, onError)
-            case (false, true) => justinSetting.createIRCBot(callback, appendLog _, onError)
+        logginTab.getSelectionIndex match {
+            case 0 => ircSetting.createIRCBot(callback, appendLog _, onError)
+            case 1 => justinSetting.createIRCBot(callback, appendLog _, onError)
         }
     }
 
     def createNotificationService() = {
-        (blockButton.getSelection, balloonButton.getSelection) match {
-            case (true, false) => blockSetting.createNotificationBlock
-            case (false, true) => balloonSetting.createBalloonController
+        displayTab.getSelectionIndex match {
+            case 0 => blockSetting.createNotificationBlock
+            case 1 => balloonSetting.createBalloonController
         }
     }
 
@@ -127,7 +134,6 @@ object MainWindow extends SWTHelper
 
         def startBot()
         {
-
             setUIEnabled(false)
             logTextArea.setText("開始連線至 IRC 伺服器，請稍候……\n")
             notification = Some(createNotificationService)
@@ -181,14 +187,8 @@ object MainWindow extends SWTHelper
 
     def setUIEnabled(isEnabled: Boolean)
     {
-        ircButton.setEnabled(isEnabled)
-        justinButton.setEnabled(isEnabled)
-        ircSetting.setUIEnabled(isEnabled)
-        justinSetting.setUIEnabled(isEnabled)
-        
-        blockButton.setEnabled(isEnabled)
-        balloonButton.setEnabled(isEnabled)
-
+        logginTab.setEnabled(isEnabled)
+        displayTab.setEnabled(isEnabled)
         blockSetting.setUIEnabled(isEnabled)
         balloonSetting.setUIEnabled(isEnabled)
     }
@@ -205,134 +205,15 @@ object MainWindow extends SWTHelper
         button
     }
 
-    def switchDisplayPages()
-    {
-        (blockButton.getSelection, balloonButton.getSelection) match {
-            case (true, _) => displayStackLayout.topControl = blockSetting
-            case (_, true) => displayStackLayout.topControl = balloonSetting
-        }
-
-        displayPages.layout()
-        updateConnectButtonState()
-    }
-
-    def createDisplayPages() =
-    {
-        val composite = new Composite(shell, SWT.NONE)
-        val spanLayout = new GridData(SWT.FILL, SWT.NONE, true, false)
-        spanLayout.horizontalSpan = 2
-        composite.setLayoutData(spanLayout)
-        composite.setLayout(displayStackLayout)
-        composite
-    }
-
-    def createSettingGroup() =
-    {
-        val group = new Group(shell, SWT.SHADOW_NONE)
-        val spanLayout = new GridData(SWT.FILL, SWT.NONE, true, false)
-        group.setLayoutData(spanLayout)
-        group.setLayout(new RowLayout)
-        group
-    }
-
-
-    def createDisplayGroup() =
-    {
-        val group = new Group(shell, SWT.SHADOW_NONE)
-        val spanLayout = new GridData(SWT.FILL, SWT.NONE, true, false)
-        group.setLayoutData(spanLayout)
-        group.setLayout(new RowLayout)
-        group
-    }
-
-    def createDisplayType() = 
-    {
-        val label = new Label(shell, SWT.LEFT)
-        label.setText("顯示方式：")
-        label
-    }
-
-    def createBlockButton() = 
-    {
-        val button = new Button(displayGroup, SWT.RADIO)
-        button.setText("固定區塊")
-        button.setSelection(true)
-        button.addSelectionListener { e:SelectionEvent =>
-            switchDisplayPages()
-        }
-        button
-    }
-
-    def createBalloonButton() = 
-    {
-        val button = new Button(displayGroup, SWT.RADIO)
-        button.setText("泡泡通知")
-        button.addSelectionListener { e: SelectionEvent =>
-            switchDisplayPages()
-        }
-        button
-    }
-
-    def switchSettingPages()
-    {
-        (ircButton.getSelection, justinButton.getSelection) match {
-            case (true, _) => stackLayout.topControl = ircSetting
-            case (_, true) => stackLayout.topControl = justinSetting
-        }
-
-        settingPages.layout(true)
-        updateConnectButtonState()
-    }
-
-    def createSettingPages() = 
-    {
-        val composite = new Composite(shell, SWT.NONE)
-        val spanLayout = new GridData(SWT.FILL, SWT.NONE, true, false)
-        spanLayout.horizontalSpan = 2
-        composite.setLayoutData(spanLayout)
-        composite.setLayout(stackLayout)
-        composite
-    }
-
-    def createLogginType() = 
-    {
-        val label = new Label(shell, SWT.LEFT)
-        label.setText("設定方式：")
-        label
-    }
-
-    def createIRCButton() =
-    {
-        val button = new Button(settingGroup, SWT.RADIO)
-        button.setText("IRC")
-        button.setSelection(true)
-        button.addSelectionListener{ e: SelectionEvent =>
-            switchSettingPages()
-        }
-        button
-    }
-    
-    def createJustinButton() = 
-    {
-        val button = new Button(settingGroup, SWT.RADIO)
-        button.setText("Justin / Twitch")
-        button.addSelectionListener { e: SelectionEvent =>
-            switchSettingPages()
-        }
-        button
-    }
-
     def setLayout()
     {
-        val gridLayout = new GridLayout(2,  false)
+        val gridLayout = new GridLayout(1,  false)
         shell.setLayout(gridLayout)
     }
 
     def main(args: Array[String])
     {
         setLayout()
-        switchSettingPages()
-        switchDisplayPages()
         setConnectButtonListener()
         setTrayIcon()
 

@@ -9,9 +9,11 @@ import org.eclipse.swt.custom.StackLayout
 
 import org.eclipse.swt._
 
-class BlockSetting(parent: Composite, onModify: ModifyEvent => Any) extends 
+class BlockSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends 
       Composite(parent, SWT.NONE) with SWTHelper
 {
+    val tabItem = new TabItem(parent, SWT.NONE)
+
     var bgColor: Color = MyColor.Black
     var fgColor: Color = MyColor.White
     var messageFont: Font = Display.getDefault.getSystemFont
@@ -130,11 +132,21 @@ class BlockSetting(parent: Composite, onModify: ModifyEvent => Any) extends
         height.getText.trim.length > 0
     }
 
+    def updatePreviewButtonState(e: ModifyEvent)
+    {
+        previewButton.setEnabled(isSettingOK)
+    }
+
     def setModifyListener() {
         locationX.addModifyListener(onModify)
         locationY.addModifyListener(onModify)
         width.addModifyListener(onModify)
         height.addModifyListener(onModify)
+
+        locationX.addModifyListener(updatePreviewButtonState _)
+        locationY.addModifyListener(updatePreviewButtonState _)
+        width.addModifyListener(updatePreviewButtonState _)
+        height.addModifyListener(updatePreviewButtonState _)
     }
 
     def setUIEnabled(isEnabled: Boolean)
@@ -155,5 +167,7 @@ class BlockSetting(parent: Composite, onModify: ModifyEvent => Any) extends
     this.setDefaultValue()
     this.setTextVerify()
     this.setModifyListener()
+    this.tabItem.setText("固定區塊")
+    this.tabItem.setControl(this)
 }
 
