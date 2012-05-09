@@ -29,7 +29,7 @@ class BalloonSetting(parent: Composite, onModify: ModifyEvent => Any) extends
     val (transparentLabel, transparentScale) = createScaleChooser(this, "透明度：")
     val (displayTimeLabel, displayTimeSpinner) = createSpinner(this, "訊息停留秒數：", 1, 120)
     val (fadeTimeLabel, fadeTimeSpinner) = createSpinner(this, "淡入淡出效果時間(ms)：", 1, 5000)
-    val spanLabel = createSpanLabel()
+    val (spacingLabel, spacingSpinner) = createSpinner(this, "泡泡間距（像素）：", 1, 20)
     val previewButton = createPreviewButton()
 
     def createSpanLabel() = {
@@ -74,7 +74,8 @@ class BalloonSetting(parent: Composite, onModify: ModifyEvent => Any) extends
             MyColor.White, bgColor, alpha, 
             fgColor, messageFont, 
             displayTimeSpinner.getSelection * 1000, 
-            fadeTimeSpinner.getSelection
+            fadeTimeSpinner.getSelection,
+            spacingSpinner.getSelection
         )
     }
 
@@ -86,6 +87,7 @@ class BalloonSetting(parent: Composite, onModify: ModifyEvent => Any) extends
         height.setText("500")
         displayTimeSpinner.setSelection(5)
         fadeTimeSpinner.setSelection(500)
+        spacingSpinner.setSelection(5)
     }
 
     def setTextVerify()
@@ -164,6 +166,7 @@ class BalloonSetting(parent: Composite, onModify: ModifyEvent => Any) extends
         transparentScale.setEnabled(isEnabled)
         displayTimeSpinner.setEnabled(isEnabled)
         fadeTimeSpinner.setEnabled(isEnabled)
+        spacingSpinner.setEnabled(isEnabled)
         previewButton.setEnabled(isEnabled)
     }
 

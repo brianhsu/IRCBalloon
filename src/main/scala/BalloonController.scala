@@ -12,7 +12,8 @@ import scala.math._
 case class BalloonController(size: (Int, Int), location: (Int, Int), 
                              borderColor: Color, bgColor: Color, alpha: Int,
                              fontColor: Color, font: Font,
-                             displayTime: Int, fadeTime: Int) extends 
+                             displayTime: Int, fadeTime: Int,
+                             spacing: Int) extends 
             Notification with NotificationBalloon
 {
     private var currentNotification: List[BalloonWindow] = Nil
@@ -41,7 +42,7 @@ case class BalloonController(size: (Int, Int), location: (Int, Int),
     def calculateLocationY = {
         currentNotification.map(_.bottomY) match {
             case Nil => location._2
-            case xs  => xs.max + 10
+            case xs  => xs.max + spacing
         }
     }
 
