@@ -29,6 +29,17 @@ class BlockSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends
     val (transparentLabel, transparentScale) = createScaleChooser(this, "透明度：")
     val (messageSizeLabel, messageSizeSpinner) = createSpinner(this, "訊息數量：", 1, 50)
     val previewButton = createPreviewButton()
+    val noticeLabel = createNoticeLabel()
+
+    def createNoticeLabel() =
+    {
+        val layoutData = new GridData(SWT.LEFT, SWT.CENTER, true, false)
+        val label = new Label(this, SWT.LEFT|SWT.WRAP)
+        layoutData.horizontalSpan =4
+        label.setLayoutData(layoutData)
+        label.setText("註：可以直接用滑鼠拖拉聊天室窗，並且用視窗右下角來縮放。")
+        label
+    }
 
     class TestThread(notificationBlock: NotificationBlock) extends Thread
     {

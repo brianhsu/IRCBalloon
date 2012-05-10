@@ -94,7 +94,7 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
         this(
             (300, 448), (100, 100), 
             MyColor.White, MyColor.Black, 210, 
-            MyColor.White, MyFont.Default, 10
+            MyColor.White, MyFont.DefaultFont, 10
         )
     }
 

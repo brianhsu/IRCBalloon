@@ -50,7 +50,7 @@ class JustinSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends
 
     this.setLayout(gridLayout)
     this.setModifyListener()
-    this.tabItem.setText("Justin")
+    this.tabItem.setText("Justin / Twitch")
     this.tabItem.setControl(this)
 }
 
