@@ -17,6 +17,12 @@ class IRCBot(hostname: String, port: Int, nickname: String,
              onLog: String => Any = IRCBot.doNothing,
              onError: Exception => Any = IRCBot.doNothing) extends PircBot
 {
+    override def onAction(sender: String, login: String, hostname: String, target: String,
+                          action: String)
+    {
+        callback("[動作] %s %s" format(sender, action))
+    }
+
     override def onMessage(channel: String, sender: String, login: String, 
                            hostname: String, message: String) 
     {

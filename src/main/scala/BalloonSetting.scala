@@ -20,17 +20,19 @@ class BalloonSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends
     var messageFont: Font = Display.getDefault.getSystemFont
 
     val gridLayout = new GridLayout(4, false)
-    val locationX = createText(this, "視窗位址 X：")
-    val locationY = createText(this, "視窗位址 Y：")
-    val width = createText(this, "視窗寬度：")
-    val height = createText(this, "視窗高度：")
+    val locationX = createText(this, "通知區域 X：")
+    val locationY = createText(this, "通知區域 Y：")
+    val width = createText(this, "通知區域寬度：")
+    val height = createText(this, "通知區域高度：")
+    val spanLabel1 = createSpanLabel()
+    val areaSelectionButton = createAreaSelectionButton()
     val (bgLabel, bgButton) = createColorChooser(this, "背景顏色：", bgColor, bgColor = _)
     val (fgLabel, fgButton) = createColorChooser(this, "文字顏色：", fgColor, fgColor = _)
     val (fontLabel, fontButton) = createFontChooser(this, "訊息字型：", messageFont = _)
     val (transparentLabel, transparentScale) = createScaleChooser(this, "透明度：")
-    val (displayTimeLabel, displayTimeSpinner) = createSpinner(this, "訊息停留秒數：", 1, 120)
-    val (fadeTimeLabel, fadeTimeSpinner) = createSpinner(this, "淡入淡出效果時間(ms)：", 1, 5000)
-    val (spacingLabel, spacingSpinner) = createSpinner(this, "泡泡間距（像素）：", 1, 20)
+    val (displayTimeLabel, displayTimeSpinner) = createSpinner(this, "停留秒數：", 1, 120)
+    val (fadeTimeLabel, fadeTimeSpinner) = createSpinner(this, "效果時間(ms)：", 1, 5000)
+    val (spacingLabel, spacingSpinner) = createSpinner(this, "泡泡間距：", 1, 20)
     val previewButton = createPreviewButton()
 
     def createSpanLabel() = {
@@ -97,6 +99,29 @@ class BalloonSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends
         height.addVerifyListener { e: VerifyEvent => e.doit = e.text.forall(_.isDigit) }
     }
 
+    def setNotificationArea(x: Int, y: Int, width: Int, height: Int)
+    {
+        this.locationX.setText(x.toString)
+        this.locationY.setText(y.toString)
+        this.width.setText(width.toString)
+        this.height.setText(height.toString)
+    }
+
+    def createAreaSelectionButton() =
+    {
+        val layoutData = new GridData(SWT.FILL, SWT.NONE, true, false)
+        val button = new Button(this, SWT.PUSH)
+        layoutData.horizontalSpan = 2
+        button.setLayoutData(layoutData)
+        button.setText("選擇通知區域")
+        button.addSelectionListener { e: SelectionEvent =>
+            val areaSelection = new AreaSelectionDialog(setNotificationArea _)
+            areaSelection.open()
+        }
+        button
+
+    }
+
     def createPreviewButton() =
     {
         var balloonController: Option[BalloonController] = None
@@ -161,7 +186,6 @@ class BalloonSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends
         locationY.addModifyListener(updatePreviewButtonState _)
         width.addModifyListener(updatePreviewButtonState _)
         height.addModifyListener(updatePreviewButtonState _)
-
     }
 
     def setUIEnabled(isEnabled: Boolean)
@@ -184,7 +208,7 @@ class BalloonSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends
     this.setDefaultValue()
     this.setTextVerify()
     this.setModifyListener()
-    this.tabItem.setText("泡泡知知")
+    this.tabItem.setText("泡泡通知")
     this.tabItem.setControl(this)
 }
 

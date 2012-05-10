@@ -34,6 +34,15 @@ object MainWindow extends SWTHelper
     private var ircBot: Option[IRCBot] = None
     private var notification: Option[Notification] = None
 
+    def getIRCBot() = ircBot
+
+    def getNickname() = {
+        logginTab.getSelectionIndex match {
+            case 0 => ircSetting.nickname.getText.trim
+            case 1 => justinSetting.username.getText.trim
+        }
+    }
+
     def createLabel(title: String)
     {
         val label = new Label(shell, SWT.LEFT)
