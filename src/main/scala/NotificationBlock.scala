@@ -29,7 +29,7 @@ trait BlockTheme {
         (startColor, endColor)
     }
 
-    def setupBackground()
+    def setBackground()
     {
         shell.setBackgroundMode(SWT.INHERIT_DEFAULT)
 
@@ -73,7 +73,8 @@ trait BlockTheme {
 case class NotificationBlock(size: (Int, Int), location: (Int, Int), 
                              borderColor: Color, backgroundColor: Color, alpha: Int,
                              fontColor: Color, font: Font, 
-                             messageSize: Int) extends Notification with BlockTheme with SWTHelper
+                             messageSize: Int) extends Notification 
+                                               with BlockTheme with SWTHelper
 {
     val display = Display.getDefault
     val shell = new Shell(display, SWT.NO_TRIM|SWT.ON_TOP|SWT.RESIZE)
@@ -89,10 +90,11 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
         label.setText("聊天：")
         label.setForeground(fontColor)
         
+        val layoutData = new GridData(SWT.FILL, SWT.NONE, true, false)
         text.setBackground(backgroundColor)
         text.setForeground(fontColor)
         text.setFont(font)
-        text.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false))
+        text.setLayoutData(layoutData)
         text.addTraverseListener(new TraverseListener() {
             override def keyTraversed(e: TraverseEvent) {
                 if (e.detail == SWT.TRAVERSE_RETURN && text.getText.trim.length > 0) {
@@ -112,6 +114,7 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
         })
         (label, text)
     }
+
 
     def createContentLabel() = 
     {
@@ -155,9 +158,14 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
         )
     }
 
-    def setupLayout()
+    def setLayout()
     {
         val layout = new GridLayout(2, false)
+        layout.marginLeft = 5
+        layout.marginRight = 5
+        layout.marginTop = 5
+        layout.marginBottom = 5
+
         shell.setLayout(layout)
         label.setFont(font)
         label.setForeground(fontColor)
@@ -165,10 +173,90 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
         label.setEnabled(false)
     }
 
+    def setMoveAndResize()
+    {
+        var isResize = false
+        var offsetX = 0
+        var offsetY = 0
+
+        shell.addMouseListener(new MouseAdapter() {
+            override def mouseDown(e: MouseEvent) {
+                offsetX = e.x
+                offsetY = e.y
+
+                isResize = 
+                    e.x >= (shell.getSize.x - 20) && e.x <= shell.getSize.x &&
+                    e.y >= (shell.getSize.y - 20) && e.y <= shell.getSize.y
+
+            }
+
+            override def mouseUp(e: MouseEvent) {
+                offsetX = 0
+                offsetY = 0
+                isResize = false
+            }
+        })
+
+        shell.addMouseMoveListener(new MouseMoveListener() {
+
+            private var isResizing = false
+
+            def isCorner(e: MouseEvent) = {
+                e.x >= (shell.getSize.x - 20) && e.x <= shell.getSize.x &&
+                e.y >= (shell.getSize.y - 20) && e.y <= shell.getSize.y
+            }
+
+            def setResizeCursor(e: MouseEvent)
+            {
+                if (isCorner(e) && !isResizing && !display.isDisposed) {
+                    shell.setCursor(display.getSystemCursor(SWT.CURSOR_SIZESE))
+                    isResizing = true
+                } else if (isResizing && !display.isDisposed) {
+                    shell.setCursor(display.getSystemCursor(SWT.CURSOR_ARROW))
+                    isResizing = false
+                }
+            }
+
+            def moveWindow(e: MouseEvent)
+            {
+                val absX = shell.getLocation.x + e.x
+                val absY = shell.getLocation.y + e.y
+                shell.setLocation(absX - offsetX, absY - offsetY)
+                MainWindow.blockSetting.locationX.setText((absX - offsetX).toString)
+                MainWindow.blockSetting.locationY.setText((absY - offsetY).toString)
+            }
+
+            def resizeWindow(e: MouseEvent)
+            {
+                shell.setSize(e.x, e.y)
+                MainWindow.blockSetting.width.setText(e.x.toString)
+                MainWindow.blockSetting.height.setText(e.x.toString)
+            }
+
+            override def mouseMove(e: MouseEvent) 
+            {
+                val isDrag = (e.stateMask & SWT.BUTTON1) != 0
+                val shouldMove = isDrag && !isResize
+                val shouldResize = isDrag && isResize
+
+                setResizeCursor(e)
+
+                (shouldResize, shouldMove) match {
+                    case (true, _) => resizeWindow(e)
+                    case (_, true) => moveWindow(e)
+                    case (_, _)    => // Do nothing
+                }
+            }
+        })
+
+
+    }
+
     def open()
     {
-        setupBackground()
-        setupLayout()
+        setBackground()
+        setLayout()
+        setMoveAndResize()
 
         shell.setAlpha(alpha)
         shell.setSize(size._1, size._2)
