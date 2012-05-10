@@ -9,72 +9,12 @@ import org.eclipse.swt.custom.StyledText
 import org.eclipse.swt._
 import scala.math._
 
-trait BlockTheme {
-    this: NotificationBlock =>
-
-    val (startColor, endColor) = gradientColor
-    var oldImage: Option[Image] = None
-
-    protected def gradientColor = {
-
-        val rgb = backgroundColor.getRGB
-
-        val red = min(255, rgb.red + 50)
-        val green = min(255, rgb.green + 50)
-        val blue = min(255, rgb.blue + 50)
-
-        val startColor = new Color(display, red, green, blue)
-        val endColor = backgroundColor
-
-        (startColor, endColor)
-    }
-
-    def setBackground()
-    {
-        shell.setBackgroundMode(SWT.INHERIT_DEFAULT)
-
-        shell.addListener(SWT.Resize, new Listener() {
-
-            def drawBackground(rect: Rectangle, gc: GC)
-            {
-                gc.setForeground(startColor)
-                gc.setBackground(endColor)
-                
-                gc.fillGradientRectangle(rect.x, rect.y, rect.width, rect.height, true)
-            }
-
-            def drawBorder(rect: Rectangle, gc: GC)
-            {
-                gc.setLineWidth(2)
-                gc.setForeground(borderColor)
-
-                gc.drawRectangle(rect.x+1, rect.y+1, rect.width -2, rect.height-2)
-            }
-
-            override def handleEvent(e: Event) {
-                val rect = shell.getClientArea
-                val newImage = new Image(display, max(1, rect.width), rect.height)
-                val gc = new GC(newImage)
-
-                drawBackground(rect, gc)
-                drawBorder(rect, gc)
-
-                gc.dispose()
-
-                shell.setBackgroundImage(newImage)
-
-                oldImage.foreach(_.dispose)
-                oldImage = Some(newImage)
-            }
-        })
-    }
-}
-
 case class NotificationBlock(size: (Int, Int), location: (Int, Int), 
-                             borderColor: Color, backgroundColor: Color, alpha: Int,
+                             borderColor: Color, bgColor: Color, alpha: Int,
                              fontColor: Color, font: Font, 
                              messageSize: Int) extends Notification 
-                                               with BlockTheme with SWTHelper
+                                               with NotificationTheme 
+                                               with NotificationWindow with SWTHelper
 {
     val display = Display.getDefault
     val shell = new Shell(display, SWT.NO_TRIM|SWT.ON_TOP|SWT.RESIZE)
@@ -91,7 +31,7 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
         label.setForeground(fontColor)
         
         val layoutData = new GridData(SWT.FILL, SWT.NONE, true, false)
-        text.setBackground(backgroundColor)
+        text.setBackground(bgColor)
         text.setForeground(fontColor)
         text.setFont(font)
         text.setLayoutData(layoutData)

@@ -16,68 +16,8 @@ trait NotificationBalloon
     val FadeStep = 5
     val FadeTick = fadeTime / (alpha / 5)
 
-    trait BalloonTheme {
-        this: BalloonWindow =>
-    
-        val (startColor, endColor) = gradientColor
-        var oldImage: Option[Image] = None
-    
-        protected def gradientColor = {
-    
-            val rgb = bgColor.getRGB
-    
-            val red = min(255, rgb.red + 50)
-            val green = min(255, rgb.green + 50)
-            val blue = min(255, rgb.blue + 50)
-    
-            val startColor = new Color(display, red, green, blue)
-            val endColor = bgColor
-    
-            (startColor, endColor)
-        }
-    
-        def setupBackground()
-        {
-            shell.setBackgroundMode(SWT.INHERIT_DEFAULT)
-    
-            shell.addListener(SWT.Resize, new Listener() {
-    
-                def drawBackground(rect: Rectangle, gc: GC)
-                {
-                    gc.setForeground(startColor)
-                    gc.setBackground(endColor)
-                    
-                    gc.fillGradientRectangle(rect.x, rect.y, rect.width, rect.height, true)
-                }
-    
-                def drawBorder(rect: Rectangle, gc: GC)
-                {
-                    gc.setLineWidth(2)
-                    gc.setForeground(borderColor)
-    
-                    gc.drawRectangle(rect.x+1, rect.y+1, rect.width -2, rect.height-2)
-                }
-    
-                override def handleEvent(e: Event) {
-                    val rect = shell.getClientArea
-                    val newImage = new Image(display, max(1, rect.width), rect.height)
-                    val gc = new GC(newImage)
-    
-                    drawBackground(rect, gc)
-                    drawBorder(rect, gc)
-    
-                    gc.dispose()
-    
-                    shell.setBackgroundImage(newImage)
-    
-                    oldImage.foreach(_.dispose)
-                    oldImage = Some(newImage)
-                }
-            })
-        }
-    }
-
-    case class BalloonWindow(message: String) extends BalloonTheme
+    case class BalloonWindow(bgColor: Color, borderColor: Color, 
+                             message: String) extends NotificationTheme with NotificationWindow
     {
         val display = Display.getDefault
 
@@ -92,7 +32,7 @@ trait NotificationBalloon
             (labelSize.x, labelSize.y)
         }
     
-        def setupLayout()
+        def setLayout()
         {
             val layout = new GridLayout(1, true)
             val layoutData = new GridData(SWT.FILL, SWT.CENTER, true, true)
@@ -113,8 +53,8 @@ trait NotificationBalloon
     
         def open()
         {
-            setupBackground()
-            setupLayout()
+            setBackground()
+            setLayout()
 
             addNotification(this)
    
