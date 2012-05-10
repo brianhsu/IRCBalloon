@@ -9,10 +9,16 @@ import org.eclipse.swt.custom.StackLayout
 
 import org.eclipse.swt._
 
-object TestWindow extends SWTHelper
+object AreaSelectionDialog
 {
-    val display = new Display
-    val shell = new Shell(display)
+    def doNothing(x: Int, y: Int, width: Int, height: Int) {}
+}
+
+class AreaSelectionDialog(onChange: (Int, Int, Int, Int) => Any = 
+                            AreaSelectionDialog.doNothing _) extends SWTHelper
+{
+    val display = MainWindow.display
+    val shell = new Shell(MainWindow.shell, SWT.ON_TOP|SWT.NO_TRIM)
     val canvas = new Canvas(shell, SWT.NONE)
 
     var locationX: Int = 0
@@ -24,11 +30,19 @@ object TestWindow extends SWTHelper
     {
         canvas.addPaintListener(new PaintListener() {
             override def paintControl(e: PaintEvent) {
+                e.gc.setForeground(MyColor.White)
                 e.gc.setBackground(MyColor.Blue)
                 e.gc.fillRectangle(locationX, locationY, width, height)
-                e.gc.setForeground(MyColor.White)
                 e.gc.setLineWidth(3)
                 e.gc.drawRectangle(locationX, locationY, width, height)
+                e.gc.setFont(MyFont.LargeFont)
+                e.gc.drawText(
+                    "請拖拉出通知區域後點兩下滑屬確認", 
+                    shell.getSize.x / 2 - 200, 
+                    shell.getSize.y / 2,
+                    true
+                )
+
             }
         })
 
@@ -37,8 +51,8 @@ object TestWindow extends SWTHelper
                 if ((e.stateMask & SWT.BUTTON1) != 0) {
                     height = e.y - locationY
                     width = e.x - locationX
-                    println("Draw:(%d, %d, %d, %d):" + locationX, locationY, width, height)
                     canvas.redraw()
+                    onChange(locationX, locationY, width, height)
                 }
             }
         })
@@ -49,7 +63,6 @@ object TestWindow extends SWTHelper
             }
 
             override def mouseDown(e: MouseEvent) {
-                println("Mouse down:" + e)
                 locationX = e.x
                 locationY = e.y
                 height = 0
@@ -61,10 +74,12 @@ object TestWindow extends SWTHelper
 
     def open(): (Int, Int, Int, Int) =
     {
+        val width = display.getClientArea.width
+        val height = display.getClientArea.height
         shell.setLayout(new FillLayout())
         shell.open()
-        shell.setMaximized(true)
-        shell.setFullScreen(true)
+        shell.setLocation(0, 0)
+        shell.setSize(width, height)
         shell.setBackgroundMode(SWT.INHERIT_DEFAULT)
         shell.setBackground(MyColor.Black)
         shell.setAlpha(150)
@@ -75,12 +90,6 @@ object TestWindow extends SWTHelper
             if (!display.readAndDispatch ()) display.sleep ();
         }
 
-        display.dispose()
         (locationX, locationY, width, height)
-    }
-
-    def main(args: Array[String])
-    {
-        println(open())
     }
 }

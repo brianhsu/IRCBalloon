@@ -17,7 +17,10 @@ object MyColor
 
 object MyFont
 {
-    lazy val Default = new Font(Display.getDefault, "Serif", 14, SWT.NORMAL)
+    lazy val DefaultFont = Display.getDefault.getSystemFont
+    lazy val DefaultFontName = DefaultFont.getFontData()(0).getName
+    lazy val DefaultFontSize = DefaultFont.getFontData()(0).getHeight
+    lazy val LargeFont = new Font(Display.getDefault, DefaultFontName, DefaultFontSize + 3, SWT.DEFAULT)
 }
 
 object MessageSample
