@@ -34,7 +34,7 @@ case class BalloonController(size: (Int, Int), location: (Int, Int),
     {
         currentNotification = notification :: currentNotification
 
-        if (notification.bottomY > (size._2 + location._2)) {
+        if (notification.bottomY > (size._2 + location._2) - 50) {
             isFull = true
         }
     }

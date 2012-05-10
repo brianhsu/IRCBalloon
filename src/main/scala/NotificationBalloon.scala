@@ -48,6 +48,7 @@ trait NotificationBalloon
             shell.setSize(width, height + 20)
             shell.setLocation(location._1, calculateLocationY)
             bottomY = calculateLocationY + height + 20
+            println("bottomY:" + bottomY)
         }
     
     
