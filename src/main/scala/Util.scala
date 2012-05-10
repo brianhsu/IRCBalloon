@@ -11,6 +11,8 @@ object MyColor
 {
     lazy val Black = new Color(Display.getDefault, 0, 0, 0)
     lazy val White = new Color(Display.getDefault, 255, 255, 255)
+    lazy val Blue = new Color(Display.getDefault, 100, 100, 255)
+
 }
 
 object MyFont
