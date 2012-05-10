@@ -73,12 +73,56 @@ trait BlockTheme {
 case class NotificationBlock(size: (Int, Int), location: (Int, Int), 
                              borderColor: Color, backgroundColor: Color, alpha: Int,
                              fontColor: Color, font: Font, 
-                             messageSize: Int) extends Notification with BlockTheme
+                             messageSize: Int) extends Notification with BlockTheme with SWTHelper
 {
     val display = Display.getDefault
     val shell = new Shell(display, SWT.NO_TRIM|SWT.ON_TOP|SWT.RESIZE)
-    val label = new StyledText(shell, SWT.MULTI|SWT.READ_ONLY|SWT.WRAP|SWT.NO_FOCUS)
+    val label = createContentLabel()
     var messages: List[String] = Nil
+    val (inputLabel, inputText) = createChatInputBox()
+
+    def createChatInputBox() = 
+    {
+        val label = new Label(shell, SWT.LEFT)
+        val text = new Text(shell, SWT.BORDER)
+
+        label.setText("聊天：")
+        label.setForeground(fontColor)
+        
+        text.setBackground(backgroundColor)
+        text.setForeground(fontColor)
+        text.setFont(font)
+        text.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false))
+        text.addTraverseListener(new TraverseListener() {
+            override def keyTraversed(e: TraverseEvent) {
+                if (e.detail == SWT.TRAVERSE_RETURN && text.getText.trim.length > 0) {
+                    val message = text.getText.trim()
+                    val displayMessage = "%s:%s" format(MainWindow.getNickname, message)
+
+                    MainWindow.getIRCBot.foreach { bot => 
+                        bot.getChannels.foreach { channel =>
+                            bot.sendMessage(channel, message)
+                        }
+                    }
+
+                    NotificationBlock.this.addMessage(displayMessage)
+                    text.setText("")
+                }
+            }
+        })
+        (label, text)
+    }
+
+    def createContentLabel() = 
+    {
+        val layoutData = new GridData(SWT.FILL, SWT.FILL, true, true)
+        val label = new StyledText(shell, SWT.MULTI|SWT.READ_ONLY|SWT.WRAP|SWT.NO_FOCUS)
+
+        layoutData.horizontalSpan = 2
+        label.setLayoutData(layoutData)
+
+        label
+    }
 
     override def onTrayIconClicked(): Unit =
     {
@@ -95,7 +139,9 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
     {
         display.syncExec (new Runnable {
             override def run () {
-                label.setText(messages.take(messageSize).reverse.mkString("\n"))
+                if (!shell.isDisposed) {
+                    label.setText(messages.take(messageSize).reverse.mkString("\n"))
+                }
             }
         })
     }
@@ -111,11 +157,7 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
 
     def setupLayout()
     {
-        val layout = new FillLayout
-        layout.marginHeight = 10
-        layout.marginWidth = 10
-        layout.spacing = 10
-
+        val layout = new GridLayout(2, false)
         shell.setLayout(layout)
         label.setFont(font)
         label.setForeground(fontColor)
