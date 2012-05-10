@@ -9,9 +9,10 @@ import org.eclipse.swt.custom.StackLayout
 
 import org.eclipse.swt._
 
-class JustinSetting(parent: Composite, onModify: ModifyEvent => Any) extends 
+class JustinSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends 
        Composite(parent, SWT.NONE) with SWTHelper
 {
+    val tabItem = new TabItem(parent, SWT.NONE)
     val gridLayout = new GridLayout(2,  false)
     val username = createText(this, "帳號：")
     val password = createText(this, "密碼：", SWT.PASSWORD)
@@ -49,5 +50,7 @@ class JustinSetting(parent: Composite, onModify: ModifyEvent => Any) extends
 
     this.setLayout(gridLayout)
     this.setModifyListener()
+    this.tabItem.setText("Justin")
+    this.tabItem.setControl(this)
 }
 

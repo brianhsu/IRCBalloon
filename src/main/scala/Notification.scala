@@ -9,6 +9,14 @@ import org.eclipse.swt.custom.StyledText
 import org.eclipse.swt._
 import scala.math._
 
+trait NotificationWindow
+{
+    def display: Display
+    def shell: Shell
+    def bgColor: Color
+    def borderColor: Color
+}
+
 trait Notification
 {
     def addMessage(newMessage: String): Unit

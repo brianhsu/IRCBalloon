@@ -9,9 +9,10 @@ import org.eclipse.swt.custom.StackLayout
 
 import org.eclipse.swt._
 
-class IRCSetting(parent: Composite, onModify: ModifyEvent => Any) extends 
+class IRCSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends 
       Composite(parent, SWT.NONE) with SWTHelper
 {
+    val tabItem = new TabItem(parent, SWT.NONE)
     val gridLayout = new GridLayout(2,  false)
     val hostText = createText(this, "IRC 伺服器主機：")
     val portText = createText(this, "IRC 伺服器Port：")
@@ -81,5 +82,7 @@ class IRCSetting(parent: Composite, onModify: ModifyEvent => Any) extends
     this.setTextVerify()
     this.setModifyListener()
     this.setLayout(gridLayout)
+    this.tabItem.setText("IRC")
+    this.tabItem.setControl(this)
 }
 

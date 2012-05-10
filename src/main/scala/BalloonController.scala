@@ -21,6 +21,15 @@ case class BalloonController(size: (Int, Int), location: (Int, Int),
     def count = currentNotification.size
     private var isFull = false
 
+    override def onTrayIconClicked()
+    {
+        currentNotification.foreach { notification =>
+            if (!notification.shell.isDisposed) {
+                notification.shell.setVisible(!notification.shell.getVisible)
+            }
+        }
+    }
+
     def addNotification(notification: BalloonWindow)
     {
         currentNotification = notification :: currentNotification
@@ -58,7 +67,7 @@ case class BalloonController(size: (Int, Int), location: (Int, Int),
                     }
 
                     override def run() {
-                        val balloon = new BalloonWindow(message)
+                        val balloon = new BalloonWindow(bgColor, borderColor, message)
                         balloon.open()
                     }
                 })

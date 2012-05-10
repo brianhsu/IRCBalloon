@@ -11,9 +11,10 @@ import org.eclipse.swt._
 
 import scala.util.Random
 
-class BalloonSetting(parent: Composite, onModify: ModifyEvent => Any) extends 
+class BalloonSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends 
       Composite(parent, SWT.NONE) with SWTHelper
 {
+    val tabItem = new TabItem(parent, SWT.NONE)
     var bgColor: Color = MyColor.Black
     var fgColor: Color = MyColor.White
     var messageFont: Font = Display.getDefault.getSystemFont
@@ -48,8 +49,6 @@ class BalloonSetting(parent: Composite, onModify: ModifyEvent => Any) extends
             this.shouldStop = shouldStop
         }
 
-        def randomPause = (Random.nextInt(3) + 1) * 1000
-        
         override def run ()
         {
             var count = 1
@@ -58,7 +57,7 @@ class BalloonSetting(parent: Composite, onModify: ModifyEvent => Any) extends
                 val message = MessageSample.random(1).head
                 balloonController.addMessage("[%d] %s" format(count, message))
                 count = (count + 1)
-                Thread.sleep(randomPause)
+                Thread.sleep(1000)
             }
         }
     }
@@ -84,7 +83,7 @@ class BalloonSetting(parent: Composite, onModify: ModifyEvent => Any) extends
         locationX.setText("100")
         locationY.setText("100")
         width.setText("300")
-        height.setText("500")
+        height.setText("300")
         displayTimeSpinner.setSelection(5)
         fadeTimeSpinner.setSelection(500)
         spacingSpinner.setSelection(5)
@@ -140,6 +139,11 @@ class BalloonSetting(parent: Composite, onModify: ModifyEvent => Any) extends
         button
     }
 
+    def updatePreviewButtonState(e: ModifyEvent)
+    {
+        previewButton.setEnabled(isSettingOK)
+    }
+
     def isSettingOK = {
         locationX.getText.trim.length > 0 &&
         locationY.getText.trim.length > 0 &&
@@ -152,6 +156,12 @@ class BalloonSetting(parent: Composite, onModify: ModifyEvent => Any) extends
         locationY.addModifyListener(onModify)
         width.addModifyListener(onModify)
         height.addModifyListener(onModify)
+
+        locationX.addModifyListener(updatePreviewButtonState _)
+        locationY.addModifyListener(updatePreviewButtonState _)
+        width.addModifyListener(updatePreviewButtonState _)
+        height.addModifyListener(updatePreviewButtonState _)
+
     }
 
     def setUIEnabled(isEnabled: Boolean)
@@ -174,5 +184,7 @@ class BalloonSetting(parent: Composite, onModify: ModifyEvent => Any) extends
     this.setDefaultValue()
     this.setTextVerify()
     this.setModifyListener()
+    this.tabItem.setText("泡泡知知")
+    this.tabItem.setControl(this)
 }
 
