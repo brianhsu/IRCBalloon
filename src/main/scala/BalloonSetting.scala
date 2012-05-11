@@ -116,7 +116,9 @@ class BalloonSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends
         button.setLayoutData(layoutData)
         button.setText("選擇通知區域")
         button.addSelectionListener { e: SelectionEvent =>
-            val areaSelection = new AreaSelectionDialog(setNotificationArea _)
+            val oldArea = (locationX.getText.toInt, locationY.getText.toInt,
+                           width.getText.toInt, height.getText.toInt)
+            val areaSelection = new AreaSelectionDialog(oldArea, setNotificationArea _)
             areaSelection.open()
         }
         button

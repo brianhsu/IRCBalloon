@@ -14,17 +14,18 @@ object AreaSelectionDialog
     def doNothing(x: Int, y: Int, width: Int, height: Int) {}
 }
 
-class AreaSelectionDialog(onChange: (Int, Int, Int, Int) => Any = 
-                            AreaSelectionDialog.doNothing _) extends SWTHelper
+class AreaSelectionDialog(default: (Int, Int, Int, Int) = (0, 0, 0, 0),
+                          onChange: (Int, Int, Int, Int) => Any = 
+                          AreaSelectionDialog.doNothing _) extends SWTHelper
 {
     val display = MainWindow.display
     val shell = new Shell(MainWindow.shell, SWT.ON_TOP|SWT.NO_TRIM)
     val canvas = new Canvas(shell, SWT.NONE)
 
-    var locationX: Int = 0
-    var locationY: Int = 0
-    var height: Int = 0
-    var width: Int = 0
+    var locationX: Int = 100
+    var locationY: Int = 100
+    var height: Int = 300
+    var width: Int = 300
 
     def setAreaSelection()
     {
