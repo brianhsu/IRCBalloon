@@ -24,6 +24,11 @@ IRCBallon 是一套 IRC / JustinTV / Twitch 聊天室擷取軟體，他可以把
 改版記錄
 =========
 
+ - 0.4
+    - 修正泡泡視窗超出所設定的通知範圍的問題
+    - 新增視窗邊框顏色設定
+    - 程式結束時會將顯示設定存檔
+
  - 0.3
     - 在「固定區塊」的聊天室窗中支援發送聊天訊息
     - 「固定區塊」的聊天室窗可以用滑鼠托放來改變位置，並且可以用拉視窗右下角的方式來改變大小
@@ -33,7 +38,7 @@ IRCBallon 是一套 IRC / JustinTV / Twitch 聊天室擷取軟體，他可以把
 下載
 =======
 
- - [Windows 32 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-win32-0.3.jar)
- - [Windows 64 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-win64-0.3.jar)
- - [Linux 64 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-linux64-0.3.jar)
+ - [Windows 32 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-win32-0.4.jar)
+ - [Windows 64 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-win64-0.4.jar)
+ - [Linux 64 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-linux64-0.4.jar)
 

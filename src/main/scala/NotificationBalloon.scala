@@ -16,7 +16,7 @@ trait NotificationBalloon
     val FadeStep = 5
     val FadeTick = fadeTime / (alpha / 5)
 
-    case class BalloonWindow(bgColor: Color, borderColor: Color, 
+    case class BalloonWindow(location: (Int, Int), bgColor: Color, borderColor: Color, 
                              message: String) extends NotificationTheme with NotificationWindow
     {
         val display = Display.getDefault
@@ -24,19 +24,23 @@ trait NotificationBalloon
         val uid = System.identityHashCode(this)
         val shell = new Shell(display, SWT.NO_TRIM|SWT.ON_TOP|SWT.RESIZE)
         val label = new StyledText(shell, SWT.MULTI|SWT.READ_ONLY|SWT.WRAP|SWT.NO_FOCUS)
-        var bottomY: Int = 0
     
         def calculateSize() =
         {
-            val labelSize = label.computeSize(size._1, SWT.DEFAULT, true)
+            val labelSize = label.computeSize(size._1 - 10, SWT.DEFAULT, true)
             (labelSize.x, labelSize.y)
+        }
+
+        def bottomY = {
+            shell.getLocation.y + shell.getSize.y + spacing
         }
     
         def setLayout()
         {
-            val layout = new GridLayout(1, true)
+            val layout = new GridLayout(1, false)
             val layoutData = new GridData(SWT.FILL, SWT.CENTER, true, true)
-            layout.marginTop = 6
+            layout.marginLeft = 5
+            layout.marginRight = 5
             shell.setLayout(layout)
             label.setLayoutData(layoutData)
             label.setForeground(fontColor)
@@ -44,22 +48,25 @@ trait NotificationBalloon
             label.setLineSpacing(5)
             label.setEnabled(false)
             label.setText(message)
+        }
+
+        def setSizeAndLocation()
+        {
             val (width, height) = calculateSize()
-            shell.setSize(width, height + 20)
-            shell.setLocation(location._1, calculateLocationY)
-            bottomY = calculateLocationY + height + 20
-            println("bottomY:" + bottomY)
+            shell.setSize(width + 20, height + 20)
+            shell.setLocation(location._1, location._2)
         }
     
-    
-        def open()
+        def prepare()
         {
             setBackground()
             setLayout()
-
-            addNotification(this)
-   
+            setSizeAndLocation()
             shell.setAlpha(0)
+        }
+    
+        def open()
+        {
             shell.open()
             fadeIn()
         }

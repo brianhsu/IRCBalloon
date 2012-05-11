@@ -14,7 +14,8 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
                              fontColor: Color, font: Font, 
                              messageSize: Int) extends Notification 
                                                with NotificationTheme 
-                                               with NotificationWindow with SWTHelper
+                                               with NotificationWindow 
+                                               with SWTHelper
 {
     val display = Display.getDefault
     val shell = new Shell(display, SWT.NO_TRIM|SWT.ON_TOP|SWT.RESIZE)
@@ -28,6 +29,7 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
         val text = new Text(shell, SWT.BORDER)
 
         label.setText("聊天：")
+        label.setFont(font)
         label.setForeground(fontColor)
         
         val layoutData = new GridData(SWT.FILL, SWT.NONE, true, false)
