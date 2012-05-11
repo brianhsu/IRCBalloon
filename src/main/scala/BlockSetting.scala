@@ -15,9 +15,11 @@ class BlockSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends
     val tabItem = new TabItem(parent, SWT.NONE)
 
     var bgColor: Color = MyColor.Black
-    var fgColor: Color = MyColor.White
+    var fontColor: Color = MyColor.White
     var borderColor: Color = MyColor.White
     var messageFont: Font = Display.getDefault.getSystemFont
+
+    val alphaTitle = "透明度："
 
     val gridLayout = new GridLayout(4, false)
     val locationX = createText(this, "視窗位址 X：")
@@ -27,9 +29,9 @@ class BlockSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends
     val (borderLabel, borderButton) = createColorChooser(this, "邊框顏色：", borderColor, borderColor = _)
     val spanLabel = createSpanLabel()
     val (bgLabel, bgButton) = createColorChooser(this, "背景顏色：", bgColor, bgColor = _)
-    val (fgLabel, fgButton) = createColorChooser(this, "文字顏色：", fgColor, fgColor = _)
+    val (fgLabel, fgButton) = createColorChooser(this, "文字顏色：", fontColor, fontColor = _)
     val (fontLabel, fontButton) = createFontChooser(this, "訊息字型：", messageFont = _)
-    val (transparentLabel, transparentScale) = createScaleChooser(this, "透明度：")
+    val (transparentLabel, transparentScale) = createScaleChooser(this, alphaTitle)
     val (messageSizeLabel, messageSizeSpinner) = createSpinner(this, "訊息數量：", 1, 50)
     val previewButton = createPreviewButton()
     val noticeLabel = createNoticeLabel()
@@ -84,7 +86,7 @@ class BlockSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends
         NotificationBlock(
             size, location, 
             borderColor, bgColor, alpha, 
-            fgColor, messageFont, messageSize
+            fontColor, messageFont, messageSize
         )
     }
 

@@ -9,6 +9,103 @@ import org.eclipse.swt.custom.StackLayout
 
 import org.eclipse.swt._
 
+class Preference extends SWTHelper
+{
+    import java.util.prefs.Preferences
+
+    val preference = Preferences.userNodeForPackage(classOf[Preference])
+
+    println("abs:" + preference.absolutePath())
+
+    def read(setting: BlockSetting)
+    {
+        setting.locationX.setText(preference.getInt("BlockX", 100).toString)
+        setting.locationY.setText(preference.getInt("BlockY", 100).toString)
+        setting.width.setText(preference.getInt("BlockWidth", 200).toString)
+        setting.height.setText(preference.getInt("BlockHeight", 400).toString)
+
+        val bgColor = new Color(
+            Display.getDefault, 
+            preference.getInt("BGRed", 0),
+            preference.getInt("BGGreen", 0),
+            preference.getInt("BGBlue", 0)
+        )
+
+        val fontColor = new Color(
+            Display.getDefault,
+            preference.getInt("FontRed", 255),
+            preference.getInt("FontGreen", 255),
+            preference.getInt("FontBlue", 255)
+        )
+
+        val borderColor = new Color(
+            Display.getDefault,
+            preference.getInt("BorderRed", 255),
+            preference.getInt("BorderGreen", 255),
+            preference.getInt("BorderBlue", 255)
+        )
+
+        setting.bgColor = bgColor
+        setting.fontColor = fontColor
+        setting.borderColor = borderColor
+        setting.bgButton.setText(bgColor)
+        setting.fgButton.setText(fontColor)
+        setting.borderButton.setText(borderColor)
+
+        val font = new Font(
+            Display.getDefault, 
+            preference.get("FontName", MyFont.DefaultFontName),
+            preference.getInt("FontHeight", MyFont.DefaultFontSize),
+            preference.getInt("FontStyle", MyFont.DefaultFontStyle)
+        )
+
+        setting.messageFont = font
+        setting.fontButton.setText(font)
+
+        val transparent = preference.getInt("Transparent", 20)
+        setting.transparentScale.setSelection(transparent)
+        setting.transparentLabel.setText(
+            setting.alphaTitle + transparent + "%"
+        )
+
+        setting.messageSizeSpinner.setSelection(
+            preference.getInt("MessageSize", 10)
+        )
+    }
+
+    def save(setting: BlockSetting)
+    {
+        // 視窗位置、大小
+        preference.putInt("BlockX", setting.locationX.getText.toInt)
+        preference.putInt("BlockY", setting.locationY.getText.toInt)
+        preference.putInt("BlockWidth", setting.width.getText.toInt)
+        preference.putInt("BlockHeight", setting.height.getText.toInt)
+
+        // 配色
+        preference.putInt("BGRed", setting.bgColor.getRed)
+        preference.putInt("BGGreen", setting.bgColor.getGreen)
+        preference.putInt("BGBlue", setting.bgColor.getBlue)
+        preference.putInt("FontRed", setting.fontColor.getRed)
+        preference.putInt("FontGreen", setting.fontColor.getGreen)
+        preference.putInt("FontBlue", setting.fontColor.getBlue)
+        preference.putInt("BorderRed", setting.borderColor.getRed)
+        preference.putInt("BorderGreen", setting.borderColor.getGreen)
+        preference.putInt("BorderBlue", setting.borderColor.getBlue)
+        preference.putInt("Transparent", setting.transparentScale.getSelection)
+
+        // 字型
+        val fontData = setting.messageFont.getFontData()(0)
+        preference.put("FontName", fontData.getName)
+        preference.putInt("FontHeight", fontData.getHeight)
+        preference.putInt("FontStyle", fontData.getStyle)
+
+        preference.putInt(
+            "MessageSize", 
+            setting.messageSizeSpinner.getSelection
+        )
+    }
+}
+
 object MainWindow extends SWTHelper
 {
     Display.setAppName("IRCBalloon")
@@ -221,14 +318,24 @@ object MainWindow extends SWTHelper
     }
 
     def main(args: Array[String])
-    {
+    {   
+        val preference = new Preference
+
         setLayout()
         setConnectButtonListener()
         setTrayIcon()
 
+        preference.read(blockSetting)
+
         shell.setText("IRC 聊天通知")
         shell.setImage(getAppIcon)
         shell.pack()
+        shell.addShellListener(new ShellAdapter() {
+            override def shellClosed(e: ShellEvent) {
+                preference.save(blockSetting)
+                //preference.preference.clear()
+            }
+        })
         shell.open()
 
         while (!shell.isDisposed()) {
