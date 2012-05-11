@@ -9,11 +9,11 @@ import org.eclipse.swt.custom.StackLayout
 
 import org.eclipse.swt._
 
-class Preference extends SWTHelper
+object Preference extends SWTHelper
 {
     import java.util.prefs.Preferences
 
-    val preference = Preferences.userNodeForPackage(classOf[Preference])
+    val preference = Preferences.userNodeForPackage(Preference.getClass)
 
     println("abs:" + preference.absolutePath())
 
@@ -26,23 +26,23 @@ class Preference extends SWTHelper
 
         val bgColor = new Color(
             Display.getDefault, 
-            preference.getInt("BGRed", 0),
-            preference.getInt("BGGreen", 0),
-            preference.getInt("BGBlue", 0)
+            preference.getInt("BlockBGRed", 0),
+            preference.getInt("BlockBGGreen", 0),
+            preference.getInt("BlockBGBlue", 0)
         )
 
         val fontColor = new Color(
             Display.getDefault,
-            preference.getInt("FontRed", 255),
-            preference.getInt("FontGreen", 255),
-            preference.getInt("FontBlue", 255)
+            preference.getInt("BlockFontRed", 255),
+            preference.getInt("BlockFontGreen", 255),
+            preference.getInt("BlockFontBlue", 255)
         )
 
         val borderColor = new Color(
             Display.getDefault,
-            preference.getInt("BorderRed", 255),
-            preference.getInt("BorderGreen", 255),
-            preference.getInt("BorderBlue", 255)
+            preference.getInt("BlockBorderRed", 255),
+            preference.getInt("BlockBorderGreen", 255),
+            preference.getInt("BlockBorderBlue", 255)
         )
 
         setting.bgColor = bgColor
@@ -54,22 +54,22 @@ class Preference extends SWTHelper
 
         val font = new Font(
             Display.getDefault, 
-            preference.get("FontName", MyFont.DefaultFontName),
-            preference.getInt("FontHeight", MyFont.DefaultFontSize),
-            preference.getInt("FontStyle", MyFont.DefaultFontStyle)
+            preference.get("BlockFontName", MyFont.DefaultFontName),
+            preference.getInt("BlockFontHeight", MyFont.DefaultFontSize),
+            preference.getInt("BlockFontStyle", MyFont.DefaultFontStyle)
         )
 
         setting.messageFont = font
         setting.fontButton.setText(font)
 
-        val transparent = preference.getInt("Transparent", 20)
+        val transparent = preference.getInt("BlockTransparent", 20)
         setting.transparentScale.setSelection(transparent)
         setting.transparentLabel.setText(
             setting.alphaTitle + transparent + "%"
         )
 
         setting.messageSizeSpinner.setSelection(
-            preference.getInt("MessageSize", 10)
+            preference.getInt("BlockMessageSize", 10)
         )
     }
 
@@ -82,25 +82,28 @@ class Preference extends SWTHelper
         preference.putInt("BlockHeight", setting.height.getText.toInt)
 
         // 配色
-        preference.putInt("BGRed", setting.bgColor.getRed)
-        preference.putInt("BGGreen", setting.bgColor.getGreen)
-        preference.putInt("BGBlue", setting.bgColor.getBlue)
-        preference.putInt("FontRed", setting.fontColor.getRed)
-        preference.putInt("FontGreen", setting.fontColor.getGreen)
-        preference.putInt("FontBlue", setting.fontColor.getBlue)
-        preference.putInt("BorderRed", setting.borderColor.getRed)
-        preference.putInt("BorderGreen", setting.borderColor.getGreen)
-        preference.putInt("BorderBlue", setting.borderColor.getBlue)
-        preference.putInt("Transparent", setting.transparentScale.getSelection)
+        preference.putInt("BlockBGRed", setting.bgColor.getRed)
+        preference.putInt("BlockBGGreen", setting.bgColor.getGreen)
+        preference.putInt("BlockBGBlue", setting.bgColor.getBlue)
+        preference.putInt("BlockFontRed", setting.fontColor.getRed)
+        preference.putInt("BlockFontGreen", setting.fontColor.getGreen)
+        preference.putInt("BlockFontBlue", setting.fontColor.getBlue)
+        preference.putInt("BlockBorderRed", setting.borderColor.getRed)
+        preference.putInt("BlockBorderGreen", setting.borderColor.getGreen)
+        preference.putInt("BlockBorderBlue", setting.borderColor.getBlue)
+        preference.putInt(
+            "BlockTransparent", 
+            setting.transparentScale.getSelection
+        )
 
         // 字型
         val fontData = setting.messageFont.getFontData()(0)
-        preference.put("FontName", fontData.getName)
-        preference.putInt("FontHeight", fontData.getHeight)
-        preference.putInt("FontStyle", fontData.getStyle)
+        preference.put("BlockFontName", fontData.getName)
+        preference.putInt("BlockFontHeight", fontData.getHeight)
+        preference.putInt("BlockFontStyle", fontData.getStyle)
 
         preference.putInt(
-            "MessageSize", 
+            "BlockMessageSize", 
             setting.messageSizeSpinner.getSelection
         )
     }
@@ -319,21 +322,18 @@ object MainWindow extends SWTHelper
 
     def main(args: Array[String])
     {   
-        val preference = new Preference
-
         setLayout()
         setConnectButtonListener()
         setTrayIcon()
 
-        preference.read(blockSetting)
+        Preference.read(blockSetting)
 
         shell.setText("IRC 聊天通知")
         shell.setImage(getAppIcon)
         shell.pack()
         shell.addShellListener(new ShellAdapter() {
             override def shellClosed(e: ShellEvent) {
-                preference.save(blockSetting)
-                //preference.preference.clear()
+                Preference.save(blockSetting)
             }
         })
         shell.open()
