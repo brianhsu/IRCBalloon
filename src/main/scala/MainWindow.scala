@@ -15,8 +15,6 @@ object Preference extends SWTHelper
 
     val preference = Preferences.userNodeForPackage(Preference.getClass)
 
-    println("abs:" + preference.absolutePath())
-
     def read(setting: BlockSetting)
     {
         setting.locationX.setText(preference.getInt("BlockX", 100).toString)
@@ -107,6 +105,102 @@ object Preference extends SWTHelper
             setting.messageSizeSpinner.getSelection
         )
     }
+
+    def read(setting: BalloonSetting)
+    {
+        setting.locationX.setText(preference.getInt("BalloonX", 100).toString)
+        setting.locationY.setText(preference.getInt("BalloonY", 100).toString)
+        setting.width.setText(preference.getInt("BalloonWidth", 200).toString)
+        setting.height.setText(preference.getInt("BalloonHeight", 400).toString)
+
+        val bgColor = new Color(
+            Display.getDefault, 
+            preference.getInt("BalloonBGRed", 0),
+            preference.getInt("BalloonBGGreen", 0),
+            preference.getInt("BalloonBGBlue", 0)
+        )
+
+        val fontColor = new Color(
+            Display.getDefault,
+            preference.getInt("BalloonFontRed", 255),
+            preference.getInt("BalloonFontGreen", 255),
+            preference.getInt("BalloonFontBlue", 255)
+        )
+
+        val borderColor = new Color(
+            Display.getDefault,
+            preference.getInt("BalloonBorderRed", 255),
+            preference.getInt("BalloonBorderGreen", 255),
+            preference.getInt("BalloonBorderBlue", 255)
+        )
+
+        setting.bgColor = bgColor
+        setting.fontColor = fontColor
+        setting.borderColor = borderColor
+        setting.bgButton.setText(bgColor)
+        setting.fgButton.setText(fontColor)
+        setting.borderButton.setText(borderColor)
+
+        val font = new Font(
+            Display.getDefault, 
+            preference.get("BalloonFontName", MyFont.DefaultFontName),
+            preference.getInt("BalloonFontHeight", MyFont.DefaultFontSize),
+            preference.getInt("BalloonFontStyle", MyFont.DefaultFontStyle)
+        )
+
+        setting.messageFont = font
+        setting.fontButton.setText(font)
+
+        val transparent = preference.getInt("BalloonTransparent", 20)
+        setting.transparentScale.setSelection(transparent)
+        setting.transparentLabel.setText(
+            setting.alphaTitle + transparent + "%"
+        )
+
+        // 特效設定
+        setting.displayTimeSpinner.setSelection(preference.getInt("BalloonDisplayTime", 5))
+        setting.fadeTimeSpinner.setSelection(preference.getInt("BalloonFadeTime", 500))
+        setting.spacingSpinner.setSelection(preference.getInt("BalloonSpacing", 5))
+
+    }
+
+
+    def save(setting: BalloonSetting)
+    {
+        // 視窗位置、大小
+        preference.putInt("BalloonX", setting.locationX.getText.toInt)
+        preference.putInt("BalloonY", setting.locationY.getText.toInt)
+        preference.putInt("BalloonWidth", setting.width.getText.toInt)
+        preference.putInt("BalloonHeight", setting.height.getText.toInt)
+
+        // 配色
+        preference.putInt("BalloonBGRed", setting.bgColor.getRed)
+        preference.putInt("BalloonBGGreen", setting.bgColor.getGreen)
+        preference.putInt("BalloonBGBlue", setting.bgColor.getBlue)
+        preference.putInt("BalloonFontRed", setting.fontColor.getRed)
+        preference.putInt("BalloonFontGreen", setting.fontColor.getGreen)
+        preference.putInt("BalloonFontBlue", setting.fontColor.getBlue)
+        preference.putInt("BalloonBorderRed", setting.borderColor.getRed)
+        preference.putInt("BalloonBorderGreen", setting.borderColor.getGreen)
+        preference.putInt("BalloonBorderBlue", setting.borderColor.getBlue)
+        preference.putInt(
+            "BalloonTransparent", 
+            setting.transparentScale.getSelection
+        )
+
+        // 字型
+        val fontData = setting.messageFont.getFontData()(0)
+        preference.put("BalloonFontName", fontData.getName)
+        preference.putInt("BalloonFontHeight", fontData.getHeight)
+        preference.putInt("BalloonFontStyle", fontData.getStyle)
+
+        // 特效設定
+        preference.putInt("BalloonDisplayTime", setting.displayTimeSpinner.getSelection)
+        preference.putInt("BalloonFadeTime", setting.fadeTimeSpinner.getSelection)
+        preference.putInt("BalloonSpacing", setting.spacingSpinner.getSelection)
+
+    }
+
 }
 
 object MainWindow extends SWTHelper
@@ -327,6 +421,7 @@ object MainWindow extends SWTHelper
         setTrayIcon()
 
         Preference.read(blockSetting)
+        Preference.read(balloonSetting)
 
         shell.setText("IRC 聊天通知")
         shell.setImage(getAppIcon)
@@ -334,6 +429,7 @@ object MainWindow extends SWTHelper
         shell.addShellListener(new ShellAdapter() {
             override def shellClosed(e: ShellEvent) {
                 Preference.save(blockSetting)
+                Preference.save(balloonSetting)
             }
         })
         shell.open()

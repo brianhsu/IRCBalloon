@@ -16,9 +16,11 @@ class BalloonSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends
 {
     val tabItem = new TabItem(parent, SWT.NONE)
     var bgColor: Color = MyColor.Black
-    var fgColor: Color = MyColor.White
+    var fontColor: Color = MyColor.White
     var borderColor: Color = MyColor.White
     var messageFont: Font = Display.getDefault.getSystemFont
+
+    val alphaTitle = "透明度："
 
     val gridLayout = new GridLayout(4, false)
     val locationX = createText(this, "通知區域 X：")
@@ -28,9 +30,9 @@ class BalloonSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends
     val (borderLabel, borderButton) = createColorChooser(this, "邊框顏色：", borderColor, borderColor = _)
     val areaSelectionButton = createAreaSelectionButton()
     val (bgLabel, bgButton) = createColorChooser(this, "背景顏色：", bgColor, bgColor = _)
-    val (fgLabel, fgButton) = createColorChooser(this, "文字顏色：", fgColor, fgColor = _)
+    val (fgLabel, fgButton) = createColorChooser(this, "文字顏色：", fontColor, fontColor = _)
     val (fontLabel, fontButton) = createFontChooser(this, "訊息字型：", messageFont = _)
-    val (transparentLabel, transparentScale) = createScaleChooser(this, "透明度：")
+    val (transparentLabel, transparentScale) = createScaleChooser(this, alphaTitle)
     val (displayTimeLabel, displayTimeSpinner) = createSpinner(this, "停留秒數：", 1, 120)
     val (fadeTimeLabel, fadeTimeSpinner) = createSpinner(this, "效果時間(ms)：", 1, 5000)
     val (spacingLabel, spacingSpinner) = createSpinner(this, "泡泡間距：", 1, 20)
@@ -74,7 +76,7 @@ class BalloonSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends
         BalloonController(
             size, location, 
             borderColor, bgColor, alpha, 
-            fgColor, messageFont, 
+            fontColor, messageFont, 
             displayTimeSpinner.getSelection * 1000, 
             fadeTimeSpinner.getSelection,
             spacingSpinner.getSelection
@@ -116,8 +118,9 @@ class BalloonSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends
         button.setLayoutData(layoutData)
         button.setText("選擇通知區域")
         button.addSelectionListener { e: SelectionEvent =>
-            val oldArea = (locationX.getText.toInt, locationY.getText.toInt,
+            def oldArea = (locationX.getText.toInt, locationY.getText.toInt,
                            width.getText.toInt, height.getText.toInt)
+            println("oldArea:" + oldArea)
             val areaSelection = new AreaSelectionDialog(oldArea, setNotificationArea _)
             areaSelection.open()
         }
