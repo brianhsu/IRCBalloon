@@ -22,7 +22,11 @@ object MyFont
     lazy val DefaultFontSize = DefaultFont.getFontData()(0).getHeight
     lazy val DefaultFontStyle = DefaultFont.getFontData()(0).getStyle
 
-    lazy val LargeFont = new Font(Display.getDefault, DefaultFontName, DefaultFontSize + 3, SWT.DEFAULT)
+    lazy val LargeFont = new Font(
+        Display.getDefault, DefaultFontName, 
+        DefaultFontSize + 3, 
+        SWT.BOLD
+    )
 }
 
 object MessageSample

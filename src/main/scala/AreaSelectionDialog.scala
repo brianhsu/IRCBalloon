@@ -22,10 +22,10 @@ class AreaSelectionDialog(default: (Int, Int, Int, Int) = (0, 0, 0, 0),
     val shell = new Shell(MainWindow.shell, SWT.ON_TOP|SWT.NO_TRIM)
     val canvas = new Canvas(shell, SWT.NONE)
 
-    var locationX: Int = 100
-    var locationY: Int = 100
-    var height: Int = 300
-    var width: Int = 300
+    var locationX: Int = default._1
+    var locationY: Int = default._2
+    var height: Int = default._3
+    var width: Int = default._4
 
     def setAreaSelection()
     {
@@ -38,7 +38,7 @@ class AreaSelectionDialog(default: (Int, Int, Int, Int) = (0, 0, 0, 0),
                 e.gc.drawRectangle(locationX, locationY, width, height)
                 e.gc.setFont(MyFont.LargeFont)
                 e.gc.drawText(
-                    "請拖拉出通知區域後點兩下滑屬確認", 
+                    "請拖拉出通知區域後點兩下滑鼠確認", 
                     shell.getSize.x / 2 - 200, 
                     shell.getSize.y / 2,
                     true
