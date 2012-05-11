@@ -47,7 +47,7 @@ case class BalloonController(size: (Int, Int), location: (Int, Int),
 
         if (currentNotification == Nil) {
             val relocated = reLocationBalloons(waitNotification)
-            val (outRange, inRange) = relocated.span(_.bottomY <= location._2)
+            val (inRange, outRange) = relocated.partition(_.bottomY <= location._2 + size._2)
 
             currentNotification = inRange
             waitNotification = outRange
@@ -81,10 +81,11 @@ case class BalloonController(size: (Int, Int), location: (Int, Int),
 
                 val locationY = calculateLocationY
                 val newBottom = locationY + notification.shell.getSize.y
+                val bottomLine = location._2 + size._2
 
                 notification.shell.setLocation(location._1, locationY)
 
-                if (newBottom <= size._2 || currentNotification == Nil) {
+                if (newBottom <= bottomLine || currentNotification == Nil) {
                     currentNotification = notification :: currentNotification
                     notification.open()
                 } else {

@@ -27,7 +27,7 @@ trait NotificationBalloon
     
         def calculateSize() =
         {
-            val labelSize = label.computeSize(size._1, SWT.DEFAULT, true)
+            val labelSize = label.computeSize(size._1 - 10, SWT.DEFAULT, true)
             (labelSize.x, labelSize.y)
         }
 
@@ -37,9 +37,10 @@ trait NotificationBalloon
     
         def setLayout()
         {
-            val layout = new GridLayout(1, true)
+            val layout = new GridLayout(1, false)
             val layoutData = new GridData(SWT.FILL, SWT.CENTER, true, true)
-            layout.marginTop = 6
+            layout.marginLeft = 5
+            layout.marginRight = 5
             shell.setLayout(layout)
             label.setLayoutData(layoutData)
             label.setForeground(fontColor)
@@ -52,7 +53,7 @@ trait NotificationBalloon
         def setSizeAndLocation()
         {
             val (width, height) = calculateSize()
-            shell.setSize(width, height + 20)
+            shell.setSize(width + 20, height + 20)
             shell.setLocation(location._1, location._2)
         }
     
