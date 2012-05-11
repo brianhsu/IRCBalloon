@@ -17,6 +17,7 @@ class BalloonSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends
     val tabItem = new TabItem(parent, SWT.NONE)
     var bgColor: Color = MyColor.Black
     var fgColor: Color = MyColor.White
+    var borderColor: Color = MyColor.White
     var messageFont: Font = Display.getDefault.getSystemFont
 
     val gridLayout = new GridLayout(4, false)
@@ -24,7 +25,7 @@ class BalloonSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends
     val locationY = createText(this, "通知區域 Y：")
     val width = createText(this, "通知區域寬度：")
     val height = createText(this, "通知區域高度：")
-    val spanLabel1 = createSpanLabel()
+    val (borderLabel, borderButton) = createColorChooser(this, "邊框顏色：", borderColor, borderColor = _)
     val areaSelectionButton = createAreaSelectionButton()
     val (bgLabel, bgButton) = createColorChooser(this, "背景顏色：", bgColor, bgColor = _)
     val (fgLabel, fgButton) = createColorChooser(this, "文字顏色：", fgColor, fgColor = _)
@@ -72,7 +73,7 @@ class BalloonSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends
 
         BalloonController(
             size, location, 
-            MyColor.White, bgColor, alpha, 
+            borderColor, bgColor, alpha, 
             fgColor, messageFont, 
             displayTimeSpinner.getSelection * 1000, 
             fadeTimeSpinner.getSelection,
