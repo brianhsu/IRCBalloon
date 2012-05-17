@@ -392,6 +392,8 @@ object MainWindow extends SWTHelper
     {
         logginTab.setEnabled(isEnabled)
         displayTab.setEnabled(isEnabled)
+        ircSetting.setUIEnabled(isEnabled)
+        justinSetting.setUIEnabled(isEnabled)
         blockSetting.setUIEnabled(isEnabled)
         balloonSetting.setUIEnabled(isEnabled)
     }

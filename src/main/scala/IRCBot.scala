@@ -15,7 +15,9 @@ class IRCBot(hostname: String, port: Int, nickname: String,
              password: Option[String], channel: String, 
              callback: String => Any = IRCBot.doNothing,
              onLog: String => Any = IRCBot.doNothing,
-             onError: Exception => Any = IRCBot.doNothing) extends PircBot
+             onError: Exception => Any = IRCBot.doNothing,
+             showJoin: Boolean = false,
+             showLeave: Boolean = false) extends PircBot
 {
     override def onAction(sender: String, login: String, hostname: String, target: String,
                           action: String)
@@ -29,17 +31,28 @@ class IRCBot(hostname: String, port: Int, nickname: String,
         callback("%s: %s" format(sender, message))
     }
 
+    override def onPart(channel: String, sender: String, login: String, hostname: String)
+    {
+        if (showLeave) {
+            callback("[系統] %s 離開聊天室" format(sender))
+        }
+    }
+
     override def onJoin(channel: String, sender: String, login: String, hostname: String)
     {
-        if (sender == nickname) {
-            callback("[系統] %s 加入聊天室" format(sender))
+        showJoin match {
+            case true  => callback("[系統] %s 加入聊天室" format(sender))
+            case false if (sender == nickname) => 
+                callback("[系統] %s 加入聊天室" format(sender))
         }
     }
 
     override def onQuit(sourceNick: String, sourceLogin: String, sourceHostname: String,
                         reason: String)
     {
-        callback("[系統] %s 離開聊天室" format(sourceNick))
+        if (showLeave) {
+            callback("[系統] %s 離開聊天室" format(sourceNick))
+        }
     }
 
     override def log(line: String)

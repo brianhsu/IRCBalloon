@@ -19,21 +19,30 @@ class IRCSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends
     val password = createText(this, "IRC 伺服器密碼：", SWT.PASSWORD)
     val nickname = createText(this, "暱稱：")
     val channel = createText(this, "聊天頻道：")
+    val (onJoinButton, onLeaveButton) = createJoinLeaveButton(this)
 
     def getPassword = password.getText.trim match {
         case ""    => None
         case value => Some(value)
     }
 
-    def createIRCBot(callback: String => Any, onLog: String => Any, onError: Exception => Any) = {
+    def createIRCBot(callback: String => Any, 
+                     onLog: String => Any, 
+                     onError: Exception => Any) = 
+    {
 
         if (!isSettingOK) {
             throw new Exception("IRC 設定不完整")
         }
 
         new IRCBot(
-            hostText.getText, portText.getText.toInt, nickname.getText, 
-            getPassword, channel.getText, callback, onLog, onError
+            hostText.getText, 
+            portText.getText.toInt, 
+            nickname.getText, 
+            getPassword, channel.getText, 
+            callback, onLog, onError,
+            onJoinButton.getSelection, 
+            onLeaveButton.getSelection
         )
     }
 
