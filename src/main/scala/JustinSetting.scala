@@ -16,15 +16,20 @@ class JustinSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends
     val gridLayout = new GridLayout(2,  false)
     val username = createText(this, "帳號：")
     val password = createText(this, "密碼：", SWT.PASSWORD)
+    val (onJoinButton, onLeaveButton) = createJoinLeaveButton(this)
 
-    def createIRCBot(callback: String => Any, onLog: String => Any, onError: Exception => Any) =
+    def createIRCBot(callback: String => Any, 
+                     onLog: String => Any, 
+                     onError: Exception => Any) =
     {
         val hostname = "%s.jtvirc.com" format(username.getText)
         val password = Some(this.password.getText.trim)
         val channel = "#%s" format(username.getText)
         new IRCBot(
             hostname, 6667, username.getText, 
-            password, channel, callback, onLog, onError
+            password, channel, callback, onLog, onError, 
+            onJoinButton.getSelection, 
+            onLeaveButton.getSelection
         )
     }
 

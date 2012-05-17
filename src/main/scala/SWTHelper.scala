@@ -150,5 +150,24 @@ trait SWTHelper
         (label, spinner)
     }
 
+    def createJoinLeaveButton(parent: Composite) =
+    {
+        val composite = new Composite(parent, SWT.NONE)
+        val rowLayout = new RowLayout()
+        val layoutData = new GridData(SWT.FILL, SWT.NONE, true, false)
+
+        layoutData.horizontalSpan = 2
+        composite.setLayout(rowLayout)
+        composite.setLayoutData(layoutData)
+
+        val onJoinButton = new Button(composite, SWT.CHECK)
+        val onLeaveButton = new Button(composite, SWT.CHECK)
+        
+        onJoinButton.setText("顯示加入聊天室訊息")
+        onLeaveButton.setText("顯示離開聊天室訊息")
+
+        (onJoinButton, onLeaveButton)
+    }
+
 }
 
