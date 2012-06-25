@@ -113,6 +113,12 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
         label.setForeground(fontColor)
         label.setLineSpacing(5)
         label.setEnabled(false)
+        label.addModifyListener(new ModifyListener() {
+            override def modifyText(e: ModifyEvent) {
+                label.setTopIndex(label.getLineCount - 1)
+            }
+        })
+
     }
 
     def setMoveAndResize()
