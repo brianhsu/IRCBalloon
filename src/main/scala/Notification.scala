@@ -19,7 +19,7 @@ trait NotificationWindow
 
 trait Notification
 {
-    def addMessage(newMessage: String): Unit
+    def addMessage(newMessage: IRCMessage): Unit
     def open(): Unit
     def close(): Unit
     def onTrayIconClicked(): Unit = {

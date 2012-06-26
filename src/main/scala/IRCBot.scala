@@ -5,6 +5,7 @@ import org.jibble.pircbot.PircBot
 object IRCBot
 {
     def doNothing(message: String) {}
+    def doNothing(message: IRCMessage) {}
     def doNothing(exception: Exception) {
         println("From IRCBot.doNothing:")
         exception.printStackTrace()
@@ -13,37 +14,51 @@ object IRCBot
 
 class IRCBot(hostname: String, port: Int, nickname: String, 
              password: Option[String], channel: String, 
-             callback: String => Any = IRCBot.doNothing,
+             callback: IRCMessage => Any = IRCBot.doNothing,
              onLog: String => Any = IRCBot.doNothing,
              onError: Exception => Any = IRCBot.doNothing,
              showJoin: Boolean = false,
              showLeave: Boolean = false) extends PircBot
 {
+    private var opUser: Set[String] = Set()
+
+    override def onDeop(channel: String, sourceNick: String, sourceLogin: String,
+                        sourceHostname: String, recipient: String)
+    {
+        opUser -= recipient
+    }
+   
+    override def onOp(channel: String, sourceNick: String, sourceLogin: String,
+                      sourceHostname: String, recipient: String)
+    {
+        opUser += recipient
+    }
+
     override def onAction(sender: String, login: String, hostname: String, target: String,
                           action: String)
     {
-        callback("[動作] %s %s" format(sender, action))
+        callback(ActionMessage(sender, opUser.contains(sender), action))
     }
 
     override def onMessage(channel: String, sender: String, login: String, 
                            hostname: String, message: String) 
     {
-        callback("%s: %s" format(sender, message))
+        callback(ChatMessage(sender, opUser.contains(sender), message))
     }
 
     override def onPart(channel: String, sender: String, login: String, hostname: String)
     {
         if (showLeave) {
-            callback("[系統] %s 離開聊天室" format(sender))
+            callback(SystemMessage("[系統] %s 離開聊天室" format(sender)))
         }
     }
 
     override def onJoin(channel: String, sender: String, login: String, hostname: String)
     {
         showJoin match {
-            case true  => callback("[系統] %s 加入聊天室" format(sender))
+            case true  => callback(SystemMessage("[系統] %s 加入聊天室" format(sender)))
             case false if (sender == nickname) => 
-                callback("[系統] %s 加入聊天室" format(sender))
+                callback(SystemMessage("[系統] %s 加入聊天室" format(sender)))
         }
     }
 
@@ -51,7 +66,7 @@ class IRCBot(hostname: String, port: Int, nickname: String,
                         reason: String)
     {
         if (showLeave) {
-            callback("[系統] %s 離開聊天室" format(sourceNick))
+            callback(SystemMessage("[系統] %s 離開聊天室" format(sourceNick)))
         }
     }
 

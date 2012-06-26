@@ -72,7 +72,7 @@ case class BalloonController(size: (Int, Int), location: (Int, Int),
         }
     }
 
-    def addMessage(message: String)
+    def addMessage(message: IRCMessage)
     {
         Display.getDefault.syncExec(new Runnable() {
             override def run() {

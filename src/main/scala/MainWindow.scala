@@ -108,7 +108,7 @@ object MainWindow extends SWTHelper
         connectButton.setEnabled(connectSettingOK && displayStettingOK)
     }
 
-    def createIRCBot(callback: String => Any, onError: Exception => Any) =
+    def createIRCBot(callback: IRCMessage => Any, onError: Exception => Any) =
     {
         logginTab.getSelectionIndex match {
             case 0 => ircSetting.createIRCBot(callback, appendLog _, onError)
@@ -136,7 +136,7 @@ object MainWindow extends SWTHelper
             displayError(exception, () => { stopBot(); toggleConnectButton()})
         }
 
-        def updateNotification(message: String)
+        def updateNotification(message: IRCMessage)
         {
             notification.foreach(_.addMessage(message))
         }
@@ -148,7 +148,7 @@ object MainWindow extends SWTHelper
             notification = Some(createNotificationService)
             notification.foreach { block =>
                 block.open()
-                block.addMessage("開始連線至 IRC 伺服器，請稍候……")
+                block.addMessage(SystemMessage("開始連線至 IRC 伺服器，請稍候……"))
                 ircBot = Some(createIRCBot(updateNotification _, onError _))
                 ircBot.foreach(_.start())
             }

@@ -12,7 +12,8 @@ import scala.math._
 case class NotificationBlock(size: (Int, Int), location: (Int, Int), 
                              borderColor: Color, bgColor: Color, alpha: Int,
                              fontColor: Color, font: Font, 
-                             messageSize: Int) extends Notification 
+                             messageSize: Int, 
+                             backgroundImage: Option[String] = None) extends Notification 
                                                with NotificationTheme 
                                                with NotificationWindow 
                                                with SWTHelper
@@ -20,7 +21,7 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
     val display = Display.getDefault
     val shell = new Shell(display, SWT.NO_TRIM|SWT.ON_TOP|SWT.RESIZE)
     val label = createContentLabel()
-    var messages: List[String] = Nil
+    var messages: List[IRCMessage] = Nil
     val (inputLabel, inputText) = createChatInputBox()
 
     def createChatInputBox() = 
@@ -33,6 +34,7 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
         label.setForeground(fontColor)
         
         val layoutData = new GridData(SWT.FILL, SWT.NONE, true, false)
+
         text.setBackground(bgColor)
         text.setForeground(fontColor)
         text.setFont(font)
@@ -49,7 +51,7 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
                         }
                     }
 
-                    NotificationBlock.this.addMessage(displayMessage)
+                    //! NotificationBlock.this.addMessage(displayMessage)
                     text.setText("")
                 }
             }
@@ -74,10 +76,18 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
         shell.setVisible(!shell.isVisible)
     }
 
-    def addMessage(newMessage: String)
+    def addMessage(newMessage: IRCMessage)
     {
         messages = (newMessage :: messages).take(messageSize)
         updateMessages()
+    }
+
+    def formatMessage(message: IRCMessage) = {
+        message match {
+            case ChatMessage(nickname, isOp, content)   => "%s: %s" format(nickname, content)
+            case ActionMessage(nickname, isOp, content) => "[動作] %s %s" format(nickname, content)
+            case SystemMessage(content) => content
+        }
     }
     
     def updateMessages()
@@ -85,7 +95,10 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
         display.syncExec (new Runnable {
             override def run () {
                 if (!shell.isDisposed) {
-                    label.setText(messages.take(messageSize).reverse.mkString("\n"))
+                    
+                    label.setText(
+                        messages.take(messageSize).reverse.map(formatMessage).mkString("\n")
+                    )
                 }
             }
         })
@@ -202,7 +215,22 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
 
     def open()
     {
-        setBackground()
+        val optionBGImage = backgroundImage.flatMap { file => 
+            try { 
+                Some(new Image(display, file))
+            } catch {
+                case e => None
+            }
+        }
+
+        optionBGImage match {
+            case None => setBackground()
+            case Some(null) => setBackground()
+            case Some(image) => 
+                    shell.setBackgroundImage(image)
+                    shell.setBackgroundMode(SWT.INHERIT_DEFAULT)
+        }
+
         setLayout()
         setMoveAndResize()
 

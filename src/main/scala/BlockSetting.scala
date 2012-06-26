@@ -12,6 +12,8 @@ import org.eclipse.swt._
 class BlockSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends 
       Composite(parent, SWT.NONE) with SWTHelper
 {
+    var blockBackgroundImage: Option[String] = None
+
     val tabItem = new TabItem(parent, SWT.NONE)
 
     var bgColor: Color = MyColor.Black
@@ -27,7 +29,8 @@ class BlockSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends
     val width = createText(this, "視窗寬度：")
     val height = createText(this, "視窗高度：")
     val (borderLabel, borderButton) = createColorChooser(this, "邊框顏色：", borderColor, borderColor = _)
-    val spanLabel = createSpanLabel()
+    val span = createSpanLabel()
+    val (bgImageLabel, bgImageButton, bgImageCheck) = createBackgroundImage()
     val (bgLabel, bgButton) = createColorChooser(this, "背景顏色：", bgColor, bgColor = _)
     val (fgLabel, fgButton) = createColorChooser(this, "文字顏色：", fontColor, fontColor = _)
     val (fontLabel, fontButton) = createFontChooser(this, "訊息字型：", messageFont = _)
@@ -35,6 +38,44 @@ class BlockSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends
     val (messageSizeLabel, messageSizeSpinner) = createSpinner(this, "訊息數量：", 1, 50)
     val previewButton = createPreviewButton()
     val noticeLabel = createNoticeLabel()
+
+    def setBlockBackgroundImage(imageFile: String) 
+    {
+        bgImageButton.setToolTipText(imageFile)
+        bgImageButton.setText(imageFile)
+        blockBackgroundImage = Some(imageFile)        
+    }
+
+    def createBackgroundImage() = {
+        val layoutData = new GridData(SWT.FILL, SWT.FILL, true, false)
+        val layoutData2 = new GridData(SWT.FILL, SWT.FILL, true, false)
+        layoutData2.horizontalSpan = 2
+
+        val label = new Label(this, SWT.LEFT)
+        val button = new Button(this, SWT.PUSH)
+        val clear = new Button(this, SWT.PUSH)
+
+        label.setText("背景圖案：")
+        clear.setLayoutData(layoutData2)
+        clear.setText("移除背景圖案")
+        clear.addSelectionListener { e: SelectionEvent =>
+            button.setText("瀏覽……")
+            blockBackgroundImage = None
+        }
+
+        button.setLayoutData(layoutData)
+        button.setText("瀏覽……")
+        button.addSelectionListener { e: SelectionEvent =>
+            val fileDialog = new FileDialog(MainWindow.shell, SWT.OPEN)
+            val imageFile = fileDialog.open()
+
+            if (imageFile != null) {
+                setBlockBackgroundImage(imageFile)
+            }
+        }
+
+        (label, button, clear)
+    }
 
     def createSpanLabel() = {
         val layoutData = new GridData(SWT.LEFT, SWT.CENTER, true, false)
@@ -69,7 +110,7 @@ class BlockSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends
 
             while (!shouldStop) {
                 val message = MessageSample.random(1).head
-                notificationBlock.addMessage("[%d] %s" format(count, message))
+                notificationBlock.addMessage(SystemMessage("[%d] %s" format(count, message)))
                 count = (count + 1)
                 Thread.sleep(1000)
             }
@@ -86,7 +127,7 @@ class BlockSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends
         NotificationBlock(
             size, location, 
             borderColor, bgColor, alpha, 
-            fontColor, messageFont, messageSize
+            fontColor, messageFont, messageSize, blockBackgroundImage
         )
     }
 

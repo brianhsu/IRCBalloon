@@ -60,7 +60,9 @@ class BalloonSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends
 
             while (!shouldStop) {
                 val message = MessageSample.random(1).head
-                balloonController.addMessage("[%d] %s" format(count, message))
+
+                balloonController.addMessage(SystemMessage("[%d] %s" format(count, message)))
+
                 count = (count + 1)
                 Thread.sleep(1000)
             }
