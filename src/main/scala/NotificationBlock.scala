@@ -191,7 +191,7 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
             {
                 shell.setSize(e.x, e.y)
                 MainWindow.blockSetting.width.setText(e.x.toString)
-                MainWindow.blockSetting.height.setText(e.x.toString)
+                MainWindow.blockSetting.height.setText(e.y.toString)
             }
 
             override def mouseMove(e: MouseEvent) 
