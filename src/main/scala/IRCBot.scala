@@ -79,12 +79,6 @@ class IRCBot(hostname: String, port: Int, nickname: String,
         onLog(line)
     }
 
-    def stop()
-    {
-        if (this.isConnected) {
-            this.disconnect()
-        }
-    }
 
     private def connect()
     {
@@ -94,19 +88,42 @@ class IRCBot(hostname: String, port: Int, nickname: String,
         }
     }
 
+    def stop()
+    {
+        val thread = new Thread()
+        {
+            override def run()
+            {
+                if (IRCBot.this.isConnected) {
+                    IRCBot.this.disconnect()
+                }
+            }
+        }
+
+        thread.start()
+    }
+
     def start()
     {
-        try {
-            this.setAutoNickChange(true)
-            this.setVerbose(true)
-            this.setName(nickname)
-            this.setEncoding("UTF-8")
-            this.connect()
-            this.getListenerManager.addListener(Callbacks)
-            this.joinChannel(channel)
-        } catch {
-            case e: Exception => onError(e)
+        val thread = new Thread()
+        {
+            override def run()
+            {
+                try {
+                    IRCBot.this.setAutoNickChange(true)
+                    IRCBot.this.setVerbose(true)
+                    IRCBot.this.setName(nickname)
+                    IRCBot.this.setEncoding("UTF-8")
+                    IRCBot.this.connect()
+                    IRCBot.this.getListenerManager.addListener(Callbacks)
+                    IRCBot.this.joinChannel(channel)
+                } catch {
+                    case e: Exception => onError(e)
+                }
+            }
         }
+
+        thread.start()
     }
 
 }
