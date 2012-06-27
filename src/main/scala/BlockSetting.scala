@@ -9,14 +9,15 @@ import org.eclipse.swt.custom.StackLayout
 import org.eclipse.swt.custom.ScrolledComposite
 
 import org.eclipse.swt._
+import java.io.File
 
-class BlockSetting(parent: TabFolder, 
+class BlockSetting(tabFolder: TabFolder, parent: ScrolledComposite,
                    onModify: ModifyEvent => Any) extends Composite(parent, SWT.NONE) 
                                                  with SWTHelper
 {
     var blockBackgroundImage: Option[String] = None
 
-    val tabItem = new TabItem(parent, SWT.NONE)
+    val tabItem = new TabItem(tabFolder, SWT.NONE)
 
     var bgColor: Color = MyColor.Black
     var fontColor: Color = MyColor.White
@@ -91,7 +92,7 @@ class BlockSetting(parent: TabFolder,
     def setBlockBackgroundImage(imageFile: String) 
     {
         bgImageButton.setToolTipText(imageFile)
-        bgImageButton.setText(imageFile)
+        bgImageButton.setText((new File(imageFile)).getName)
         blockBackgroundImage = Some(imageFile)        
     }
 
@@ -110,6 +111,7 @@ class BlockSetting(parent: TabFolder,
         clear.setText("移除背景圖案")
         clear.addSelectionListener { e: SelectionEvent =>
             browse.setText("瀏覽……")
+            browse.setToolTipText("")
             blockBackgroundImage = None
         }
 
@@ -282,11 +284,30 @@ class BlockSetting(parent: TabFolder,
         previewButton.setEnabled(isEnabled)
     }
 
+    def resetScrollSize()
+    {
+        val r = parent.getClientArea();
+        parent.setMinSize(BlockSetting.this.computeSize(r.width, SWT.DEFAULT))
+    }
+
     this.setLayout(gridLayout)
     this.setDefaultValue()
     this.setTextVerify()
     this.setModifyListener()
+
+    this.parent.setContent(this)
+    this.parent.setExpandVertical(true)
+    this.parent.setExpandHorizontal(true)
+
+    this.parent.addControlListener(new ControlAdapter() {
+        override def controlResized(e: ControlEvent) {
+            resetScrollSize()
+        }
+    })
+
+
     this.tabItem.setText("固定區塊")
-    this.tabItem.setControl(this)
+    this.tabItem.setControl(parent)
+    this.resetScrollSize()
 }
 
