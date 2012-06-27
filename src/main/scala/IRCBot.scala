@@ -2,9 +2,11 @@ package org.bone.ircballoon
 
 import org.jibble.pircbot.PircBot
 import org.pircbotx.PircBotX
+import org.pircbotx.User
 
 import org.pircbotx.hooks.ListenerAdapter
 import org.pircbotx.hooks.events._
+import scala.collection.JavaConversions._
 
 class IRCBot(hostname: String, port: Int, nickname: String, 
              password: Option[String], channel: String, 
@@ -17,18 +19,21 @@ class IRCBot(hostname: String, port: Int, nickname: String,
 
     object Callbacks extends ListenerAdapter[IRCBot]
     {
-        private var opUser: Set[String] = Set()
+        private def isOp(user: User): Boolean =
+        {
+            user.getChannelsOpIn.map(_.getName).contains(channel)
+        }
 
         override def onMessage(event: MessageEvent[IRCBot])
         {
             val nickname = event.getUser.getNick
-            callback(ChatMessage(nickname, opUser.contains(nickname), event.getMessage))
+            callback(ChatMessage(nickname, isOp(event.getUser), event.getMessage))
         }
 
         override def onAction(event: ActionEvent[IRCBot])
         {
             val nickname = event.getUser.getNick
-            callback(ActionMessage(nickname, opUser.contains(nickname), event.getAction))
+            callback(ActionMessage(nickname, isOp(event.getUser), event.getAction))
         }
 
         override def onPart(event: PartEvent[IRCBot])
@@ -55,21 +60,6 @@ class IRCBot(hostname: String, port: Int, nickname: String,
             if (showLeave) {
                 callback(SystemMessage("[系統] %s 離開聊天室" format(event.getUser.getNick)))
             }
-        }
-
-        override def onOp(event: OpEvent[IRCBot])
-        {
-            println("======== opOp =========")
-            println("isOp:" + event.isOp)
-            println("nickname:" + event.getRecipient.getNick)
-
-            event.isOp match {
-                case true => opUser += event.getRecipient.getNick
-                case false => opUser -= event.getRecipient.getNick
-            }
-            println("opUser:" + opUser)
-            println("=======================")
-
         }
     }
 
