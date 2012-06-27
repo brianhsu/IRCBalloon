@@ -26,12 +26,14 @@ class IRCBot(hostname: String, port: Int, nickname: String,
                         sourceHostname: String, recipient: String)
     {
         opUser -= recipient
+        println("onDeop:" + opUser)
     }
    
     override def onOp(channel: String, sourceNick: String, sourceLogin: String,
                       sourceHostname: String, recipient: String)
     {
         opUser += recipient
+        println("onOp:" + opUser)
     }
 
     override def onAction(sender: String, login: String, hostname: String, target: String,
@@ -59,6 +61,7 @@ class IRCBot(hostname: String, port: Int, nickname: String,
             case true  => callback(SystemMessage("[系統] %s 加入聊天室" format(sender)))
             case false if (sender == nickname) => 
                 callback(SystemMessage("[系統] %s 加入聊天室" format(sender)))
+            case _ => 
         }
     }
 

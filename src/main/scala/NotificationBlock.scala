@@ -84,10 +84,12 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
     }
 
     def formatMessage(message: IRCMessage) = {
+        println("mesage:" + message)
         message match {
-            case ChatMessage(nickname, isOp, content)   => "%s: %s" format(nickname, content)
-            case ActionMessage(nickname, isOp, content) => "[動作] %s %s" format(nickname, content)
-            case SystemMessage(content) => content
+        case ChatMessage(nickname, true, content)   => "[OP] %s: %s" format(nickname, content)
+        case ChatMessage(nickname, false, content)  => "%s: %s" format(nickname, content)
+        case ActionMessage(nickname, isOp, content) => "[動作] %s %s" format(nickname, content)
+        case SystemMessage(content) => content
         }
     }
     
