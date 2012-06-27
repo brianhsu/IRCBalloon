@@ -5,6 +5,7 @@ import org.eclipse.swt.layout._
 import org.eclipse.swt.events._
 import org.eclipse.swt.graphics._
 import org.eclipse.swt.custom.StyledText
+import org.eclipse.swt.custom.StyleRange
 
 import org.eclipse.swt._
 import scala.math._
@@ -95,10 +96,25 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
         display.syncExec (new Runnable {
             override def run () {
                 if (!shell.isDisposed) {
-                    
-                    label.setText(
-                        messages.take(messageSize).reverse.map(formatMessage).mkString("\n")
-                    )
+
+                    val regex = """\w+:""".r
+                    val message = messages.take(messageSize).
+                                  reverse.map(formatMessage).mkString("\n")
+
+                    label.setText(message)
+
+                    val styles = regex.findAllIn(message).matchData.map { data => 
+                        val style = new StyleRange
+                        style.start = data.start
+                        style.length = data.end - data.start
+                        style.foreground = display.getSystemColor(SWT.COLOR_RED);
+                        style.font = new Font(display, "cwTeXYen", 20, SWT.BOLD)
+                        style
+                    }
+
+                    styles.foreach { style =>
+                        label.setStyleRange(style)
+                    }
                 }
             }
         })

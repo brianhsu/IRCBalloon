@@ -6,6 +6,7 @@ import org.eclipse.swt.events._
 import org.eclipse.swt.graphics._
 import org.eclipse.swt.custom.StyledText
 import org.eclipse.swt.custom.StackLayout
+import org.eclipse.swt.custom.ScrolledComposite
 
 import org.eclipse.swt._
 
@@ -25,6 +26,7 @@ object MainWindow extends SWTHelper
 
     val displayLabel = createLabel("顯示方式：")
     val displayTab = createTabFolder()
+
     val blockSetting = new BlockSetting(displayTab, e => updateConnectButtonState())
     val balloonSetting = new BalloonSetting(displayTab, e => updateConnectButtonState())
 
