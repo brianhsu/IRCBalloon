@@ -183,7 +183,9 @@ class BlockSetting(tabFolder: TabFolder, parent: ScrolledComposite,
         NotificationBlock(
             size, location, 
             borderColor, bgColor, alpha, 
-            fontColor, messageFont, messageSize, blockBackgroundImage
+            fontColor, messageFont, 
+            nicknameColor, nicknameFont,
+            messageSize, blockBackgroundImage
         )
     }
 

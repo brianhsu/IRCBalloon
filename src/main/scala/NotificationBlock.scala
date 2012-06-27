@@ -13,6 +13,7 @@ import scala.math._
 case class NotificationBlock(size: (Int, Int), location: (Int, Int), 
                              borderColor: Color, bgColor: Color, alpha: Int,
                              fontColor: Color, font: Font, 
+                             nicknameColor: Color, nicknameFont: Font,
                              messageSize: Int, 
                              backgroundImage: Option[String] = None) extends Notification 
                                                with NotificationTheme 
@@ -44,7 +45,6 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
             override def keyTraversed(e: TraverseEvent) {
                 if (e.detail == SWT.TRAVERSE_RETURN && text.getText.trim.length > 0) {
                     val message = text.getText.trim()
-                    val displayMessage = "%s:%s" format(MainWindow.getNickname, message)
 
                     MainWindow.getIRCBot.foreach { bot => 
                         bot.getChannels.foreach { channel =>
@@ -52,7 +52,7 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
                         }
                     }
 
-                    //! NotificationBlock.this.addMessage(displayMessage)
+                    NotificationBlock.this.addMessage(ChatMessage(MainWindow.getNickname, false, message))
                     text.setText("")
                 }
             }
@@ -107,8 +107,8 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
                         val style = new StyleRange
                         style.start = data.start
                         style.length = data.end - data.start
-                        style.foreground = display.getSystemColor(SWT.COLOR_RED);
-                        style.font = new Font(display, "cwTeXYen", 20, SWT.BOLD)
+                        style.foreground = nicknameColor
+                        style.font = nicknameFont
                         style
                     }
 
@@ -125,7 +125,9 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
         this(
             (300, 448), (100, 100), 
             MyColor.White, MyColor.Black, 210, 
-            MyColor.White, MyFont.DefaultFont, 10
+            MyColor.White, MyFont.DefaultFont, 
+            MyColor.White, MyFont.DefaultFont,
+            10
         )
     }
 
