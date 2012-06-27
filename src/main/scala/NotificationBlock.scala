@@ -83,16 +83,6 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
         messages = (newMessage :: messages).take(messageSize)
         updateMessages()
     }
-
-    def formatMessage(message: IRCMessage) = {
-        println("mesage:" + message)
-        message match {
-        case ChatMessage(nickname, true, content)   => "[OP] %s: %s" format(nickname, content)
-        case ChatMessage(nickname, false, content)  => "%s: %s" format(nickname, content)
-        case ActionMessage(nickname, isOp, content) => "[動作] %s %s" format(nickname, content)
-        case SystemMessage(content) => content
-        }
-    }
     
     def updateMessages()
     {
@@ -102,7 +92,7 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
 
                     val regex = """\w+:""".r
                     val message = messages.take(messageSize).
-                                  reverse.map(formatMessage).mkString("\n")
+                                  reverse.map(_.toString).mkString("\n")
 
                     label.setText(message)
 
