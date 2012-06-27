@@ -11,3 +11,7 @@ version := "0.5"
 scalaVersion := "2.9.1"
 
 fork in run := true
+
+libraryDependencies ++= Seq(
+    "org.pircbotx" % "pircbotx" % "1.7"
+)

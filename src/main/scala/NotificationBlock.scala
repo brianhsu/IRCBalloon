@@ -9,6 +9,7 @@ import org.eclipse.swt.custom.StyleRange
 
 import org.eclipse.swt._
 import scala.math._
+import scala.collection.JavaConversions._
 
 case class NotificationBlock(size: (Int, Int), location: (Int, Int), 
                              borderColor: Color, bgColor: Color, alpha: Int,
