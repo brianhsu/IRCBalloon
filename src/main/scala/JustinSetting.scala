@@ -18,7 +18,7 @@ class JustinSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends
     val password = createText(this, "密碼：", SWT.PASSWORD)
     val (onJoinButton, onLeaveButton) = createJoinLeaveButton(this)
 
-    def createIRCBot(callback: String => Any, 
+    def createIRCBot(callback: IRCMessage => Any, 
                      onLog: String => Any, 
                      onError: Exception => Any) =
     {

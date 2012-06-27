@@ -69,6 +69,14 @@ object Preference extends SWTHelper
         setting.messageSizeSpinner.setSelection(
             preference.getInt("BlockMessageSize", 10)
         )
+
+        // 背景圖片
+        val backgroundImage = preference.get("BlockBackgroundImage", "")
+
+        if (backgroundImage != "") {
+            setting.setBlockBackgroundImage(backgroundImage)
+        }
+
     }
 
     def save(setting: BlockSetting)
@@ -93,6 +101,12 @@ object Preference extends SWTHelper
             "BlockTransparent", 
             setting.transparentScale.getSelection
         )
+
+        // 背景圖片
+        setting.blockBackgroundImage match {
+            case Some(imageFile) => preference.put("BlockBackgroundImage", imageFile)
+            case None => preference.remove("BlockBackgroundImage")
+        }
 
         // 字型
         val fontData = setting.messageFont.getFontData()(0)

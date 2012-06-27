@@ -17,7 +17,7 @@ trait NotificationBalloon
     val FadeTick = fadeTime / (alpha / 5)
 
     case class BalloonWindow(location: (Int, Int), bgColor: Color, borderColor: Color, 
-                             message: String) extends NotificationTheme with NotificationWindow
+                             message: IRCMessage) extends NotificationTheme with NotificationWindow
     {
         val display = Display.getDefault
 
@@ -47,7 +47,7 @@ trait NotificationBalloon
             label.setFont(font)
             label.setLineSpacing(5)
             label.setEnabled(false)
-            label.setText(message)
+            label.setText(message.message)
         }
 
         def setSizeAndLocation()

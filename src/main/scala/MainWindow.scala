@@ -6,6 +6,7 @@ import org.eclipse.swt.events._
 import org.eclipse.swt.graphics._
 import org.eclipse.swt.custom.StyledText
 import org.eclipse.swt.custom.StackLayout
+import org.eclipse.swt.custom.ScrolledComposite
 
 import org.eclipse.swt._
 
@@ -24,10 +25,13 @@ object MainWindow extends SWTHelper
     val justinSetting = new JustinSetting(logginTab, e => updateConnectButtonState())
 
     val displayLabel = createLabel("顯示方式：")
-    val displayTab = createTabFolder()
-    val blockSetting = new BlockSetting(displayTab, e => updateConnectButtonState())
-    val balloonSetting = new BalloonSetting(displayTab, e => updateConnectButtonState())
+    val displayTab = createTabFolder(true)
 
+    val blockScroll = new ScrolledComposite(displayTab, SWT.V_SCROLL)
+    val ballonScroll = new ScrolledComposite(displayTab, SWT.V_SCROLL)
+
+    val blockSetting = new BlockSetting(displayTab, blockScroll, e => updateConnectButtonState())
+    val balloonSetting = new BalloonSetting(displayTab, ballonScroll, e => updateConnectButtonState())
     val connectButton = createConnectButton()
     val logTextArea = createLogTextArea()
 
@@ -50,10 +54,15 @@ object MainWindow extends SWTHelper
         label
     }
 
-    def createTabFolder() = 
+    def createTabFolder(adjustHeight: Boolean = false) = 
     {
-        val layoutData = new GridData(SWT.FILL, SWT.NONE, true, false)
+        val layoutData = new GridData(SWT.FILL, SWT.FILL, true, adjustHeight)
         val tabFolder = new TabFolder(shell, SWT.NONE)
+
+        if (adjustHeight) {
+            layoutData.minimumHeight = 250
+        }
+
         tabFolder.setLayoutData(layoutData)
         tabFolder
     }
@@ -91,6 +100,8 @@ object MainWindow extends SWTHelper
         val layoutData = new GridData(SWT.FILL, SWT.FILL, true, true)
         val text = new Text(shell, SWT.BORDER|SWT.MULTI|SWT.WRAP|SWT.V_SCROLL|SWT.READ_ONLY)
         layoutData.horizontalSpan = 2
+        layoutData.minimumHeight = 50
+
         text.setLayoutData(layoutData)
         text
     }
@@ -108,7 +119,7 @@ object MainWindow extends SWTHelper
         connectButton.setEnabled(connectSettingOK && displayStettingOK)
     }
 
-    def createIRCBot(callback: String => Any, onError: Exception => Any) =
+    def createIRCBot(callback: IRCMessage => Any, onError: Exception => Any) =
     {
         logginTab.getSelectionIndex match {
             case 0 => ircSetting.createIRCBot(callback, appendLog _, onError)
@@ -136,7 +147,7 @@ object MainWindow extends SWTHelper
             displayError(exception, () => { stopBot(); toggleConnectButton()})
         }
 
-        def updateNotification(message: String)
+        def updateNotification(message: IRCMessage)
         {
             notification.foreach(_.addMessage(message))
         }
@@ -148,7 +159,7 @@ object MainWindow extends SWTHelper
             notification = Some(createNotificationService)
             notification.foreach { block =>
                 block.open()
-                block.addMessage("開始連線至 IRC 伺服器，請稍候……")
+                block.addMessage(SystemMessage("開始連線至 IRC 伺服器，請稍候……"))
                 ircBot = Some(createIRCBot(updateNotification _, onError _))
                 ircBot.foreach(_.start())
             }

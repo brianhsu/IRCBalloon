@@ -26,7 +26,7 @@ class IRCSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends
         case value => Some(value)
     }
 
-    def createIRCBot(callback: String => Any, 
+    def createIRCBot(callback: IRCMessage => Any, 
                      onLog: String => Any, 
                      onError: Exception => Any) = 
     {

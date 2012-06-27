@@ -5,6 +5,7 @@ import org.eclipse.swt.layout._
 import org.eclipse.swt.events._
 import org.eclipse.swt.graphics._
 import org.eclipse.swt.custom.StyledText
+import org.eclipse.swt.custom.StyleRange
 
 import org.eclipse.swt._
 import scala.math._
@@ -12,7 +13,9 @@ import scala.math._
 case class NotificationBlock(size: (Int, Int), location: (Int, Int), 
                              borderColor: Color, bgColor: Color, alpha: Int,
                              fontColor: Color, font: Font, 
-                             messageSize: Int) extends Notification 
+                             nicknameColor: Color, nicknameFont: Font,
+                             messageSize: Int, 
+                             backgroundImage: Option[String] = None) extends Notification 
                                                with NotificationTheme 
                                                with NotificationWindow 
                                                with SWTHelper
@@ -20,7 +23,7 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
     val display = Display.getDefault
     val shell = new Shell(display, SWT.NO_TRIM|SWT.ON_TOP|SWT.RESIZE)
     val label = createContentLabel()
-    var messages: List[String] = Nil
+    var messages: List[IRCMessage] = Nil
     val (inputLabel, inputText) = createChatInputBox()
 
     def createChatInputBox() = 
@@ -33,6 +36,7 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
         label.setForeground(fontColor)
         
         val layoutData = new GridData(SWT.FILL, SWT.NONE, true, false)
+
         text.setBackground(bgColor)
         text.setForeground(fontColor)
         text.setFont(font)
@@ -41,7 +45,6 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
             override def keyTraversed(e: TraverseEvent) {
                 if (e.detail == SWT.TRAVERSE_RETURN && text.getText.trim.length > 0) {
                     val message = text.getText.trim()
-                    val displayMessage = "%s:%s" format(MainWindow.getNickname, message)
 
                     MainWindow.getIRCBot.foreach { bot => 
                         bot.getChannels.foreach { channel =>
@@ -49,7 +52,7 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
                         }
                     }
 
-                    NotificationBlock.this.addMessage(displayMessage)
+                    NotificationBlock.this.addMessage(ChatMessage(MainWindow.getNickname, false, message))
                     text.setText("")
                 }
             }
@@ -74,10 +77,18 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
         shell.setVisible(!shell.isVisible)
     }
 
-    def addMessage(newMessage: String)
+    def addMessage(newMessage: IRCMessage)
     {
         messages = (newMessage :: messages).take(messageSize)
         updateMessages()
+    }
+
+    def formatMessage(message: IRCMessage) = {
+        message match {
+            case ChatMessage(nickname, isOp, content)   => "%s: %s" format(nickname, content)
+            case ActionMessage(nickname, isOp, content) => "[動作] %s %s" format(nickname, content)
+            case SystemMessage(content) => content
+        }
     }
     
     def updateMessages()
@@ -85,7 +96,25 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
         display.syncExec (new Runnable {
             override def run () {
                 if (!shell.isDisposed) {
-                    label.setText(messages.take(messageSize).reverse.mkString("\n"))
+
+                    val regex = """\w+:""".r
+                    val message = messages.take(messageSize).
+                                  reverse.map(formatMessage).mkString("\n")
+
+                    label.setText(message)
+
+                    val styles = regex.findAllIn(message).matchData.map { data => 
+                        val style = new StyleRange
+                        style.start = data.start
+                        style.length = data.end - data.start
+                        style.foreground = nicknameColor
+                        style.font = nicknameFont
+                        style
+                    }
+
+                    styles.foreach { style =>
+                        label.setStyleRange(style)
+                    }
                 }
             }
         })
@@ -96,7 +125,9 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
         this(
             (300, 448), (100, 100), 
             MyColor.White, MyColor.Black, 210, 
-            MyColor.White, MyFont.DefaultFont, 10
+            MyColor.White, MyFont.DefaultFont, 
+            MyColor.White, MyFont.DefaultFont,
+            10
         )
     }
 
@@ -113,6 +144,12 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
         label.setForeground(fontColor)
         label.setLineSpacing(5)
         label.setEnabled(false)
+        label.addModifyListener(new ModifyListener() {
+            override def modifyText(e: ModifyEvent) {
+                label.setTopIndex(label.getLineCount - 1)
+            }
+        })
+
     }
 
     def setMoveAndResize()
@@ -172,7 +209,7 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
             {
                 shell.setSize(e.x, e.y)
                 MainWindow.blockSetting.width.setText(e.x.toString)
-                MainWindow.blockSetting.height.setText(e.x.toString)
+                MainWindow.blockSetting.height.setText(e.y.toString)
             }
 
             override def mouseMove(e: MouseEvent) 
@@ -196,7 +233,22 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
 
     def open()
     {
-        setBackground()
+        val optionBGImage = backgroundImage.flatMap { file => 
+            try { 
+                Some(new Image(display, file))
+            } catch {
+                case e => None
+            }
+        }
+
+        optionBGImage match {
+            case None => setBackground()
+            case Some(null) => setBackground()
+            case Some(image) => 
+                    shell.setBackgroundImage(image)
+                    shell.setBackgroundMode(SWT.INHERIT_DEFAULT)
+        }
+
         setLayout()
         setMoveAndResize()
 
