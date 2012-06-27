@@ -27,10 +27,11 @@ object MainWindow extends SWTHelper
     val displayLabel = createLabel("顯示方式：")
     val displayTab = createTabFolder(true)
 
-    val scroll = new ScrolledComposite(displayTab, SWT.V_SCROLL)
+    val blockScroll = new ScrolledComposite(displayTab, SWT.V_SCROLL)
+    val ballonScroll = new ScrolledComposite(displayTab, SWT.V_SCROLL)
 
-    val blockSetting = new BlockSetting(displayTab, scroll, e => updateConnectButtonState())
-    val balloonSetting = new BalloonSetting(displayTab, e => updateConnectButtonState())
+    val blockSetting = new BlockSetting(displayTab, blockScroll, e => updateConnectButtonState())
+    val balloonSetting = new BalloonSetting(displayTab, ballonScroll, e => updateConnectButtonState())
     val connectButton = createConnectButton()
     val logTextArea = createLogTextArea()
 
@@ -57,6 +58,11 @@ object MainWindow extends SWTHelper
     {
         val layoutData = new GridData(SWT.FILL, SWT.FILL, true, adjustHeight)
         val tabFolder = new TabFolder(shell, SWT.NONE)
+
+        if (adjustHeight) {
+            layoutData.minimumHeight = 250
+        }
+
         tabFolder.setLayoutData(layoutData)
         tabFolder
     }

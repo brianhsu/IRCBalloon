@@ -6,15 +6,18 @@ import org.eclipse.swt.events._
 import org.eclipse.swt.graphics._
 import org.eclipse.swt.custom.StyledText
 import org.eclipse.swt.custom.StackLayout
+import org.eclipse.swt.custom.ScrolledComposite
 
 import org.eclipse.swt._
 
 import scala.util.Random
 
-class BalloonSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends 
-      Composite(parent, SWT.NONE) with SWTHelper
+class BalloonSetting(tabFolder: TabFolder, parent: ScrolledComposite, 
+                     onModify: ModifyEvent => Any) extends Composite(parent, SWT.NONE) 
+                                                   with SWTHelper
 {
-    val tabItem = new TabItem(parent, SWT.NONE)
+    val tabItem = new TabItem(tabFolder, SWT.NONE)
+
     var bgColor: Color = MyColor.Black
     var fontColor: Color = MyColor.White
     var borderColor: Color = MyColor.White
@@ -212,11 +215,28 @@ class BalloonSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends
         previewButton.setEnabled(isEnabled)
     }
 
+    def resetScrollSize()
+    {
+        val r = parent.getClientArea();
+        parent.setMinSize(BalloonSetting.this.computeSize(r.width, SWT.DEFAULT))
+    }
+
     this.setLayout(gridLayout)
     this.setDefaultValue()
     this.setTextVerify()
     this.setModifyListener()
+
+    this.parent.setContent(this)
+    this.parent.setExpandVertical(true)
+    this.parent.setExpandHorizontal(true)
+
+    this.parent.addControlListener(new ControlAdapter() {
+        override def controlResized(e: ControlEvent) {
+            resetScrollSize()
+        }
+    })
+
     this.tabItem.setText("泡泡通知")
-    this.tabItem.setControl(this)
+    this.tabItem.setControl(parent)
 }
 
