@@ -36,6 +36,20 @@ trait NotificationBalloon
             shell.getLocation.y + shell.getSize.y + spacing
         }
 
+        def nicknameStyles(message: String): List[StyleRange] = 
+        {
+            val regex = """\w+:""".r
+
+            regex.findAllIn(message).matchData.map { data => 
+                val style = new StyleRange
+                style.start = data.start
+                style.length = data.end - data.start
+                style.foreground = MyColor.Blue
+                //style.font = nicknameFont
+                style
+            }.toList
+        }
+
         def opStyles(message: String): List[StyleRange] = 
         {
             val regex = """\[OP\] """.r
@@ -82,7 +96,8 @@ trait NotificationBalloon
                 }
             })
 
-            opStyles(message.toString).foreach { style => label.setStyleRange(style) }
+            nicknameStyles(message.toString).foreach { label.setStyleRange }
+            opStyles(message.toString).foreach { label.setStyleRange }
         }
 
         def setSizeAndLocation()

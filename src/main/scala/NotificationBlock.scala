@@ -145,8 +145,8 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
 
                     label.setText(message)
 
-                    nicknameStyles(message).foreach { style => label.setStyleRange(style) }
-                    opStyles(message).foreach { style => label.setStyleRange(style) }
+                    nicknameStyles(message).foreach { label.setStyleRange }
+                    opStyles(message).foreach { label.setStyleRange }
                 }
             }
         })
