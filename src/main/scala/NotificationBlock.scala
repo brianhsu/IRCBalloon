@@ -178,7 +178,7 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
         label.setEnabled(false)
         label.addModifyListener(new ModifyListener() {
             override def modifyText(e: ModifyEvent) {
-                label.setTopIndex(label.getLineCount - 1)
+                label.setTopIndex(label.getLineCount)
             }
         })
 
