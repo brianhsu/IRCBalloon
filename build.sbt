@@ -6,7 +6,7 @@ seq(assemblySettings: _*)
 
 name := "IRCBalloon"
 
-version := "0.5"
+version := "0.6"
 
 scalaVersion := "2.9.1"
 
@@ -22,6 +22,7 @@ libraryDependencies ++= Seq(
 )
 
 TaskKey[Unit]("xgettext") := {
-    println("This is my action")
+    val q = (sources in Compile)
+    println("This is my action:" + q.map(_.toString))
 }
 

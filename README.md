@@ -1,6 +1,49 @@
 IRCBalloon 
 ===========
 
+IRCBalloon is a IRC / Justin.tv / Twtich chat room notification application, 
+it could fetch the dialog in chatroom and display it using either a pinned
+chat window or a bubble pop up notification.
+
+You could use IRCBalloon to fetch your chatroom and put it into your bradcast
+screen when you are broadcasting using Justin.tv / Twitch.
+
+Since Justin.tv / Twitch are using IRC protocol, this could be also used on
+any IRC chatroom.
+
+Props
+======
+
+ - It's easy, just enter your Justin.tv username and password!
+ - You need only one program, no more need for LimeChat and Growl.
+ - You could fine tuning the location of chatroom window and bubble notification area
+
+Cons
+=======
+
+ - Mouse events are not transparent like NicoLime.
+ - No full screen support.
+ - File is huge.
+ - Fix bugs.
+
+ChangeLog
+===========
+ - 0.6
+    - Add icon for IRC OP.
+    - Add nickname color / font settings.
+    - Add background image setting for chat room window.
+
+Download
+==========
+
+ - [Windows 32 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-win32-0.6.jar)
+ - [Windows 64 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-win64-0.6.jar)
+ - [Linux 64 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-linux64-0.6.jar)
+
+
+IRCBalloon 
+===========
+
 IRCBallon 是一套 IRC / JustinTV / Twitch 聊天室擷取軟體，他可以把聊天室的
 內容擷取出來，並且放成置頂視窗或泡泡通知。
 
@@ -23,6 +66,12 @@ IRCBallon 是一套 IRC / JustinTV / Twitch 聊天室擷取軟體，他可以把
 
 改版記錄
 =========
+ - 0.6
+    - 新增 IRC 聊天室管理員 (OP) 圖示
+    - 新增暱稱字型、顏色設定
+    - 新增固定聊天視窗背景設定
+    - 讓固定聊天視窗一定會往下捲到最後一行聊天訊息
+    - 修正其他小錯誤
 
  - 0.5
     - 新增是否顯示加入與離開聊天室的訊息
@@ -42,7 +91,7 @@ IRCBallon 是一套 IRC / JustinTV / Twitch 聊天室擷取軟體，他可以把
 下載
 =======
 
- - [Windows 32 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-win32-0.5.jar)
- - [Windows 64 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-win64-0.5.jar)
- - [Linux 64 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-linux64-0.5.jar)
+ - [Windows 32 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-win32-0.6.jar)
+ - [Windows 64 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-win64-0.6.jar)
+ - [Linux 64 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-linux64-0.6.jar)
 
