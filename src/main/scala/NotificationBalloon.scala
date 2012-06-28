@@ -4,7 +4,7 @@ import org.eclipse.swt.widgets.{List => SWTList, _}
 import org.eclipse.swt.layout._
 import org.eclipse.swt.events._
 import org.eclipse.swt.graphics._
-import org.eclipse.swt.custom.StyledText
+import org.eclipse.swt.custom._
 
 import org.eclipse.swt._
 import scala.math._
@@ -35,13 +35,33 @@ trait NotificationBalloon
         def bottomY = {
             shell.getLocation.y + shell.getSize.y + spacing
         }
-    
+
+        def opStyles(message: String): List[StyleRange] = 
+        {
+            val regex = """\[OP\] """.r
+
+            regex.findAllIn(message).matchData.map { data => 
+                val style = new StyleRange
+
+                style.start = data.start
+                style.length = data.end - data.start
+                style.data = MyIcon.ircOP
+                style.metrics = new GlyphMetrics(
+                    MyIcon.ircOP.getBounds.height, 0, 
+                    MyIcon.ircOP.getBounds.width / 4
+                )
+
+                style
+            }.toList
+        }
+
         def setLayout()
         {
             val layout = new GridLayout(1, false)
             val layoutData = new GridData(SWT.FILL, SWT.CENTER, true, true)
             layout.marginLeft = 5
             layout.marginRight = 5
+
             shell.setLayout(layout)
             label.setLayoutData(layoutData)
             label.setForeground(fontColor)
@@ -49,6 +69,20 @@ trait NotificationBalloon
             label.setLineSpacing(5)
             label.setEnabled(false)
             label.setText(message.toString)
+            label.addPaintObjectListener(new PaintObjectListener() {
+                override def paintObject(event: PaintObjectEvent) {
+                    event.style.data match {
+                        case image: Image => 
+                            val x = event.x
+                            val y = event.y + event.ascent - event.style.metrics.ascent
+                            event.gc.drawImage(image, x, y)
+
+                        case _ =>
+                    }
+                }
+            })
+
+            opStyles(message.toString).foreach { style => label.setStyleRange(style) }
         }
 
         def setSizeAndLocation()

@@ -19,9 +19,15 @@ class IRCBot(hostname: String, port: Int, nickname: String,
 
     object Callbacks extends ListenerAdapter[IRCBot]
     {
+        private def isBrodcaster(user: User): Boolean = 
+        {
+            hostname == ("%s.jtvirc.com" format(user.getNick)) &&
+            channel  == ("#%s" format(user.getNick))
+        }
+
         private def isOp(user: User): Boolean =
         {
-            user.getChannelsOpIn.map(_.getName).contains(channel)
+            isBrodcaster(user) || user.getChannelsOpIn.map(_.getName).contains(channel)
         }
 
         override def onMessage(event: MessageEvent[IRCBot])
