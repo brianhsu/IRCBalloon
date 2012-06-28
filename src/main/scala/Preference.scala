@@ -43,12 +43,21 @@ object Preference extends SWTHelper
             preference.getInt("BlockBorderBlue", 255)
         )
 
+        val nicknameColor = new Color(
+            Display.getDefault,
+            preference.getInt("BlockNicknameRed", 255),
+            preference.getInt("BlockNicknameGreen", 255),
+            preference.getInt("BlockNicknameBlue", 255)
+        )
+
         setting.bgColor = bgColor
         setting.fontColor = fontColor
         setting.borderColor = borderColor
+        setting.nicknameColor = nicknameColor
         setting.bgButton.setText(bgColor)
         setting.fgButton.setText(fontColor)
         setting.borderButton.setText(borderColor)
+        setting.nicknameColorButton.setText(nicknameColor)
 
         val font = new Font(
             Display.getDefault, 
@@ -57,8 +66,18 @@ object Preference extends SWTHelper
             preference.getInt("BlockFontStyle", MyFont.DefaultFontStyle)
         )
 
+        val nicknameFont = new Font(
+            Display.getDefault, 
+            preference.get("BlockNicknameFontName", MyFont.DefaultFontName),
+            preference.getInt("BlockNicknameFontHeight", MyFont.DefaultFontSize),
+            preference.getInt("BlockNicknameFontStyle", MyFont.DefaultFontStyle)
+        )
+
         setting.messageFont = font
+        setting.nicknameFont = nicknameFont
+
         setting.fontButton.setText(font)
+        setting.nicknameFontButton.setText(nicknameFont)
 
         val transparent = preference.getInt("BlockTransparent", 20)
         setting.transparentScale.setSelection(transparent)
@@ -97,6 +116,11 @@ object Preference extends SWTHelper
         preference.putInt("BlockBorderRed", setting.borderColor.getRed)
         preference.putInt("BlockBorderGreen", setting.borderColor.getGreen)
         preference.putInt("BlockBorderBlue", setting.borderColor.getBlue)
+
+        preference.putInt("BlockNicknameRed", setting.nicknameColor.getRed)
+        preference.putInt("BlockNicknameGreen", setting.nicknameColor.getGreen)
+        preference.putInt("BlockNicknameBlue", setting.nicknameColor.getBlue)
+
         preference.putInt(
             "BlockTransparent", 
             setting.transparentScale.getSelection
@@ -108,11 +132,17 @@ object Preference extends SWTHelper
             case None => preference.remove("BlockBackgroundImage")
         }
 
-        // 字型
+        // 訊息字型
         val fontData = setting.messageFont.getFontData()(0)
         preference.put("BlockFontName", fontData.getName)
         preference.putInt("BlockFontHeight", fontData.getHeight)
         preference.putInt("BlockFontStyle", fontData.getStyle)
+
+        // 暱稱字型
+        val nicknameFontData = setting.nicknameFont.getFontData()(0)
+        preference.put("BlockNicknameFontName", nicknameFontData.getName)
+        preference.putInt("BlockNicknameFontHeight", nicknameFontData.getHeight)
+        preference.putInt("BlockNicknameFontStyle", nicknameFontData.getStyle)
 
         preference.putInt(
             "BlockMessageSize", 
