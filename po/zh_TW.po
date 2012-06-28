@@ -8,141 +8,141 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-28 16:19+0800\n"
+"POT-Creation-Date: 2012-06-28 15:47+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: src/main/scala/AreaSelectionDialog.scala:42
 msgid "Drag notification area and double click to confirm"
-msgstr ""
+msgstr "請托出通知區域，並點兩下確認"
 
 #: src/main/scala/BalloonSetting.scala:29 src/main/scala/BlockSetting.scala:31
 msgid "Transparency:"
-msgstr ""
+msgstr "透明度："
 
 #: src/main/scala/BalloonSetting.scala:33
 msgid "Notification Area Setting"
-msgstr ""
+msgstr "通知域域設定"
 
 #: src/main/scala/BalloonSetting.scala:34
 msgid "Area X:"
-msgstr ""
+msgstr "通知區域位置 X："
 
 #: src/main/scala/BalloonSetting.scala:35
 msgid "Area Y:"
-msgstr ""
+msgstr "通知區域位置 Y："
 
 #: src/main/scala/BalloonSetting.scala:36
 msgid "Area Width:"
-msgstr ""
+msgstr "通知區域寬度："
 
 #: src/main/scala/BalloonSetting.scala:37
 msgid "Area Height:"
-msgstr ""
+msgstr "通知區域高度："
 
 #: src/main/scala/BalloonSetting.scala:41 src/main/scala/BlockSetting.scala:36
 msgid "Background Setting"
-msgstr ""
+msgstr "背景設定"
 
-#: src/main/scala/BalloonSetting.scala:44 src/main/scala/BlockSetting.scala:45
+#: src/main/scala/BalloonSetting.scala:44
 msgid "Border Color:"
-msgstr ""
+msgstr "邊框顏色："
 
 #: src/main/scala/BalloonSetting.scala:49 src/main/scala/BlockSetting.scala:49
 msgid "Background Color:"
-msgstr ""
+msgstr "背景顏色："
 
 #: src/main/scala/BalloonSetting.scala:53 src/main/scala/BlockSetting.scala:37
 msgid "Message Setting"
-msgstr ""
+msgstr "訊息設定"
 
 #: src/main/scala/BalloonSetting.scala:55 src/main/scala/BlockSetting.scala:55
 msgid "Nickname Color:"
-msgstr ""
+msgstr "暱稱顏色："
 
 #: src/main/scala/BalloonSetting.scala:59 src/main/scala/BlockSetting.scala:59
 msgid "Nickname Font:"
-msgstr ""
+msgstr "暱稱字型："
 
 #: src/main/scala/BalloonSetting.scala:64 src/main/scala/BlockSetting.scala:65
 msgid "Message Color:"
-msgstr ""
+msgstr "訊息顏色："
 
 #: src/main/scala/BalloonSetting.scala:68 src/main/scala/BlockSetting.scala:69
 msgid "Message Font:"
-msgstr ""
+msgstr "訊息字型："
 
 #: src/main/scala/BalloonSetting.scala:73
 msgid "Effect Setting"
-msgstr ""
+msgstr "效果設定"
 
 #: src/main/scala/BalloonSetting.scala:76
 msgid "Bubble keeps (second):"
-msgstr ""
+msgstr "泡泡顯示時間："
 
 #: src/main/scala/BalloonSetting.scala:79
 msgid "Animation time (ms):"
-msgstr ""
+msgstr "動畫效果長度 (ms)："
 
 #: src/main/scala/BalloonSetting.scala:82
 msgid "Space between bubbles:"
-msgstr ""
+msgstr "泡泡間隔："
 
 #: src/main/scala/BalloonSetting.scala:162
 msgid "Select notification Area"
-msgstr ""
+msgstr "選擇通知區域"
 
 #: src/main/scala/BalloonSetting.scala:193
 #: src/main/scala/BlockSetting.scala:209
 msgid "Stop Preview"
-msgstr ""
+msgstr "停止預覽"
 
 #: src/main/scala/BalloonSetting.scala:198
 #: src/main/scala/BalloonSetting.scala:209
 #: src/main/scala/BlockSetting.scala:214 src/main/scala/BlockSetting.scala:225
 msgid "Start Preview"
-msgstr ""
+msgstr "開始預覽"
 
 #: src/main/scala/BalloonSetting.scala:284
 msgid "Bubble Notification"
-msgstr ""
+msgstr "泡泡通知"
 
 #: src/main/scala/BlockSetting.scala:35
 msgid "Window Position / Size"
-msgstr ""
+msgstr "視窗位置與大小"
 
 #: src/main/scala/BlockSetting.scala:39
 msgid "Window X:"
-msgstr ""
+msgstr "視窗位置 X："
 
 #: src/main/scala/BlockSetting.scala:40
 msgid "Window Y:"
-msgstr ""
+msgstr "視窗位置 Y："
 
 #: src/main/scala/BlockSetting.scala:41
 msgid "Window Width:"
-msgstr ""
+msgstr "視窗寬度："
 
 #: src/main/scala/BlockSetting.scala:42
 msgid "Window Height:"
-msgstr ""
+msgstr "視窗高度："
 
 #: src/main/scala/BlockSetting.scala:76
 msgid "Message Limit:"
-msgstr ""
+msgstr "訊息數目："
 
 #: src/main/scala/BlockSetting.scala:101
 msgid "Background Image"
-msgstr ""
+msgstr "背景圖案："
 
 #: src/main/scala/BlockSetting.scala:103
 msgid "Remove Background Image"
-msgstr ""
+msgstr "移除背景圖案"
 
 #: src/main/scala/BlockSetting.scala:105 src/main/scala/BlockSetting.scala:111
 msgid "Browse..."
@@ -150,88 +150,88 @@ msgstr ""
 
 #: src/main/scala/BlockSetting.scala:134
 msgid "* Drag and drop the right-bottom corner of chat window to resize"
-msgstr ""
+msgstr "註：可以直接托拉視窗移動位址，或拉右下角改變大小"
 
 #: src/main/scala/BlockSetting.scala:304
 msgid "Pinned Chat Window"
-msgstr ""
+msgstr "固定視窗"
 
 #: src/main/scala/IRCBot.scala:48 src/main/scala/IRCBot.scala:67
 msgid "[SYS] %s has left"
-msgstr ""
+msgstr "[系統] %s 離開聊天室"
 
 #: src/main/scala/IRCBot.scala:57 src/main/scala/IRCBot.scala:59
 msgid "[SYS] %s has joined"
-msgstr ""
+msgstr "[系統] %s 進入聊天室"
 
 #: src/main/scala/IRCMessage.scala:11
 msgid "[Action] %s %s"
-msgstr ""
+msgstr "[動作] %s %s"
 
 #: src/main/scala/IRCSetting.scala:18
 msgid "IRC Host:"
-msgstr ""
+msgstr "IRC 伺服器主機："
 
 #: src/main/scala/IRCSetting.scala:19
 msgid "IRC Port:"
-msgstr ""
+msgstr "IRC 伺服器Port："
 
 #: src/main/scala/IRCSetting.scala:20
 msgid "IRC Password:"
-msgstr ""
+msgstr "IRC 伺服器密碼："
 
 #: src/main/scala/IRCSetting.scala:21
 msgid "Nickname:"
-msgstr ""
+msgstr "暱稱："
 
 #: src/main/scala/IRCSetting.scala:22
 msgid "Channel:"
-msgstr ""
+msgstr "聊天頻道："
 
 #: src/main/scala/IRCSetting.scala:36
 msgid "IRC Setting is not completed"
-msgstr ""
+msgstr "IRC 設定不完整"
 
 #: src/main/scala/JustinSetting.scala:18
 msgid "Username:"
-msgstr ""
+msgstr "使用者名稱："
 
 #: src/main/scala/JustinSetting.scala:19
 msgid "Password:"
-msgstr ""
+msgstr "密碼："
 
 #: src/main/scala/MainWindow.scala:23
 msgid "Login Method"
-msgstr ""
+msgstr "連線方式"
 
 #: src/main/scala/MainWindow.scala:28
 msgid "Display Method"
-msgstr ""
+msgstr "顯示方式"
 
 #: src/main/scala/MainWindow.scala:159
 msgid "Connecting to IRC server, please wait...\n"
-msgstr ""
+msgstr "連線至 IRC 伺服器，請稍候……\n"
 
 #: src/main/scala/MainWindow.scala:204
 msgid "Error:"
-msgstr ""
+msgstr "錯誤："
 
 #: src/main/scala/MainWindow.scala:229
 msgid "Connect"
-msgstr ""
+msgstr "連線"
 
 #: src/main/scala/MainWindow.scala:251
 msgid "IRC Notification"
-msgstr ""
+msgstr "IRC 通知"
 
 #: src/main/scala/NotificationBlock.scala:35
 msgid "Chat:"
-msgstr ""
+msgstr "聊天："
 
 #: src/main/scala/SWTHelper.scala:170
 msgid "Show join message"
-msgstr ""
+msgstr "顯示加入聊天室訊息"
 
 #: src/main/scala/SWTHelper.scala:171
 msgid "Show leave message"
-msgstr ""
+msgstr "顯示離開聊天室訊息"

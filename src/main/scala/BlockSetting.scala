@@ -42,7 +42,7 @@ class BlockSetting(tabFolder: TabFolder, parent: ScrolledComposite,
     val height = createText(groupPos, tr("Window Height:"))
 
     val (borderLabel, borderButton) = createColorChooser(
-        groupBackground, tr("Broder Color:"), borderColor, borderColor = _
+        groupBackground, tr("Border Color:"), borderColor, borderColor = _
     )
 
     val (bgLabel, bgButton) = createColorChooser(

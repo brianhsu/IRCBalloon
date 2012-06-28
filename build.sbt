@@ -20,3 +20,8 @@ libraryDependencies ++= Seq(
     "org.pircbotx" % "pircbotx" % "1.7",
     "org.xnap.commons" % "gettext-commons" % "0.9.6"
 )
+
+TaskKey[Unit]("xgettext") := {
+    println("This is my action")
+}
+
