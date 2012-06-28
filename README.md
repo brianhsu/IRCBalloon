@@ -33,6 +33,11 @@ ChangeLog
     - Add nickname color / font settings.
     - Add background image setting for chat room window.
 
+License
+========
+
+IRCBallon is released under GNU GPL v3.
+
 Download
 ==========
 
@@ -87,6 +92,11 @@ IRCBallon 是一套 IRC / JustinTV / Twitch 聊天室擷取軟體，他可以把
     - 「固定區塊」的聊天室窗可以用滑鼠托放來改變位置，並且可以用拉視窗右下角的方式來改變大小
     - 「泡泡通知」設定頁裡，可以用拉的方法來選取通知區域的範圍
     - 修正一些錯字和用詞
+
+授權條款
+========
+
+IRCBallon 採用 GNU GPL v3 做為授權條款
 
 下載
 =======
