@@ -7,6 +7,12 @@ import org.eclipse.swt.events._
 import org.eclipse.swt.graphics._
 import org.eclipse.swt.custom.StyledText
 
+object MyIcon
+{
+    val appIcon = new Image(Display.getDefault, getClass().getResourceAsStream("/appIcon.png"))
+    val ircOP = new Image(Display.getDefault, getClass().getResourceAsStream("/opIcon.png"))
+}
+
 object MyColor
 {
     lazy val Black = new Color(Display.getDefault, 0, 0, 0)

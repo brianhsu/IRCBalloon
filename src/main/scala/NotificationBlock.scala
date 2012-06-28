@@ -4,8 +4,7 @@ import org.eclipse.swt.widgets.{List => SWTList, _}
 import org.eclipse.swt.layout._
 import org.eclipse.swt.events._
 import org.eclipse.swt.graphics._
-import org.eclipse.swt.custom.StyledText
-import org.eclipse.swt.custom.StyleRange
+import org.eclipse.swt.custom._
 
 import org.eclipse.swt._
 import scala.math._
@@ -53,7 +52,10 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
                         }
                     }
 
-                    NotificationBlock.this.addMessage(ChatMessage(MainWindow.getNickname, false, message))
+                    NotificationBlock.this.addMessage(
+                        ChatMessage(MainWindow.getNickname, true, message)
+                    )
+
                     text.setText("")
                 }
             }
@@ -69,6 +71,20 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
 
         layoutData.horizontalSpan = 2
         label.setLayoutData(layoutData)
+        label.addPaintObjectListener(new PaintObjectListener() {
+            override def paintObject(event: PaintObjectEvent) {
+                println("==> paintObject")
+
+                event.style.data match {
+                    case image: Image => 
+                        val x = event.x
+                        val y = event.y + event.ascent - event.style.metrics.ascent
+                        event.gc.drawImage(image, x, y)
+
+                    case _ =>
+                }
+            }
+        })
 
         label
     }
@@ -87,27 +103,51 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
     def updateMessages()
     {
         display.syncExec (new Runnable {
-            override def run () {
+
+            def opStyles(message: String): List[StyleRange] = 
+            {
+                val regex = """\[OP\] """.r
+
+                regex.findAllIn(message).matchData.map { data => 
+                    val style = new StyleRange
+
+                    style.start = data.start
+                    style.length = data.end - data.start
+                    style.data = MyIcon.ircOP
+                    style.metrics = new GlyphMetrics(
+                        MyIcon.ircOP.getBounds.height, 0, 
+                        MyIcon.ircOP.getBounds.width / 4
+                    )
+
+                    style
+                }.toList
+            }
+
+            def nicknameStyles(message: String): List[StyleRange] = 
+            {
+                val regex = """\w+:""".r
+
+                regex.findAllIn(message).matchData.map { data => 
+                    val style = new StyleRange
+                    style.start = data.start
+                    style.length = data.end - data.start
+                    style.foreground = nicknameColor
+                    style.font = nicknameFont
+                    style
+                }.toList
+            }
+
+            override def run () 
+            {
                 if (!shell.isDisposed) {
 
-                    val regex = """\w+:""".r
                     val message = messages.take(messageSize).
                                   reverse.map(_.toString).mkString("\n")
 
                     label.setText(message)
 
-                    val styles = regex.findAllIn(message).matchData.map { data => 
-                        val style = new StyleRange
-                        style.start = data.start
-                        style.length = data.end - data.start
-                        style.foreground = nicknameColor
-                        style.font = nicknameFont
-                        style
-                    }
-
-                    styles.foreach { style =>
-                        label.setStyleRange(style)
-                    }
+                    nicknameStyles(message).foreach { style => label.setStyleRange(style) }
+                    opStyles(message).foreach { style => label.setStyleRange(style) }
                 }
             }
         })

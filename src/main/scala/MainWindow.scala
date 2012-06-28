@@ -67,18 +67,13 @@ object MainWindow extends SWTHelper
         tabFolder
     }
 
-    def getAppIcon() =
-    {
-        new Image(display, getClass().getResourceAsStream("/appIcon.png"));
-    }
-
     def setTrayIcon()
     {
         val tray = display.getSystemTray()
 
         if (tray != null) {
             val trayIcon = new TrayItem (tray, SWT.NONE)
-            trayIcon.setImage(getAppIcon)
+            trayIcon.setImage(MyIcon.appIcon)
             trayIcon.addSelectionListener { e: SelectionEvent =>
                 notification.foreach(_.onTrayIconClicked())
             }
@@ -245,7 +240,7 @@ object MainWindow extends SWTHelper
         Preference.read(balloonSetting)
 
         shell.setText("IRC 聊天通知")
-        shell.setImage(getAppIcon)
+        shell.setImage(MyIcon.appIcon)
         shell.pack()
         shell.addShellListener(new ShellAdapter() {
             override def shellClosed(e: ShellEvent) {
