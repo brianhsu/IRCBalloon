@@ -36,7 +36,7 @@ ChangeLog
 License
 ========
 
-IRCBallon is released under GNU GPL v3.
+IRCBalloon is released under GNU GPL v3.
 
 Download
 ==========
@@ -49,10 +49,10 @@ Download
 IRCBalloon 
 ===========
 
-IRCBallon 是一套 IRC / JustinTV / Twitch 聊天室擷取軟體，他可以把聊天室的
+IRCBalloon 是一套 IRC / JustinTV / Twitch 聊天室擷取軟體，他可以把聊天室的
 內容擷取出來，並且放成置頂視窗或泡泡通知。
 
-你可以使用 IRCBallon 來擷取自己的實況聊天室，並且將他放入實況的畫面中，這
+你可以使用 IRCBalloon 來擷取自己的實況聊天室，並且將他放入實況的畫面中，這
 樣觀眾重播的時候，就可以知道那個時間點大家在聊什麼。
 
 優點
@@ -96,7 +96,7 @@ IRCBallon 是一套 IRC / JustinTV / Twitch 聊天室擷取軟體，他可以把
 授權條款
 ========
 
-IRCBallon 採用 GNU GPL v3 做為授權條款
+IRCBalloon 採用 GNU GPL v3 做為授權條款
 
 下載
 =======
