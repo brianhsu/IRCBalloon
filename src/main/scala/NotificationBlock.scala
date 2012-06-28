@@ -9,6 +9,7 @@ import org.eclipse.swt.custom.StyleRange
 
 import org.eclipse.swt._
 import scala.math._
+import scala.collection.JavaConversions._
 
 case class NotificationBlock(size: (Int, Int), location: (Int, Int), 
                              borderColor: Color, bgColor: Color, alpha: Int,
@@ -82,14 +83,6 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
         messages = (newMessage :: messages).take(messageSize)
         updateMessages()
     }
-
-    def formatMessage(message: IRCMessage) = {
-        message match {
-            case ChatMessage(nickname, isOp, content)   => "%s: %s" format(nickname, content)
-            case ActionMessage(nickname, isOp, content) => "[動作] %s %s" format(nickname, content)
-            case SystemMessage(content) => content
-        }
-    }
     
     def updateMessages()
     {
@@ -99,7 +92,7 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
 
                     val regex = """\w+:""".r
                     val message = messages.take(messageSize).
-                                  reverse.map(formatMessage).mkString("\n")
+                                  reverse.map(_.toString).mkString("\n")
 
                     label.setText(message)
 

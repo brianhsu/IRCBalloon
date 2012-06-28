@@ -284,6 +284,15 @@ class BlockSetting(tabFolder: TabFolder, parent: ScrolledComposite,
         transparentScale.setEnabled(isEnabled)
         messageSizeSpinner.setEnabled(isEnabled)
         previewButton.setEnabled(isEnabled)
+
+        borderButton.setEnabled(isEnabled)
+        bgImageButton.setEnabled(isEnabled)
+        bgImageCheck.setEnabled(isEnabled)
+
+        nicknameColorButton.setEnabled(isEnabled)
+        nicknameFontButton.setEnabled(isEnabled)
+        transparentScale.setEnabled(isEnabled)
+        parent.setEnabled(isEnabled)
     }
 
     def resetScrollSize()
