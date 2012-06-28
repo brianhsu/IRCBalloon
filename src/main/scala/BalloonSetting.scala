@@ -20,33 +20,60 @@ class BalloonSetting(tabFolder: TabFolder, parent: ScrolledComposite,
 
     var bgColor: Color = MyColor.Black
     var fontColor: Color = MyColor.White
+    var nicknameColor: Color = MyColor.White
     var borderColor: Color = MyColor.White
-    var messageFont: Font = Display.getDefault.getSystemFont
+    var messageFont: Font = MyFont.DefaultFont
+    var nicknameFont: Font = MyFont.DefaultFont
 
     val alphaTitle = "透明度："
 
     val gridLayout = new GridLayout(4, false)
-    val locationX = createText(this, "通知區域 X：")
-    val locationY = createText(this, "通知區域 Y：")
-    val width = createText(this, "通知區域寬度：")
-    val height = createText(this, "通知區域高度：")
-    val (borderLabel, borderButton) = createColorChooser(this, "邊框顏色：", borderColor, borderColor = _)
-    val areaSelectionButton = createAreaSelectionButton()
-    val (bgLabel, bgButton) = createColorChooser(this, "背景顏色：", bgColor, bgColor = _)
-    val (fgLabel, fgButton) = createColorChooser(this, "文字顏色：", fontColor, fontColor = _)
-    val (fontLabel, fontButton) = createFontChooser(this, "訊息字型：", messageFont = _)
-    val (transparentLabel, transparentScale) = createScaleChooser(this, alphaTitle)
-    val (displayTimeLabel, displayTimeSpinner) = createSpinner(this, "停留秒數：", 1, 120)
-    val (fadeTimeLabel, fadeTimeSpinner) = createSpinner(this, "效果時間(ms)：", 1, 5000)
-    val (spacingLabel, spacingSpinner) = createSpinner(this, "泡泡間距：", 1, 20)
-    val previewButton = createPreviewButton()
 
-    def createSpanLabel() = {
-        val label = new Label(this, SWT.NONE)
-        val layoutData = new GridData(SWT.FILL, SWT.NONE, true, false)
-        layoutData.horizontalSpan = 2
-        label.setLayoutData(layoutData)
-    }
+    val areaGroup = createGroup(this, "通知區域位置與大小")
+    val locationX = createText(areaGroup, "通知區域 X：")
+    val locationY = createText(areaGroup, "通知區域 Y：")
+    val width = createText(areaGroup, "通知區域寬度：")
+    val height = createText(areaGroup, "通知區域高度：")
+    val areaSpan = createSpanLabel(areaGroup, 2)
+    val areaSelectionButton = createAreaSelectionButton(areaGroup)
+
+    val backgroundGroup = createGroup(this, "背景設定")
+
+    val (borderLabel, borderButton) = createColorChooser(
+        backgroundGroup, "邊框顏色：", 
+        borderColor, borderColor = _
+    )
+
+    val (bgLabel, bgButton) = createColorChooser(
+        backgroundGroup, "背景顏色：", 
+        bgColor, bgColor = _
+    )
+
+    val fontGroup = createGroup(this, "訊息設定")
+    val (nicknameColorLabel, nicknameColorButton) = createColorChooser(
+        fontGroup, "暱稱顏色：",
+        nicknameColor, nicknameColor = _
+    )
+    val (nicknameFontLabel, nicknameFontButton) = createFontChooser(
+        fontGroup, "暱稱字型：",
+        nicknameFont = _
+    )
+    val (fgLabel, fgButton) = createColorChooser(
+        fontGroup, "文字顏色：", 
+        fontColor, fontColor = _
+    )
+    val (fontLabel, fontButton) = createFontChooser(
+        fontGroup, "訊息字型：", 
+        messageFont = _
+    )
+
+    val effectGroup = createGroup(this, "效果設定")
+    val (transparentLabel, transparentScale) = createScaleChooser(effectGroup, alphaTitle)
+    val (displayTimeLabel, displayTimeSpinner) = createSpinner(effectGroup, "停留秒數：", 1, 120)
+    val (fadeTimeLabel, fadeTimeSpinner) = createSpinner(effectGroup, "效果時間(ms)：", 1, 5000)
+    val (spacingLabel, spacingSpinner) = createSpinner(effectGroup, "泡泡間距：", 1, 20)
+    val spanLabel = createSpanLabel(this, 1)
+    val previewButton = createPreviewButton()
 
     class TestThread(balloonController: BalloonController) extends Thread
     {
@@ -115,22 +142,25 @@ class BalloonSetting(tabFolder: TabFolder, parent: ScrolledComposite,
         this.height.setText(height.toString)
     }
 
-    def createAreaSelectionButton() =
+    def createAreaSelectionButton(parent: Composite) =
     {
         val layoutData = new GridData(SWT.FILL, SWT.NONE, true, false)
-        val button = new Button(this, SWT.PUSH)
+        val button = new Button(parent, SWT.PUSH)
         layoutData.horizontalSpan = 2
         button.setLayoutData(layoutData)
         button.setText("選擇通知區域")
         button.addSelectionListener { e: SelectionEvent =>
-            def oldArea = (locationX.getText.toInt, locationY.getText.toInt,
-                           width.getText.toInt, height.getText.toInt)
-            println("oldArea:" + oldArea)
+
+            def oldArea = (
+                locationX.getText.toInt, locationY.getText.toInt,
+                width.getText.toInt, height.getText.toInt
+            )
+
             val areaSelection = new AreaSelectionDialog(oldArea, setNotificationArea _)
             areaSelection.open()
         }
-        button
 
+        button
     }
 
     def createPreviewButton() =

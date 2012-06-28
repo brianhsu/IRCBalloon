@@ -169,5 +169,26 @@ trait SWTHelper
         (onJoinButton, onLeaveButton)
     }
 
+    def createGroup(parent: Composite, title: String) =
+    {
+        val gridLayout = new GridLayout(4, false)
+        val layoutData = new GridData(SWT.FILL, SWT.FILL, true, false)
+        val group = new Group(parent, SWT.SHADOW_IN)
+
+        layoutData.horizontalSpan = 4
+        group.setText(title)
+        group.setLayout(gridLayout)
+        group.setLayoutData(layoutData)
+
+        group
+    }
+
+    def createSpanLabel(parent: Composite, span: Int = 2) = 
+    {
+        val label = new Label(parent, SWT.NONE)
+        val layoutData = new GridData(SWT.FILL, SWT.NONE, true, false)
+        layoutData.horizontalSpan = span
+        label.setLayoutData(layoutData)
+    }
 }
 

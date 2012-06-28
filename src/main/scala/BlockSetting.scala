@@ -75,20 +75,6 @@ class BlockSetting(tabFolder: TabFolder, parent: ScrolledComposite,
     val previewButton = createPreviewButton()
     val noticeLabel = createNoticeLabel()
 
-    def createGroup(parent: Composite, title: String) =
-    {
-        val gridLayout = new GridLayout(4, false)
-        val layoutData = new GridData(SWT.FILL, SWT.FILL, true, false)
-        val group = new Group(parent, SWT.SHADOW_IN)
-
-        layoutData.horizontalSpan = 4
-        group.setText(title)
-        group.setLayout(gridLayout)
-        group.setLayoutData(layoutData)
-
-        group
-    }
-
     def setBlockBackgroundImage(imageFile: String) 
     {
         bgImageButton.setToolTipText(imageFile)
@@ -131,14 +117,6 @@ class BlockSetting(tabFolder: TabFolder, parent: ScrolledComposite,
         }
 
         (label, browse, clear)
-    }
-
-    def createSpanLabel(parent: Composite, span: Int) = {
-        val layoutData = new GridData(SWT.LEFT, SWT.CENTER, true, false)
-        val label = new Label(parent, SWT.LEFT|SWT.WRAP)
-        layoutData.horizontalSpan = span
-        label.setLayoutData(layoutData)
-        label
     }
 
     def createNoticeLabel() =
