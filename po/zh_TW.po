@@ -146,7 +146,7 @@ msgstr "移除背景圖案"
 
 #: src/main/scala/BlockSetting.scala:105 src/main/scala/BlockSetting.scala:111
 msgid "Browse..."
-msgstr ""
+msgstr "瀏覽……"
 
 #: src/main/scala/BlockSetting.scala:134
 msgid "* Drag and drop the right-bottom corner of chat window to resize"
