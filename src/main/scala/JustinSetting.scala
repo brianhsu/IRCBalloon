@@ -8,17 +8,18 @@ import org.eclipse.swt.custom.StyledText
 import org.eclipse.swt.custom.StackLayout
 
 import org.eclipse.swt._
+import I18N.i18n._
 
 class JustinSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends 
        Composite(parent, SWT.NONE) with SWTHelper
 {
     val tabItem = new TabItem(parent, SWT.NONE)
     val gridLayout = new GridLayout(2,  false)
-    val username = createText(this, "帳號：")
-    val password = createText(this, "密碼：", SWT.PASSWORD)
+    val username = createText(this, tr("Username:"))
+    val password = createText(this, tr("Password:"), SWT.PASSWORD)
     val (onJoinButton, onLeaveButton) = createJoinLeaveButton(this)
 
-    def createIRCBot(callback: String => Any, 
+    def createIRCBot(callback: IRCMessage => Any, 
                      onLog: String => Any, 
                      onError: Exception => Any) =
     {

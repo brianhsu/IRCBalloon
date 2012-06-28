@@ -8,17 +8,18 @@ import org.eclipse.swt.custom.StyledText
 import org.eclipse.swt.custom.StackLayout
 
 import org.eclipse.swt._
+import I18N.i18n._
 
 class IRCSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends 
       Composite(parent, SWT.NONE) with SWTHelper
 {
     val tabItem = new TabItem(parent, SWT.NONE)
     val gridLayout = new GridLayout(2,  false)
-    val hostText = createText(this, "IRC 伺服器主機：")
-    val portText = createText(this, "IRC 伺服器Port：")
-    val password = createText(this, "IRC 伺服器密碼：", SWT.PASSWORD)
-    val nickname = createText(this, "暱稱：")
-    val channel = createText(this, "聊天頻道：")
+    val hostText = createText(this, tr("IRC Host:"))
+    val portText = createText(this, tr("IRC Port:"))
+    val password = createText(this, tr("IRC Password:"), SWT.PASSWORD)
+    val nickname = createText(this, tr("Nickname:"))
+    val channel = createText(this, tr("Channel:"))
     val (onJoinButton, onLeaveButton) = createJoinLeaveButton(this)
 
     def getPassword = password.getText.trim match {
@@ -26,13 +27,13 @@ class IRCSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends
         case value => Some(value)
     }
 
-    def createIRCBot(callback: String => Any, 
+    def createIRCBot(callback: IRCMessage => Any, 
                      onLog: String => Any, 
                      onError: Exception => Any) = 
     {
 
         if (!isSettingOK) {
-            throw new Exception("IRC 設定不完整")
+            throw new Exception(tr("IRC Setting is not completed"))
         }
 
         new IRCBot(

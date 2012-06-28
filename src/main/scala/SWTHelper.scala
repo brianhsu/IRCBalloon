@@ -8,6 +8,7 @@ import org.eclipse.swt.custom.StyledText
 import org.eclipse.swt.custom.StackLayout
 
 import org.eclipse.swt._
+import I18N.i18n._
 
 trait SWTHelper
 {
@@ -89,7 +90,8 @@ trait SWTHelper
         (label, scale)
     }
 
-    def createFontChooser(parent: Composite, title: String, action: Font => Any) =
+    def createFontChooser(parent: Composite, title: String, 
+                          font: => Font, action: Font => Any) =
     {
         val layoutData = new GridData(SWT.FILL, SWT.NONE, true, false)
         val label = new Label(parent, SWT.LEFT)
@@ -100,8 +102,10 @@ trait SWTHelper
         button.setText(Display.getDefault.getSystemFont)
         button.addSelectionListener { e: SelectionEvent =>
             val fontDialog = new FontDialog(MainWindow.shell)
-            val fontData = fontDialog.open()
+            
+            fontDialog.setFontList(font.getFontData)
 
+            val fontData = fontDialog.open()
             if (fontData != null) {
                 val font = new Font(Display.getDefault, fontData)
                 action(font)
@@ -163,11 +167,32 @@ trait SWTHelper
         val onJoinButton = new Button(composite, SWT.CHECK)
         val onLeaveButton = new Button(composite, SWT.CHECK)
         
-        onJoinButton.setText("顯示加入聊天室訊息")
-        onLeaveButton.setText("顯示離開聊天室訊息")
+        onJoinButton.setText(tr("Show join message"))
+        onLeaveButton.setText(tr("Show leave message"))
 
         (onJoinButton, onLeaveButton)
     }
 
+    def createGroup(parent: Composite, title: String) =
+    {
+        val gridLayout = new GridLayout(4, false)
+        val layoutData = new GridData(SWT.FILL, SWT.FILL, true, false)
+        val group = new Group(parent, SWT.SHADOW_IN)
+
+        layoutData.horizontalSpan = 4
+        group.setText(title)
+        group.setLayout(gridLayout)
+        group.setLayoutData(layoutData)
+
+        group
+    }
+
+    def createSpanLabel(parent: Composite, span: Int = 2) = 
+    {
+        val label = new Label(parent, SWT.NONE)
+        val layoutData = new GridData(SWT.FILL, SWT.NONE, true, false)
+        layoutData.horizontalSpan = span
+        label.setLayoutData(layoutData)
+    }
 }
 

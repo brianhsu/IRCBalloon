@@ -6,8 +6,10 @@ import org.eclipse.swt.events._
 import org.eclipse.swt.graphics._
 import org.eclipse.swt.custom.StyledText
 import org.eclipse.swt.custom.StackLayout
+import org.eclipse.swt.custom.ScrolledComposite
 
 import org.eclipse.swt._
+import I18N.i18n._
 
 object MainWindow extends SWTHelper
 {
@@ -18,16 +20,19 @@ object MainWindow extends SWTHelper
 
     val displayStackLayout = new StackLayout
 
-    val logginLabel = createLabel("登入方式：")
+    val logginLabel = createLabel(tr("Login Method"))
     val logginTab = createTabFolder()
     val ircSetting = new IRCSetting(logginTab, e => updateConnectButtonState())
     val justinSetting = new JustinSetting(logginTab, e => updateConnectButtonState())
 
-    val displayLabel = createLabel("顯示方式：")
-    val displayTab = createTabFolder()
-    val blockSetting = new BlockSetting(displayTab, e => updateConnectButtonState())
-    val balloonSetting = new BalloonSetting(displayTab, e => updateConnectButtonState())
+    val displayLabel = createLabel(tr("Display Method"))
+    val displayTab = createTabFolder(true)
 
+    val blockScroll = new ScrolledComposite(displayTab, SWT.V_SCROLL)
+    val ballonScroll = new ScrolledComposite(displayTab, SWT.V_SCROLL)
+
+    val blockSetting = new BlockSetting(displayTab, blockScroll, e => updateConnectButtonState())
+    val balloonSetting = new BalloonSetting(displayTab, ballonScroll, e => updateConnectButtonState())
     val connectButton = createConnectButton()
     val logTextArea = createLogTextArea()
 
@@ -50,17 +55,17 @@ object MainWindow extends SWTHelper
         label
     }
 
-    def createTabFolder() = 
+    def createTabFolder(adjustHeight: Boolean = false) = 
     {
-        val layoutData = new GridData(SWT.FILL, SWT.NONE, true, false)
+        val layoutData = new GridData(SWT.FILL, SWT.FILL, true, adjustHeight)
         val tabFolder = new TabFolder(shell, SWT.NONE)
+
+        if (adjustHeight) {
+            layoutData.minimumHeight = 250
+        }
+
         tabFolder.setLayoutData(layoutData)
         tabFolder
-    }
-
-    def getAppIcon() =
-    {
-        new Image(display, getClass().getResourceAsStream("/appIcon.png"));
     }
 
     def setTrayIcon()
@@ -69,7 +74,7 @@ object MainWindow extends SWTHelper
 
         if (tray != null) {
             val trayIcon = new TrayItem (tray, SWT.NONE)
-            trayIcon.setImage(getAppIcon)
+            trayIcon.setImage(MyIcon.appIcon)
             trayIcon.addSelectionListener { e: SelectionEvent =>
                 notification.foreach(_.onTrayIconClicked())
             }
@@ -78,10 +83,16 @@ object MainWindow extends SWTHelper
 
     def appendLog(message: String)
     {
+        if (display.isDisposed) {
+            return
+        }
+
         display.asyncExec(new Runnable() {
             override def run()
             {
-                logTextArea.append(message + "\n")
+                if (!logTextArea.isDisposed) {
+                    logTextArea.append(message + "\n")
+                }
             }
         })
     }
@@ -91,6 +102,8 @@ object MainWindow extends SWTHelper
         val layoutData = new GridData(SWT.FILL, SWT.FILL, true, true)
         val text = new Text(shell, SWT.BORDER|SWT.MULTI|SWT.WRAP|SWT.V_SCROLL|SWT.READ_ONLY)
         layoutData.horizontalSpan = 2
+        layoutData.minimumHeight = 50
+
         text.setLayoutData(layoutData)
         text
     }
@@ -108,7 +121,7 @@ object MainWindow extends SWTHelper
         connectButton.setEnabled(connectSettingOK && displayStettingOK)
     }
 
-    def createIRCBot(callback: String => Any, onError: Exception => Any) =
+    def createIRCBot(callback: IRCMessage => Any, onError: Exception => Any) =
     {
         logginTab.getSelectionIndex match {
             case 0 => ircSetting.createIRCBot(callback, appendLog _, onError)
@@ -136,19 +149,21 @@ object MainWindow extends SWTHelper
             displayError(exception, () => { stopBot(); toggleConnectButton()})
         }
 
-        def updateNotification(message: String)
+        def updateNotification(message: IRCMessage)
         {
             notification.foreach(_.addMessage(message))
         }
 
         def startBot()
         {
+            val connectMessage = tr("Connecting to IRC server, please wait...\n")
+
             setUIEnabled(false)
-            logTextArea.setText("開始連線至 IRC 伺服器，請稍候……\n")
+            logTextArea.setText(connectMessage)
             notification = Some(createNotificationService)
             notification.foreach { block =>
                 block.open()
-                block.addMessage("開始連線至 IRC 伺服器，請稍候……")
+                block.addMessage(SystemMessage(connectMessage))
                 ircBot = Some(createIRCBot(updateNotification _, onError _))
                 ircBot.foreach(_.start())
             }
@@ -186,7 +201,7 @@ object MainWindow extends SWTHelper
                 val dialog = new MessageBox(MainWindow.shell, SWT.ICON_ERROR)
 
                 outputToLogTextArea()
-                dialog.setMessage("錯誤：" + exception.getMessage)
+                dialog.setMessage(tr("Error:") + exception.getMessage)
                 dialog.open()
                 callback()
                 setUIEnabled(true)
@@ -211,7 +226,7 @@ object MainWindow extends SWTHelper
 
         layoutData.horizontalSpan = 2
         button.setLayoutData(layoutData)
-        button.setText("連線")
+        button.setText(tr("Connect"))
         button.setEnabled(false)
         button
     }
@@ -233,11 +248,17 @@ object MainWindow extends SWTHelper
         Preference.read(blockSetting)
         Preference.read(balloonSetting)
 
-        shell.setText("IRC 聊天通知")
-        shell.setImage(getAppIcon)
+        shell.setText(tr("IRC Notification"))
+        shell.setImage(MyIcon.appIcon)
         shell.pack()
         shell.addShellListener(new ShellAdapter() {
             override def shellClosed(e: ShellEvent) {
+
+                ircBot.foreach(_.stop())
+                notification.foreach(_.close)
+                ircBot = None
+                notification = None
+
                 Preference.save(ircSetting)
                 Preference.save(justinSetting)
                 Preference.save(blockSetting)

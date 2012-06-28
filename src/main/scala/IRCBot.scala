@@ -1,57 +1,71 @@
 package org.bone.ircballoon
 
-import org.jibble.pircbot.PircBot
+import org.pircbotx.PircBotX
+import org.pircbotx.User
+import org.pircbotx.hooks.ListenerAdapter
+import org.pircbotx.hooks.events._
 
-object IRCBot
-{
-    def doNothing(message: String) {}
-    def doNothing(exception: Exception) {
-        println("From IRCBot.doNothing:")
-        exception.printStackTrace()
-    }
-}
+import scala.collection.JavaConversions._
+import I18N.i18n._
 
 class IRCBot(hostname: String, port: Int, nickname: String, 
              password: Option[String], channel: String, 
-             callback: String => Any = IRCBot.doNothing,
+             callback: IRCMessage => Any = IRCBot.doNothing,
              onLog: String => Any = IRCBot.doNothing,
              onError: Exception => Any = IRCBot.doNothing,
              showJoin: Boolean = false,
-             showLeave: Boolean = false) extends PircBot
+             showLeave: Boolean = false) extends PircBotX
 {
-    override def onAction(sender: String, login: String, hostname: String, target: String,
-                          action: String)
-    {
-        callback("[動作] %s %s" format(sender, action))
-    }
 
-    override def onMessage(channel: String, sender: String, login: String, 
-                           hostname: String, message: String) 
+    object Callbacks extends ListenerAdapter[IRCBot]
     {
-        callback("%s: %s" format(sender, message))
-    }
-
-    override def onPart(channel: String, sender: String, login: String, hostname: String)
-    {
-        if (showLeave) {
-            callback("[系統] %s 離開聊天室" format(sender))
+        private def isBrodcaster(user: User): Boolean = 
+        {
+            hostname == ("%s.jtvirc.com" format(user.getNick)) &&
+            channel  == ("#%s" format(user.getNick))
         }
-    }
 
-    override def onJoin(channel: String, sender: String, login: String, hostname: String)
-    {
-        showJoin match {
-            case true  => callback("[系統] %s 加入聊天室" format(sender))
-            case false if (sender == nickname) => 
-                callback("[系統] %s 加入聊天室" format(sender))
+        private def isOp(user: User): Boolean =
+        {
+            isBrodcaster(user) || user.getChannelsOpIn.map(_.getName).contains(channel)
         }
-    }
 
-    override def onQuit(sourceNick: String, sourceLogin: String, sourceHostname: String,
-                        reason: String)
-    {
-        if (showLeave) {
-            callback("[系統] %s 離開聊天室" format(sourceNick))
+        override def onMessage(event: MessageEvent[IRCBot])
+        {
+            val nickname = event.getUser.getNick
+            callback(ChatMessage(nickname, isOp(event.getUser), event.getMessage))
+        }
+
+        override def onAction(event: ActionEvent[IRCBot])
+        {
+            val nickname = event.getUser.getNick
+            callback(ActionMessage(nickname, isOp(event.getUser), event.getAction))
+        }
+
+        override def onPart(event: PartEvent[IRCBot])
+        {
+            if (showLeave) {
+                callback(SystemMessage(tr("[SYS] %s has left") format(event.getUser.getNick)))
+            }
+        }
+
+        override def onJoin(event: JoinEvent[IRCBot])
+        {
+            val sender = event.getUser.getNick
+
+            showJoin match {
+                case true  => callback(SystemMessage(tr("[SYS] %s has joined") format(sender)))
+                case false if (sender == nickname) => 
+                    callback(SystemMessage(tr("[SYS] %s has joined") format(sender)))
+                case _ => 
+            }
+        }
+
+        override def onQuit(event: QuitEvent[IRCBot])
+        {
+            if (showLeave) {
+                callback(SystemMessage(tr("[SYS] %s has left") format(event.getUser.getNick)))
+            }
         }
     }
 
@@ -61,6 +75,7 @@ class IRCBot(hostname: String, port: Int, nickname: String,
         onLog(line)
     }
 
+
     private def connect()
     {
         password match {
@@ -68,14 +83,15 @@ class IRCBot(hostname: String, port: Int, nickname: String,
             case Some(password) => super.connect(hostname, port, password)
         }
     }
-    
+
     def stop()
     {
-        val thread = new Thread() {
-            override def run() {
+        val thread = new Thread()
+        {
+            override def run()
+            {
                 if (IRCBot.this.isConnected) {
                     IRCBot.this.disconnect()
-                    IRCBot.this.dispose()
                 }
             }
         }
@@ -85,14 +101,17 @@ class IRCBot(hostname: String, port: Int, nickname: String,
 
     def start()
     {
-        val thread = new Thread() {
-            override def run() {
+        val thread = new Thread()
+        {
+            override def run()
+            {
                 try {
                     IRCBot.this.setAutoNickChange(true)
                     IRCBot.this.setVerbose(true)
                     IRCBot.this.setName(nickname)
                     IRCBot.this.setEncoding("UTF-8")
                     IRCBot.this.connect()
+                    IRCBot.this.getListenerManager.addListener(Callbacks)
                     IRCBot.this.joinChannel(channel)
                 } catch {
                     case e: Exception => onError(e)
@@ -102,5 +121,16 @@ class IRCBot(hostname: String, port: Int, nickname: String,
 
         thread.start()
     }
+
 }
 
+
+object IRCBot
+{
+    def doNothing(message: String) {}
+    def doNothing(message: IRCMessage) {}
+    def doNothing(exception: Exception) {
+        println("From IRCBot.doNothing:")
+        exception.printStackTrace()
+    }
+}

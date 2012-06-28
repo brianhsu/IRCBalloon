@@ -12,6 +12,7 @@ import scala.math._
 case class BalloonController(size: (Int, Int), location: (Int, Int), 
                              borderColor: Color, bgColor: Color, alpha: Int,
                              fontColor: Color, font: Font,
+                             nicknameColor: Color, nicknameFont: Font,
                              displayTime: Int, fadeTime: Int,
                              spacing: Int) extends 
             Notification with NotificationBalloon
@@ -72,7 +73,7 @@ case class BalloonController(size: (Int, Int), location: (Int, Int),
         }
     }
 
-    def addMessage(message: String)
+    def addMessage(message: IRCMessage)
     {
         Display.getDefault.syncExec(new Runnable() {
             override def run() {
