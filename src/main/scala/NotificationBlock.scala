@@ -73,7 +73,6 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
         label.setLayoutData(layoutData)
         label.addPaintObjectListener(new PaintObjectListener() {
             override def paintObject(event: PaintObjectEvent) {
-                println("==> paintObject")
 
                 event.style.data match {
                     case image: Image => 
