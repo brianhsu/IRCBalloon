@@ -25,8 +25,8 @@ class AreaSelectionDialog(default: (Int, Int, Int, Int) = (0, 0, 0, 0),
 
     var locationX: Int = default._1
     var locationY: Int = default._2
-    var height: Int = default._3
-    var width: Int = default._4
+    var width: Int = default._3
+    var height: Int = default._4
 
     def setAreaSelection()
     {
