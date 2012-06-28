@@ -1,11 +1,10 @@
 package org.bone.ircballoon
 
-import org.jibble.pircbot.PircBot
 import org.pircbotx.PircBotX
 import org.pircbotx.User
-
 import org.pircbotx.hooks.ListenerAdapter
 import org.pircbotx.hooks.events._
+
 import scala.collection.JavaConversions._
 
 class IRCBot(hostname: String, port: Int, nickname: String, 
