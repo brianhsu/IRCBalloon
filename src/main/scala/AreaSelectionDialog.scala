@@ -8,6 +8,7 @@ import org.eclipse.swt.custom.StyledText
 import org.eclipse.swt.custom.StackLayout
 
 import org.eclipse.swt._
+import I18N.i18n._
 
 object AreaSelectionDialog
 {
@@ -38,7 +39,7 @@ class AreaSelectionDialog(default: (Int, Int, Int, Int) = (0, 0, 0, 0),
                 e.gc.drawRectangle(locationX, locationY, width, height)
                 e.gc.setFont(MyFont.LargeFont)
                 e.gc.drawText(
-                    "請拖拉出通知區域後點兩下滑鼠確認", 
+                    tr("Drag notification area and double click to confirm"), 
                     shell.getSize.x / 2 - 200, 
                     shell.getSize.y / 2,
                     true

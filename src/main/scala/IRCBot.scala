@@ -6,6 +6,7 @@ import org.pircbotx.hooks.ListenerAdapter
 import org.pircbotx.hooks.events._
 
 import scala.collection.JavaConversions._
+import I18N.i18n._
 
 class IRCBot(hostname: String, port: Int, nickname: String, 
              password: Option[String], channel: String, 
@@ -44,7 +45,7 @@ class IRCBot(hostname: String, port: Int, nickname: String,
         override def onPart(event: PartEvent[IRCBot])
         {
             if (showLeave) {
-                callback(SystemMessage("[系統] %s 離開聊天室" format(event.getUser.getNick)))
+                callback(SystemMessage(tr("[SYS] %s has left") format(event.getUser.getNick)))
             }
         }
 
@@ -53,9 +54,9 @@ class IRCBot(hostname: String, port: Int, nickname: String,
             val sender = event.getUser.getNick
 
             showJoin match {
-                case true  => callback(SystemMessage("[系統] %s 加入聊天室" format(sender)))
+                case true  => callback(SystemMessage(tr("[SYS] %s has joined") format(sender)))
                 case false if (sender == nickname) => 
-                    callback(SystemMessage("[系統] %s 加入聊天室" format(sender)))
+                    callback(SystemMessage(tr("[SYS] %s has joined") format(sender)))
                 case _ => 
             }
         }
@@ -63,7 +64,7 @@ class IRCBot(hostname: String, port: Int, nickname: String,
         override def onQuit(event: QuitEvent[IRCBot])
         {
             if (showLeave) {
-                callback(SystemMessage("[系統] %s 離開聊天室" format(event.getUser.getNick)))
+                callback(SystemMessage(tr("[SYS] %s has left") format(event.getUser.getNick)))
             }
         }
     }

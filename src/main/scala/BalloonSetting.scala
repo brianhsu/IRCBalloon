@@ -11,6 +11,7 @@ import org.eclipse.swt.custom.ScrolledComposite
 import org.eclipse.swt._
 
 import scala.util.Random
+import I18N.i18n._
 
 class BalloonSetting(tabFolder: TabFolder, parent: ScrolledComposite, 
                      onModify: ModifyEvent => Any) extends Composite(parent, SWT.NONE) 
@@ -25,55 +26,62 @@ class BalloonSetting(tabFolder: TabFolder, parent: ScrolledComposite,
     var messageFont: Font = MyFont.DefaultFont
     var nicknameFont: Font = MyFont.DefaultFont
 
-    val alphaTitle = "透明度："
+    val alphaTitle = tr("Transparency:")
 
     val gridLayout = new GridLayout(4, false)
 
-    val areaGroup = createGroup(this, "通知區域位置與大小")
-    val locationX = createText(areaGroup, "通知區域 X：")
-    val locationY = createText(areaGroup, "通知區域 Y：")
-    val width = createText(areaGroup, "通知區域寬度：")
-    val height = createText(areaGroup, "通知區域高度：")
+    val areaGroup = createGroup(this, tr("Notification Area Setting"))
+    val locationX = createText(areaGroup, tr("Area X:"))
+    val locationY = createText(areaGroup, tr("Area Y:"))
+    val width = createText(areaGroup, tr("Area Width:"))
+    val height = createText(areaGroup, tr("Area Height:"))
     val areaSpan = createSpanLabel(areaGroup, 2)
     val areaSelectionButton = createAreaSelectionButton(areaGroup)
 
-    val backgroundGroup = createGroup(this, "背景設定")
+    val backgroundGroup = createGroup(this, tr("Background Setting"))
 
     val (borderLabel, borderButton) = createColorChooser(
-        backgroundGroup, "邊框顏色：", 
+        backgroundGroup, tr("Border Color:"), 
         borderColor, borderColor = _
     )
 
     val (bgLabel, bgButton) = createColorChooser(
-        backgroundGroup, "背景顏色：", 
+        backgroundGroup, tr("Background Color:"), 
         bgColor, bgColor = _
     )
 
-    val fontGroup = createGroup(this, "訊息設定")
+    val fontGroup = createGroup(this, tr("Message Setting"))
     val (nicknameColorLabel, nicknameColorButton) = createColorChooser(
-        fontGroup, "暱稱顏色：",
+        fontGroup, tr("Nickname Color:"),
         nicknameColor, nicknameColor = _
     )
     val (nicknameFontLabel, nicknameFontButton) = createFontChooser(
-        fontGroup, "暱稱字型：",
+        fontGroup, tr("Nickname Font:"),
         nicknameFont,
         nicknameFont = _
     )
     val (fgLabel, fgButton) = createColorChooser(
-        fontGroup, "文字顏色：", 
+        fontGroup, tr("Message Color:"), 
         fontColor, fontColor = _
     )
     val (fontLabel, fontButton) = createFontChooser(
-        fontGroup, "訊息字型：", 
+        fontGroup, tr("Message Font:"), 
         messageFont,
         messageFont = _
     )
 
-    val effectGroup = createGroup(this, "效果設定")
+    val effectGroup = createGroup(this, tr("Effect Setting"))
     val (transparentLabel, transparentScale) = createScaleChooser(effectGroup, alphaTitle)
-    val (displayTimeLabel, displayTimeSpinner) = createSpinner(effectGroup, "停留秒數：", 1, 120)
-    val (fadeTimeLabel, fadeTimeSpinner) = createSpinner(effectGroup, "效果時間(ms)：", 1, 5000)
-    val (spacingLabel, spacingSpinner) = createSpinner(effectGroup, "泡泡間距：", 1, 20)
+    val (displayTimeLabel, displayTimeSpinner) = createSpinner(
+        effectGroup, tr("Bubble keeps (second):"), 1, 120
+    )
+    val (fadeTimeLabel, fadeTimeSpinner) = createSpinner(
+        effectGroup, tr("Animation time (ms):"), 1, 5000
+    )
+    val (spacingLabel, spacingSpinner) = createSpinner(
+        effectGroup, tr("Space between bubbles:"), 1, 20
+    )
+
     val spanLabel = createSpanLabel(this, 1)
     val previewButton = createPreviewButton()
 
@@ -151,7 +159,7 @@ class BalloonSetting(tabFolder: TabFolder, parent: ScrolledComposite,
         val button = new Button(parent, SWT.PUSH)
         layoutData.horizontalSpan = 2
         button.setLayoutData(layoutData)
-        button.setText("選擇通知區域")
+        button.setText(tr("Select notification Area"))
         button.addSelectionListener { e: SelectionEvent =>
 
             def oldArea = (
@@ -182,12 +190,12 @@ class BalloonSetting(tabFolder: TabFolder, parent: ScrolledComposite,
                 testThread = Some(new TestThread(controller))
                 testThread.foreach(_.start)
             }
-            button.setText("停止預覽")
+            button.setText(tr("Stop Preview"))
         }
 
         def stopPreview()
         {
-            button.setText("開始預覽")
+            button.setText(tr("Start Preview"))
             balloonController.foreach{ controller =>
                 testThread.foreach{_.setStop(true)}
                 testThread = None
@@ -198,7 +206,7 @@ class BalloonSetting(tabFolder: TabFolder, parent: ScrolledComposite,
 
         layoutData.horizontalSpan = 2
         button.setLayoutData(layoutData)
-        button.setText("開始預覽")
+        button.setText(tr("Start Preview"))
         button.addSelectionListener { e: SelectionEvent =>
             balloonController match {
                 case None    => startPreview()
@@ -273,7 +281,7 @@ class BalloonSetting(tabFolder: TabFolder, parent: ScrolledComposite,
         }
     })
 
-    this.tabItem.setText("泡泡通知")
+    this.tabItem.setText(tr("Bubble Notification"))
     this.tabItem.setControl(parent)
 }
 

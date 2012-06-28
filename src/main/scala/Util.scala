@@ -7,6 +7,13 @@ import org.eclipse.swt.events._
 import org.eclipse.swt.graphics._
 import org.eclipse.swt.custom.StyledText
 
+import org.xnap.commons.i18n.I18nFactory
+
+object I18N
+{
+    val i18n = I18nFactory.getI18n(getClass())
+}
+
 object MyIcon
 {
     val appIcon = new Image(Display.getDefault, getClass().getResourceAsStream("/appIcon.png"))
