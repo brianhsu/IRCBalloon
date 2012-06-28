@@ -44,8 +44,8 @@ trait NotificationBalloon
                 val style = new StyleRange
                 style.start = data.start
                 style.length = data.end - data.start
-                style.foreground = MyColor.Blue
-                //style.font = nicknameFont
+                style.foreground = nicknameColor
+                style.font = nicknameFont
                 style
             }.toList
         }
