@@ -85,7 +85,9 @@ object MainWindow extends SWTHelper
         display.asyncExec(new Runnable() {
             override def run()
             {
-                logTextArea.append(message + "\n")
+                if (!logTextArea.isDisposed) {
+                    logTextArea.append(message + "\n")
+                }
             }
         })
     }

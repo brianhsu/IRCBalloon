@@ -178,12 +178,20 @@ object Preference extends SWTHelper
             preference.getInt("BalloonBorderBlue", 255)
         )
 
+        val nicknameColor = new Color(
+            Display.getDefault,
+            preference.getInt("BalloonNicknameRed", 255),
+            preference.getInt("BalloonNicknameGreen", 255),
+            preference.getInt("BalloonNicknameBlue", 255)
+        )
+
         setting.bgColor = bgColor
         setting.fontColor = fontColor
         setting.borderColor = borderColor
         setting.bgButton.setText(bgColor)
         setting.fgButton.setText(fontColor)
         setting.borderButton.setText(borderColor)
+        setting.nicknameColorButton.setText(nicknameColor)
 
         val font = new Font(
             Display.getDefault, 
@@ -192,8 +200,18 @@ object Preference extends SWTHelper
             preference.getInt("BalloonFontStyle", MyFont.DefaultFontStyle)
         )
 
+        val nicknameFont = new Font(
+            Display.getDefault, 
+            preference.get("BalloonNicknameFontName", MyFont.DefaultFontName),
+            preference.getInt("BalloonNicknameFontHeight", MyFont.DefaultFontSize),
+            preference.getInt("BalloonNicknameFontStyle", MyFont.DefaultFontStyle)
+        )
+
         setting.messageFont = font
+        setting.nicknameFont = nicknameFont
+
         setting.fontButton.setText(font)
+        setting.nicknameFontButton.setText(nicknameFont)
 
         val transparent = preference.getInt("BalloonTransparent", 20)
         setting.transparentScale.setSelection(transparent)
@@ -227,6 +245,9 @@ object Preference extends SWTHelper
         preference.putInt("BalloonBorderRed", setting.borderColor.getRed)
         preference.putInt("BalloonBorderGreen", setting.borderColor.getGreen)
         preference.putInt("BalloonBorderBlue", setting.borderColor.getBlue)
+        preference.putInt("BalloonNicknameRed", setting.nicknameColor.getRed)
+        preference.putInt("BalloonNicknameGreen", setting.nicknameColor.getGreen)
+        preference.putInt("BalloonNicknameBlue", setting.nicknameColor.getBlue)
         preference.putInt(
             "BalloonTransparent", 
             setting.transparentScale.getSelection
@@ -234,9 +255,14 @@ object Preference extends SWTHelper
 
         // 字型
         val fontData = setting.messageFont.getFontData()(0)
+        val nicknameFontData = setting.nicknameFont.getFontData()(0)
         preference.put("BalloonFontName", fontData.getName)
         preference.putInt("BalloonFontHeight", fontData.getHeight)
         preference.putInt("BalloonFontStyle", fontData.getStyle)
+
+        preference.put("BalloonNicknameFontName", nicknameFontData.getName)
+        preference.putInt("BalloonNicknameFontHeight", nicknameFontData.getHeight)
+        preference.putInt("BalloonNicknameFontStyle", nicknameFontData.getStyle)
 
         // 特效設定
         preference.putInt("BalloonDisplayTime", setting.displayTimeSpinner.getSelection)
