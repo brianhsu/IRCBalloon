@@ -8,10 +8,12 @@ import org.eclipse.swt.graphics._
 import org.eclipse.swt.custom.StyledText
 
 import org.xnap.commons.i18n.I18nFactory
+import java.util.Locale
 
 object I18N
 {
-    val i18n = I18nFactory.getI18n(getClass())
+    val flags = I18nFactory.FALLBACK|I18nFactory.READ_PROPERTIES
+    val i18n = I18nFactory.getI18n(getClass(), Locale.getDefault, flags)
 }
 
 object MyIcon
