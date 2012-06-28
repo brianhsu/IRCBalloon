@@ -56,6 +56,7 @@ class BalloonSetting(tabFolder: TabFolder, parent: ScrolledComposite,
     )
     val (nicknameFontLabel, nicknameFontButton) = createFontChooser(
         fontGroup, "暱稱字型：",
+        nicknameFont,
         nicknameFont = _
     )
     val (fgLabel, fgButton) = createColorChooser(
@@ -64,6 +65,7 @@ class BalloonSetting(tabFolder: TabFolder, parent: ScrolledComposite,
     )
     val (fontLabel, fontButton) = createFontChooser(
         fontGroup, "訊息字型：", 
+        messageFont,
         messageFont = _
     )
 

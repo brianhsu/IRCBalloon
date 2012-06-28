@@ -89,7 +89,8 @@ trait SWTHelper
         (label, scale)
     }
 
-    def createFontChooser(parent: Composite, title: String, action: Font => Any) =
+    def createFontChooser(parent: Composite, title: String, 
+                          font: => Font, action: Font => Any) =
     {
         val layoutData = new GridData(SWT.FILL, SWT.NONE, true, false)
         val label = new Label(parent, SWT.LEFT)
@@ -100,8 +101,10 @@ trait SWTHelper
         button.setText(Display.getDefault.getSystemFont)
         button.addSelectionListener { e: SelectionEvent =>
             val fontDialog = new FontDialog(MainWindow.shell)
-            val fontData = fontDialog.open()
+            
+            fontDialog.setFontList(font.getFontData)
 
+            val fontData = fontDialog.open()
             if (fontData != null) {
                 val font = new Font(Display.getDefault, fontData)
                 action(font)
