@@ -22,8 +22,8 @@ class BlockSetting(tabFolder: TabFolder, parent: ScrolledComposite,
     var bgColor: Color = MyColor.Black
     var fontColor: Color = MyColor.White
     var borderColor: Color = MyColor.White
-    var messageFont: Font = Display.getDefault.getSystemFont
-    var nicknameFont: Font = Display.getDefault.getSystemFont
+    var messageFont: Font = MyFont.DefaultFont
+    var nicknameFont: Font = MyFont.DefaultFont
     var nicknameColor: Color = MyColor.White
 
     val alphaTitle = "透明度："
@@ -54,7 +54,9 @@ class BlockSetting(tabFolder: TabFolder, parent: ScrolledComposite,
     )
 
     val (nicknameFontLabel, nicknameFontButton) = createFontChooser(
-        groupMessageFont, "暱稱字型：", nicknameFont = _
+        groupMessageFont, "暱稱字型：", 
+        nicknameFont,
+        nicknameFont = _
     )
 
     val (fgLabel, fgButton) = createColorChooser(
@@ -62,7 +64,9 @@ class BlockSetting(tabFolder: TabFolder, parent: ScrolledComposite,
     )
 
     val (fontLabel, fontButton) = createFontChooser(
-        groupMessageFont, "訊息字型：", messageFont = _
+        groupMessageFont, "訊息字型：", 
+        messageFont,
+        messageFont = _
     )
 
     val spanLabel = createSpanLabel(groupMessageFont, 2)
@@ -74,20 +78,6 @@ class BlockSetting(tabFolder: TabFolder, parent: ScrolledComposite,
     val (transparentLabel, transparentScale) = createScaleChooser(this, alphaTitle)
     val previewButton = createPreviewButton()
     val noticeLabel = createNoticeLabel()
-
-    def createGroup(parent: Composite, title: String) =
-    {
-        val gridLayout = new GridLayout(4, false)
-        val layoutData = new GridData(SWT.FILL, SWT.FILL, true, false)
-        val group = new Group(parent, SWT.SHADOW_IN)
-
-        layoutData.horizontalSpan = 4
-        group.setText(title)
-        group.setLayout(gridLayout)
-        group.setLayoutData(layoutData)
-
-        group
-    }
 
     def setBlockBackgroundImage(imageFile: String) 
     {
@@ -131,14 +121,6 @@ class BlockSetting(tabFolder: TabFolder, parent: ScrolledComposite,
         }
 
         (label, browse, clear)
-    }
-
-    def createSpanLabel(parent: Composite, span: Int) = {
-        val layoutData = new GridData(SWT.LEFT, SWT.CENTER, true, false)
-        val label = new Label(parent, SWT.LEFT|SWT.WRAP)
-        layoutData.horizontalSpan = span
-        label.setLayoutData(layoutData)
-        label
     }
 
     def createNoticeLabel() =
