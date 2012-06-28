@@ -82,6 +82,10 @@ object MainWindow extends SWTHelper
 
     def appendLog(message: String)
     {
+        if (display.isDisposed) {
+            return
+        }
+
         display.asyncExec(new Runnable() {
             override def run()
             {
@@ -246,6 +250,12 @@ object MainWindow extends SWTHelper
         shell.pack()
         shell.addShellListener(new ShellAdapter() {
             override def shellClosed(e: ShellEvent) {
+
+                ircBot.foreach(_.stop())
+                notification.foreach(_.close)
+                ircBot = None
+                notification = None
+
                 Preference.save(ircSetting)
                 Preference.save(justinSetting)
                 Preference.save(blockSetting)
