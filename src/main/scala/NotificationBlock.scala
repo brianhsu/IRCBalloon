@@ -9,6 +9,7 @@ import org.eclipse.swt.custom._
 import org.eclipse.swt._
 import scala.math._
 import scala.collection.JavaConversions._
+import I18N.i18n._
 
 case class NotificationBlock(size: (Int, Int), location: (Int, Int), 
                              borderColor: Color, bgColor: Color, alpha: Int,
@@ -31,7 +32,7 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
         val label = new Label(shell, SWT.LEFT)
         val text = new Text(shell, SWT.BORDER)
 
-        label.setText("聊天：")
+        label.setText(tr("Chat:"))
         label.setFont(font)
         label.setForeground(fontColor)
         

@@ -9,6 +9,7 @@ import org.eclipse.swt.custom.StackLayout
 import org.eclipse.swt.custom.ScrolledComposite
 
 import org.eclipse.swt._
+import I18N.i18n._
 
 object MainWindow extends SWTHelper
 {
@@ -19,12 +20,12 @@ object MainWindow extends SWTHelper
 
     val displayStackLayout = new StackLayout
 
-    val logginLabel = createLabel("登入方式：")
+    val logginLabel = createLabel(tr("Login Method"))
     val logginTab = createTabFolder()
     val ircSetting = new IRCSetting(logginTab, e => updateConnectButtonState())
     val justinSetting = new JustinSetting(logginTab, e => updateConnectButtonState())
 
-    val displayLabel = createLabel("顯示方式：")
+    val displayLabel = createLabel(tr("Display Method"))
     val displayTab = createTabFolder(true)
 
     val blockScroll = new ScrolledComposite(displayTab, SWT.V_SCROLL)
@@ -155,12 +156,14 @@ object MainWindow extends SWTHelper
 
         def startBot()
         {
+            val connectMessage = tr("Connecting to IRC server, please wait...\n")
+
             setUIEnabled(false)
-            logTextArea.setText("開始連線至 IRC 伺服器，請稍候……\n")
+            logTextArea.setText(connectMessage)
             notification = Some(createNotificationService)
             notification.foreach { block =>
                 block.open()
-                block.addMessage(SystemMessage("開始連線至 IRC 伺服器，請稍候……"))
+                block.addMessage(SystemMessage(connectMessage))
                 ircBot = Some(createIRCBot(updateNotification _, onError _))
                 ircBot.foreach(_.start())
             }
@@ -198,7 +201,7 @@ object MainWindow extends SWTHelper
                 val dialog = new MessageBox(MainWindow.shell, SWT.ICON_ERROR)
 
                 outputToLogTextArea()
-                dialog.setMessage("錯誤：" + exception.getMessage)
+                dialog.setMessage(tr("Error:") + exception.getMessage)
                 dialog.open()
                 callback()
                 setUIEnabled(true)
@@ -223,7 +226,7 @@ object MainWindow extends SWTHelper
 
         layoutData.horizontalSpan = 2
         button.setLayoutData(layoutData)
-        button.setText("連線")
+        button.setText(tr("Connect"))
         button.setEnabled(false)
         button
     }
@@ -245,7 +248,7 @@ object MainWindow extends SWTHelper
         Preference.read(blockSetting)
         Preference.read(balloonSetting)
 
-        shell.setText("IRC 聊天通知")
+        shell.setText(tr("IRC Notification"))
         shell.setImage(MyIcon.appIcon)
         shell.pack()
         shell.addShellListener(new ShellAdapter() {

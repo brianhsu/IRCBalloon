@@ -8,6 +8,7 @@ import org.eclipse.swt.custom.StyledText
 import org.eclipse.swt.custom.StackLayout
 
 import org.eclipse.swt._
+import I18N.i18n._
 
 trait SWTHelper
 {
@@ -166,8 +167,8 @@ trait SWTHelper
         val onJoinButton = new Button(composite, SWT.CHECK)
         val onLeaveButton = new Button(composite, SWT.CHECK)
         
-        onJoinButton.setText("顯示加入聊天室訊息")
-        onLeaveButton.setText("顯示離開聊天室訊息")
+        onJoinButton.setText(tr("Show join message"))
+        onLeaveButton.setText(tr("Show leave message"))
 
         (onJoinButton, onLeaveButton)
     }

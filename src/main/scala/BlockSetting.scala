@@ -9,7 +9,9 @@ import org.eclipse.swt.custom.StackLayout
 import org.eclipse.swt.custom.ScrolledComposite
 
 import org.eclipse.swt._
+
 import java.io.File
+import I18N.i18n._
 
 class BlockSetting(tabFolder: TabFolder, parent: ScrolledComposite,
                    onModify: ModifyEvent => Any) extends Composite(parent, SWT.NONE) 
@@ -26,52 +28,52 @@ class BlockSetting(tabFolder: TabFolder, parent: ScrolledComposite,
     var nicknameFont: Font = MyFont.DefaultFont
     var nicknameColor: Color = MyColor.White
 
-    val alphaTitle = "透明度："
+    val alphaTitle = tr("Transparency:")
 
     val gridLayout = new GridLayout(4, false)
 
-    val groupPos = createGroup(this, "視窗位置與大小")
-    val groupBackground = createGroup(this, "背景設定")
-    val groupMessageFont = createGroup(this, "聊天訊息設定")
+    val groupPos = createGroup(this, tr("Window Position / Size"))
+    val groupBackground = createGroup(this, tr("Background Setting"))
+    val groupMessageFont = createGroup(this, tr("Message Setting"))
 
-    val locationX = createText(groupPos, "視窗位址 X：")
-    val locationY = createText(groupPos, "視窗位址 Y：")
-    val width = createText(groupPos, "視窗寬度：")
-    val height = createText(groupPos, "視窗高度：")
+    val locationX = createText(groupPos, tr("Window X:"))
+    val locationY = createText(groupPos, tr("Window Y:"))
+    val width = createText(groupPos, tr("Window Width:"))
+    val height = createText(groupPos, tr("Window Height:"))
 
     val (borderLabel, borderButton) = createColorChooser(
-        groupBackground, "邊框顏色：", borderColor, borderColor = _
+        groupBackground, tr("Border Color:"), borderColor, borderColor = _
     )
 
     val (bgLabel, bgButton) = createColorChooser(
-        groupBackground, "背景顏色：", bgColor, bgColor = _
+        groupBackground, tr("Background Color:"), bgColor, bgColor = _
     )
 
     val (bgImageLabel, bgImageButton, bgImageCheck) = createBackgroundImage(groupBackground)
 
     val (nicknameColorLabel, nicknameColorButton) = createColorChooser(
-        groupMessageFont, "暱稱顏色：", nicknameColor, nicknameColor = _
+        groupMessageFont, tr("Nickname Color:"), nicknameColor, nicknameColor = _
     )
 
     val (nicknameFontLabel, nicknameFontButton) = createFontChooser(
-        groupMessageFont, "暱稱字型：", 
+        groupMessageFont, tr("Nickname Font:"), 
         nicknameFont,
         nicknameFont = _
     )
 
     val (fgLabel, fgButton) = createColorChooser(
-        groupMessageFont, "訊息顏色：", fontColor, fontColor = _
+        groupMessageFont, tr("Message Color:"), fontColor, fontColor = _
     )
 
     val (fontLabel, fontButton) = createFontChooser(
-        groupMessageFont, "訊息字型：", 
+        groupMessageFont, tr("Message Font:"), 
         messageFont,
         messageFont = _
     )
 
     val spanLabel = createSpanLabel(groupMessageFont, 2)
     val (messageSizeLabel, messageSizeSpinner) = createSpinner(
-        groupMessageFont, "訊息數量：", 1, 50
+        groupMessageFont, tr("Message Limit:"), 1, 50
     )
 
 
@@ -96,17 +98,17 @@ class BlockSetting(tabFolder: TabFolder, parent: ScrolledComposite,
         val browse = new Button(parent, SWT.PUSH)
         val clear = new Button(parent, SWT.PUSH)
 
-        label.setText("背景圖案：")
+        label.setText(tr("Background Image"))
         clear.setLayoutData(layoutData2)
-        clear.setText("移除背景圖案")
+        clear.setText(tr("Remove Background Image"))
         clear.addSelectionListener { e: SelectionEvent =>
-            browse.setText("瀏覽……")
+            browse.setText(tr("Browse..."))
             browse.setToolTipText("")
             blockBackgroundImage = None
         }
 
         browse.setLayoutData(layoutData)
-        browse.setText("瀏覽……")
+        browse.setText(tr("Browse..."))
         browse.addSelectionListener { e: SelectionEvent =>
             val extensions = Array("*.jpeg;*.jpg;*.png;*.gif;*.JPG;*.PNG;*.GIF;*.JPEG")
             val fileDialog = new FileDialog(MainWindow.shell, SWT.OPEN)
@@ -129,7 +131,7 @@ class BlockSetting(tabFolder: TabFolder, parent: ScrolledComposite,
         val label = new Label(this, SWT.LEFT|SWT.WRAP)
         layoutData.horizontalSpan =4
         label.setLayoutData(layoutData)
-        label.setText("註：可以直接用滑鼠拖拉聊天室窗，並且用視窗右下角來縮放。")
+        label.setText(tr("* Drag and drop the right-bottom corner of chat window to resize"))
         label
     }
 
@@ -204,12 +206,12 @@ class BlockSetting(tabFolder: TabFolder, parent: ScrolledComposite,
                 testThread = Some(new TestThread(block))
                 testThread.foreach(_.start)
             }
-            button.setText("停止預覽")
+            button.setText(tr("Stop Preview"))
         }
 
         def stopPreview()
         {
-            button.setText("開始預覽")
+            button.setText(tr("Start Preview"))
             notificationBlock.foreach{ block =>
                 testThread.foreach{_.setStop(true)}
                 testThread = None
@@ -220,7 +222,7 @@ class BlockSetting(tabFolder: TabFolder, parent: ScrolledComposite,
 
         layoutData.horizontalSpan = 2
         button.setLayoutData(layoutData)
-        button.setText("開始預覽")
+        button.setText(tr("Start Preview"))
         button.addSelectionListener { e: SelectionEvent =>
             notificationBlock match {
                 case None    => startPreview()
@@ -299,7 +301,7 @@ class BlockSetting(tabFolder: TabFolder, parent: ScrolledComposite,
     })
 
 
-    this.tabItem.setText("固定區塊")
+    this.tabItem.setText(tr("Pinned Chat Window"))
     this.tabItem.setControl(parent)
     this.resetScrollSize()
 }

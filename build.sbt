@@ -12,6 +12,16 @@ scalaVersion := "2.9.1"
 
 fork in run := true
 
-libraryDependencies ++= Seq(
-    "org.pircbotx" % "pircbotx" % "1.7"
+resolvers ++= Seq(
+    "gettext-commons-site" at "http://gettext-commons.googlecode.com/svn/maven-repository"
 )
+
+libraryDependencies ++= Seq(
+    "org.pircbotx" % "pircbotx" % "1.7",
+    "org.xnap.commons" % "gettext-commons" % "0.9.6"
+)
+
+TaskKey[Unit]("xgettext") := {
+    println("This is my action")
+}
+
