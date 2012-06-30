@@ -188,6 +188,8 @@ object Preference extends SWTHelper
         setting.bgColor = bgColor
         setting.fontColor = fontColor
         setting.borderColor = borderColor
+        setting.nicknameColor = nicknameColor
+
         setting.bgButton.setText(bgColor)
         setting.fgButton.setText(fontColor)
         setting.borderButton.setText(borderColor)
