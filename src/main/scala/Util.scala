@@ -20,6 +20,7 @@ object MyIcon
 {
     val appIcon = new Image(Display.getDefault, getClass().getResourceAsStream("/appIcon.png"))
     val ircOP = new Image(Display.getDefault, getClass().getResourceAsStream("/opIcon.png"))
+    val preference = new Image(Display.getDefault, getClass().getResourceAsStream("/preference.png"))
 }
 
 object MyColor

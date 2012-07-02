@@ -18,8 +18,7 @@ object MainWindow extends SWTHelper
     val display = new Display
     val shell = new Shell(display)
 
-    val displayStackLayout = new StackLayout
-
+    val menu = createMenu()
     val logginLabel = createLabel(tr("Login Method"))
     val logginTab = createTabFolder()
     val ircSetting = new IRCSetting(logginTab, e => updateConnectButtonState())
@@ -46,6 +45,24 @@ object MainWindow extends SWTHelper
             case 0 => ircSetting.nickname.getText.trim
             case 1 => justinSetting.username.getText.trim
         }
+    }
+
+    def createMenu() =
+    {
+        val menuBar = new Menu(shell, SWT.BAR)
+        val optionHeader = new MenuItem(menuBar, SWT.CASCADE)
+        val optionMenu = new Menu(shell, SWT.DROP_DOWN)
+        val emoteItem = new MenuItem(optionMenu, SWT.PUSH)
+
+        optionHeader.setMenu(optionMenu)
+        optionHeader.setText(tr("&Preference"))
+        emoteItem.setText("Emotes")
+        emoteItem.addSelectionListener { e: SelectionEvent =>
+            println("// Open Emote dialog")
+        }
+
+        shell.setMenuBar(menuBar)
+        menuBar
     }
 
     def createLabel(title: String)
@@ -265,7 +282,9 @@ object MainWindow extends SWTHelper
                 Preference.save(balloonSetting)
             }
         })
+        
         shell.open()
+        logginTab.setFocus()
 
         while (!shell.isDisposed()) {
             if (!display.readAndDispatch ()) display.sleep ();
