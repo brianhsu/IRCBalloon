@@ -48,14 +48,19 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
                     val message = text.getText.trim()
 
                     MainWindow.getIRCBot.foreach { bot => 
+
                         bot.getChannels.foreach { channel =>
+                            val nickname = MainWindow.getNickname
+                            val user = bot.getUser(nickname)
+                            val isOP = user.getChannelsOpIn.contains(channel)
+                            
                             bot.sendMessage(channel, message)
+
+                            NotificationBlock.this.addMessage(
+                                ChatMessage(nickname, isOP, message)
+                            )
                         }
                     }
-
-                    NotificationBlock.this.addMessage(
-                        ChatMessage(MainWindow.getNickname, true, message)
-                    )
 
                     text.setText("")
                 }
