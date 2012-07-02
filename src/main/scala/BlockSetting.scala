@@ -71,7 +71,7 @@ class BlockSetting(tabFolder: TabFolder, parent: ScrolledComposite,
         messageFont = _
     )
 
-    val spanLabel = createSpanLabel(groupMessageFont, 2)
+    val scrollBarCheckbox = createCheckBox(groupMessageFont, tr("Show scroll bar"))
     val (messageSizeLabel, messageSizeSpinner) = createSpinner(
         groupMessageFont, tr("Message Limit:"), 1, 50
     )
@@ -80,6 +80,17 @@ class BlockSetting(tabFolder: TabFolder, parent: ScrolledComposite,
     val (transparentLabel, transparentScale) = createScaleChooser(this, alphaTitle)
     val previewButton = createPreviewButton()
     val noticeLabel = createNoticeLabel()
+
+    def createCheckBox(parent: Composite, title: String) =
+    {
+        val checkbox = new Button(parent, SWT.CHECK)
+        val layoutData2 = new GridData(SWT.FILL, SWT.FILL, true, false)
+        layoutData2.horizontalSpan = 2
+
+        checkbox.setLayoutData(layoutData2)
+        checkbox.setText(title)
+        checkbox
+    }
 
     def setBlockBackgroundImage(imageFile: String) 
     {
@@ -169,7 +180,8 @@ class BlockSetting(tabFolder: TabFolder, parent: ScrolledComposite,
             borderColor, bgColor, alpha, 
             fontColor, messageFont, 
             nicknameColor, nicknameFont,
-            messageSize, blockBackgroundImage
+            messageSize, scrollBarCheckbox.getSelection,
+            blockBackgroundImage
         )
     }
 
