@@ -96,6 +96,9 @@ object Preference extends SWTHelper
             setting.setBlockBackgroundImage(backgroundImage)
         }
 
+        // Scroll Bar
+        val hasScrollBar = preference.getBoolean("BlockScrollBar", false)
+        setting.scrollBarCheckbox.setSelection(hasScrollBar)
     }
 
     def save(setting: BlockSetting)
@@ -144,9 +147,16 @@ object Preference extends SWTHelper
         preference.putInt("BlockNicknameFontHeight", nicknameFontData.getHeight)
         preference.putInt("BlockNicknameFontStyle", nicknameFontData.getStyle)
 
+        // 訊息數量
         preference.putInt(
             "BlockMessageSize", 
             setting.messageSizeSpinner.getSelection
+        )
+
+        // Scroll Bar
+        preference.putBoolean(
+            "BlockScrollBar",
+            setting.scrollBarCheckbox.getSelection
         )
     }
 
