@@ -15,7 +15,7 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
                              borderColor: Color, bgColor: Color, alpha: Int,
                              fontColor: Color, font: Font, 
                              nicknameColor: Color, nicknameFont: Font,
-                             messageSize: Int, 
+                             messageSize: Int, hasScrollBar: Boolean,
                              backgroundImage: Option[String] = None) extends Notification 
                                                with NotificationTheme 
                                                with NotificationWindow 
@@ -48,14 +48,19 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
                     val message = text.getText.trim()
 
                     MainWindow.getIRCBot.foreach { bot => 
+
                         bot.getChannels.foreach { channel =>
+                            val nickname = MainWindow.getNickname
+                            val user = bot.getUser(nickname)
+                            val isOP = user.getChannelsOpIn.contains(channel)
+                            
                             bot.sendMessage(channel, message)
+
+                            NotificationBlock.this.addMessage(
+                                ChatMessage(nickname, isOP, message)
+                            )
                         }
                     }
-
-                    NotificationBlock.this.addMessage(
-                        ChatMessage(MainWindow.getNickname, true, message)
-                    )
 
                     text.setText("")
                 }
@@ -68,9 +73,15 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
     def createContentLabel() = 
     {
         val layoutData = new GridData(SWT.FILL, SWT.FILL, true, true)
-        val label = new StyledText(shell, SWT.MULTI|SWT.READ_ONLY|SWT.WRAP|SWT.NO_FOCUS)
+        val style = hasScrollBar match {
+            case true  => SWT.MULTI|SWT.WRAP|SWT.READ_ONLY|SWT.V_SCROLL|SWT.NO_FOCUS
+            case false => SWT.MULTI|SWT.WRAP|SWT.READ_ONLY|SWT.NO_FOCUS
+        }
+
+        val label = new StyledText(shell, style)
 
         layoutData.horizontalSpan = 2
+        label.setBackgroundMode(SWT.INHERIT_FORCE)
         label.setLayoutData(layoutData)
         label.addPaintObjectListener(new PaintObjectListener() {
             override def paintObject(event: PaintObjectEvent) {
@@ -144,24 +155,13 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
                     val message = messages.take(messageSize).
                                   reverse.map(_.toString).mkString("\n")
 
-                    label.setText(message)
+                    label.setText(message + "\n")
 
                     nicknameStyles(message).foreach { label.setStyleRange }
                     opStyles(message).foreach { label.setStyleRange }
                 }
             }
         })
-    }
-
-    def this()
-    {
-        this(
-            (300, 448), (100, 100), 
-            MyColor.White, MyColor.Black, 210, 
-            MyColor.White, MyFont.DefaultFont, 
-            MyColor.White, MyFont.DefaultFont,
-            10
-        )
     }
 
     def setLayout()
@@ -176,11 +176,9 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
         label.setFont(font)
         label.setForeground(fontColor)
         label.setLineSpacing(5)
-        label.setEnabled(false)
         label.addModifyListener(new ModifyListener() {
             override def modifyText(e: ModifyEvent) {
                 label.setTopPixel(Int.MaxValue)
-                //label.setTopIndex(label.getLineCount)
             }
         })
 
@@ -278,10 +276,10 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
         optionBGImage match {
             case None => setBackground()
             case Some(null) => setBackground()
-            case Some(image) => 
-                    shell.setBackgroundImage(image)
-                    shell.setBackgroundMode(SWT.INHERIT_DEFAULT)
+            case Some(image) => shell.setBackgroundImage(image)
         }
+
+        shell.setBackgroundMode(SWT.INHERIT_FORCE)
 
         setLayout()
         setMoveAndResize()

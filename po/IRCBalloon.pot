@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-28 17:22+0800\n"
+"POT-Creation-Date: 2012-07-02 13:18+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,221 +17,238 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/main/scala/AreaSelectionDialog.scala:42
-msgid "Drag notification area and double click to confirm"
-msgstr ""
-
-#: src/main/scala/BalloonSetting.scala:29 src/main/scala/BlockSetting.scala:31
-msgid "Transparency:"
-msgstr ""
-
-#: src/main/scala/BalloonSetting.scala:33
-msgid "Notification Area Setting"
-msgstr ""
-
-#: src/main/scala/BalloonSetting.scala:34
-msgid "Area X:"
-msgstr ""
-
-#: src/main/scala/BalloonSetting.scala:35
-msgid "Area Y:"
-msgstr ""
-
-#: src/main/scala/BalloonSetting.scala:36
-msgid "Area Width:"
-msgstr ""
-
-#: src/main/scala/BalloonSetting.scala:37
-msgid "Area Height:"
-msgstr ""
-
-#: src/main/scala/BalloonSetting.scala:41 src/main/scala/BlockSetting.scala:36
-msgid "Background Setting"
-msgstr ""
-
-#: src/main/scala/BalloonSetting.scala:44 src/main/scala/BlockSetting.scala:45
-msgid "Border Color:"
-msgstr ""
-
-#: src/main/scala/BalloonSetting.scala:49 src/main/scala/BlockSetting.scala:49
-msgid "Background Color:"
-msgstr ""
-
-#: src/main/scala/BalloonSetting.scala:53 src/main/scala/BlockSetting.scala:37
-msgid "Message Setting"
-msgstr ""
-
-#: src/main/scala/BalloonSetting.scala:55 src/main/scala/BlockSetting.scala:55
-msgid "Nickname Color:"
-msgstr ""
-
-#: src/main/scala/BalloonSetting.scala:59 src/main/scala/BlockSetting.scala:59
-msgid "Nickname Font:"
-msgstr ""
-
-#: src/main/scala/BalloonSetting.scala:64 src/main/scala/BlockSetting.scala:65
-msgid "Message Color:"
-msgstr ""
-
-#: src/main/scala/BalloonSetting.scala:68 src/main/scala/BlockSetting.scala:69
-msgid "Message Font:"
-msgstr ""
-
-#: src/main/scala/BalloonSetting.scala:73
-msgid "Effect Setting"
-msgstr ""
-
-#: src/main/scala/BalloonSetting.scala:76
-msgid "Bubble keeps (second):"
-msgstr ""
-
-#: src/main/scala/BalloonSetting.scala:79
-msgid "Animation time (ms):"
-msgstr ""
-
-#: src/main/scala/BalloonSetting.scala:82
-msgid "Space between bubbles:"
-msgstr ""
-
-#: src/main/scala/BalloonSetting.scala:162
-msgid "Select notification Area"
-msgstr ""
-
-#: src/main/scala/BalloonSetting.scala:193
-#: src/main/scala/BlockSetting.scala:209
-msgid "Stop Preview"
-msgstr ""
-
-#: src/main/scala/BalloonSetting.scala:198
-#: src/main/scala/BalloonSetting.scala:209
-#: src/main/scala/BlockSetting.scala:214 src/main/scala/BlockSetting.scala:225
-msgid "Start Preview"
-msgstr ""
-
-#: src/main/scala/BalloonSetting.scala:284
-msgid "Bubble Notification"
-msgstr ""
-
-#: src/main/scala/BlockSetting.scala:35
-msgid "Window Position / Size"
-msgstr ""
-
-#: src/main/scala/BlockSetting.scala:39
-msgid "Window X:"
-msgstr ""
-
-#: src/main/scala/BlockSetting.scala:40
-msgid "Window Y:"
-msgstr ""
-
-#: src/main/scala/BlockSetting.scala:41
-msgid "Window Width:"
-msgstr ""
-
-#: src/main/scala/BlockSetting.scala:42
-msgid "Window Height:"
-msgstr ""
-
-#: src/main/scala/BlockSetting.scala:76
-msgid "Message Limit:"
-msgstr ""
-
-#: src/main/scala/BlockSetting.scala:101
-msgid "Background Image"
-msgstr ""
-
-#: src/main/scala/BlockSetting.scala:103
-msgid "Remove Background Image"
-msgstr ""
-
-#: src/main/scala/BlockSetting.scala:105 src/main/scala/BlockSetting.scala:111
-msgid "Browse..."
-msgstr ""
-
-#: src/main/scala/BlockSetting.scala:134
-msgid "* Drag and drop the right-bottom corner of chat window to resize"
-msgstr ""
-
-#: src/main/scala/BlockSetting.scala:304
-msgid "Pinned Chat Window"
-msgstr ""
-
-#: src/main/scala/IRCBot.scala:48 src/main/scala/IRCBot.scala:67
-msgid "[SYS] %s has left"
-msgstr ""
-
-#: src/main/scala/IRCBot.scala:57 src/main/scala/IRCBot.scala:59
-msgid "[SYS] %s has joined"
-msgstr ""
-
-#: src/main/scala/IRCMessage.scala:11
-msgid "[Action] %s %s"
-msgstr ""
-
-#: src/main/scala/IRCSetting.scala:18
-msgid "IRC Host:"
-msgstr ""
-
-#: src/main/scala/IRCSetting.scala:19
-msgid "IRC Port:"
-msgstr ""
-
-#: src/main/scala/IRCSetting.scala:20
-msgid "IRC Password:"
-msgstr ""
-
-#: src/main/scala/IRCSetting.scala:21
-msgid "Nickname:"
-msgstr ""
-
-#: src/main/scala/IRCSetting.scala:22
-msgid "Channel:"
-msgstr ""
-
-#: src/main/scala/IRCSetting.scala:36
-msgid "IRC Setting is not completed"
-msgstr ""
-
-#: src/main/scala/JustinSetting.scala:18
+#: /home/brianhsu/IRCBalloon/src/main/scala/JustinSetting.scala:18
 msgid "Username:"
 msgstr ""
 
-#: src/main/scala/JustinSetting.scala:19
+#: /home/brianhsu/IRCBalloon/src/main/scala/JustinSetting.scala:19
 msgid "Password:"
 msgstr ""
 
-#: src/main/scala/MainWindow.scala:23
+#: /home/brianhsu/IRCBalloon/src/main/scala/BalloonSetting.scala:29
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:31
+msgid "Transparency:"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/BalloonSetting.scala:33
+msgid "Notification Area Setting"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/BalloonSetting.scala:34
+msgid "Area X:"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/BalloonSetting.scala:35
+msgid "Area Y:"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/BalloonSetting.scala:36
+msgid "Area Width:"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/BalloonSetting.scala:37
+msgid "Area Height:"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/BalloonSetting.scala:41
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:36
+msgid "Background Setting"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/BalloonSetting.scala:44
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:45
+msgid "Border Color:"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/BalloonSetting.scala:49
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:49
+msgid "Background Color:"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/BalloonSetting.scala:53
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:37
+msgid "Message Setting"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/BalloonSetting.scala:55
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:55
+msgid "Nickname Color:"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/BalloonSetting.scala:59
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:59
+msgid "Nickname Font:"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/BalloonSetting.scala:64
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:65
+msgid "Message Color:"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/BalloonSetting.scala:68
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:69
+msgid "Message Font:"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/BalloonSetting.scala:73
+msgid "Effect Setting"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/BalloonSetting.scala:76
+msgid "Bubble keeps (second):"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/BalloonSetting.scala:79
+msgid "Animation time (ms):"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/BalloonSetting.scala:82
+msgid "Space between bubbles:"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/BalloonSetting.scala:162
+msgid "Select notification Area"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/BalloonSetting.scala:193
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:221
+msgid "Stop Preview"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/BalloonSetting.scala:198
+#: /home/brianhsu/IRCBalloon/src/main/scala/BalloonSetting.scala:209
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:226
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:237
+msgid "Start Preview"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/BalloonSetting.scala:284
+msgid "Bubble Notification"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:35
+msgid "Window Position / Size"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:39
+msgid "Window X:"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:40
+msgid "Window Y:"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:41
+msgid "Window Width:"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:42
+msgid "Window Height:"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:74
+msgid "Show scroll bar"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:76
+msgid "Message Limit:"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:112
+msgid "Background Image"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:114
+msgid "Remove Background Image"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:116
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:122
+msgid "Browse..."
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:145
+msgid "* Drag and drop the right-bottom corner of chat window to resize"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:316
+msgid "Pinned Chat Window"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/AreaSelectionDialog.scala:42
+msgid "Drag notification area and double click to confirm"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/MainWindow.scala:23
 msgid "Login Method"
 msgstr ""
 
-#: src/main/scala/MainWindow.scala:28
+#: /home/brianhsu/IRCBalloon/src/main/scala/MainWindow.scala:28
 msgid "Display Method"
 msgstr ""
 
-#: src/main/scala/MainWindow.scala:159
+#: /home/brianhsu/IRCBalloon/src/main/scala/MainWindow.scala:159
 msgid "Connecting to IRC server, please wait...\n"
 msgstr ""
 
-#: src/main/scala/MainWindow.scala:204
+#: /home/brianhsu/IRCBalloon/src/main/scala/MainWindow.scala:204
 msgid "Error:"
 msgstr ""
 
-#: src/main/scala/MainWindow.scala:229
+#: /home/brianhsu/IRCBalloon/src/main/scala/MainWindow.scala:229
 msgid "Connect"
 msgstr ""
 
-#: src/main/scala/MainWindow.scala:251
+#: /home/brianhsu/IRCBalloon/src/main/scala/MainWindow.scala:251
 msgid "IRC Notification"
 msgstr ""
 
-#: src/main/scala/NotificationBlock.scala:35
-msgid "Chat:"
+#: /home/brianhsu/IRCBalloon/src/main/scala/IRCMessage.scala:11
+msgid "[Action] %s %s"
 msgstr ""
 
-#: src/main/scala/SWTHelper.scala:170
+#: /home/brianhsu/IRCBalloon/src/main/scala/SWTHelper.scala:170
 msgid "Show join message"
 msgstr ""
 
-#: src/main/scala/SWTHelper.scala:171
+#: /home/brianhsu/IRCBalloon/src/main/scala/SWTHelper.scala:171
 msgid "Show leave message"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/IRCBot.scala:48
+#: /home/brianhsu/IRCBalloon/src/main/scala/IRCBot.scala:67
+msgid "[SYS] %s has left"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/IRCBot.scala:57
+#: /home/brianhsu/IRCBalloon/src/main/scala/IRCBot.scala:59
+msgid "[SYS] %s has joined"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/IRCSetting.scala:18
+msgid "IRC Host:"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/IRCSetting.scala:19
+msgid "IRC Port:"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/IRCSetting.scala:20
+msgid "IRC Password:"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/IRCSetting.scala:21
+msgid "Nickname:"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/IRCSetting.scala:22
+msgid "Channel:"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/IRCSetting.scala:36
+msgid "IRC Setting is not completed"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/NotificationBlock.scala:35
+msgid "Chat:"
 msgstr ""
