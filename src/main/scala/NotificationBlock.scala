@@ -17,6 +17,7 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
                              nicknameColor: Color, nicknameFont: Font,
                              messageSize: Int, hasScrollBar: Boolean,
                              backgroundImage: Option[String] = None) extends Notification 
+                                               with MessageIcon
                                                with NotificationTheme 
                                                with NotificationWindow 
                                                with SWTHelper
@@ -110,43 +111,10 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
         messages = (newMessage :: messages).take(messageSize)
         updateMessages()
     }
-    
+
     def updateMessages()
     {
         display.syncExec (new Runnable {
-
-            def opStyles(message: String): List[StyleRange] = 
-            {
-                val regex = """\[OP\] """.r
-
-                regex.findAllIn(message).matchData.map { data => 
-                    val style = new StyleRange
-
-                    style.start = data.start
-                    style.length = data.end - data.start
-                    style.data = MyIcon.ircOP
-                    style.metrics = new GlyphMetrics(
-                        MyIcon.ircOP.getBounds.height, 0, 
-                        MyIcon.ircOP.getBounds.width / 4
-                    )
-
-                    style
-                }.toList
-            }
-
-            def nicknameStyles(message: String): List[StyleRange] = 
-            {
-                val regex = """\w+:""".r
-
-                regex.findAllIn(message).matchData.map { data => 
-                    val style = new StyleRange
-                    style.start = data.start
-                    style.length = data.end - data.start
-                    style.foreground = nicknameColor
-                    style.font = nicknameFont
-                    style
-                }.toList
-            }
 
             override def run () 
             {
@@ -157,8 +125,11 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
 
                     label.setText(message + "\n")
 
-                    nicknameStyles(message).foreach { label.setStyleRange }
-                    opStyles(message).foreach { label.setStyleRange }
+                    val styles = nicknameStyles(message, nicknameColor, nicknameFont) ++
+                                  opStyles(message) ++ 
+                                  emoteStyles(message)
+
+                    styles.foreach(label.setStyleRange)
                 }
             }
         })
