@@ -68,9 +68,10 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
     def createContentLabel() = 
     {
         val layoutData = new GridData(SWT.FILL, SWT.FILL, true, true)
-        val label = new StyledText(shell, SWT.MULTI|SWT.READ_ONLY|SWT.WRAP|SWT.NO_FOCUS)
+        val label = new StyledText(shell, SWT.MULTI|SWT.WRAP|SWT.V_SCROLL|SWT.READ_ONLY)
 
         layoutData.horizontalSpan = 2
+        label.setBackgroundMode(SWT.INHERIT_FORCE)
         label.setLayoutData(layoutData)
         label.addPaintObjectListener(new PaintObjectListener() {
             override def paintObject(event: PaintObjectEvent) {
@@ -144,7 +145,7 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
                     val message = messages.take(messageSize).
                                   reverse.map(_.toString).mkString("\n")
 
-                    label.setText(message)
+                    label.setText(message + "\n")
 
                     nicknameStyles(message).foreach { label.setStyleRange }
                     opStyles(message).foreach { label.setStyleRange }
@@ -176,7 +177,6 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
         label.setFont(font)
         label.setForeground(fontColor)
         label.setLineSpacing(5)
-        label.setEnabled(false)
         label.addModifyListener(new ModifyListener() {
             override def modifyText(e: ModifyEvent) {
                 label.setTopPixel(Int.MaxValue)
@@ -278,10 +278,10 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
         optionBGImage match {
             case None => setBackground()
             case Some(null) => setBackground()
-            case Some(image) => 
-                    shell.setBackgroundImage(image)
-                    shell.setBackgroundMode(SWT.INHERIT_DEFAULT)
+            case Some(image) => shell.setBackgroundImage(image)
         }
+
+        shell.setBackgroundMode(SWT.INHERIT_FORCE)
 
         setLayout()
         setMoveAndResize()
