@@ -48,7 +48,7 @@ trait MessageIcon
 
     def emoteStyles(message: String): List[StyleRange] = {
         
-        val styleList = Emotes.default.map { case (text, image) =>
+        val styleList = Emotes.getEmotes.map { case (text, image) =>
             val regex = """\Q%s\E""".format(text).r
 
             regex.findAllIn(message).matchData.map { data => 

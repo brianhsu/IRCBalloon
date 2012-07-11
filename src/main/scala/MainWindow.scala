@@ -58,7 +58,8 @@ object MainWindow extends SWTHelper
         optionHeader.setText(tr("&Preference"))
         emoteItem.setText("Emotes")
         emoteItem.addSelectionListener { e: SelectionEvent =>
-            println("// Open Emote dialog")
+            val emotePreference = new EmoteWindow(shell)
+            emotePreference.open()
         }
 
         shell.setMenuBar(menuBar)

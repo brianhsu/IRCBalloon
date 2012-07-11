@@ -81,17 +81,6 @@ class BlockSetting(tabFolder: TabFolder, parent: ScrolledComposite,
     val previewButton = createPreviewButton()
     val noticeLabel = createNoticeLabel()
 
-    def createCheckBox(parent: Composite, title: String) =
-    {
-        val checkbox = new Button(parent, SWT.CHECK)
-        val layoutData2 = new GridData(SWT.FILL, SWT.FILL, true, false)
-        layoutData2.horizontalSpan = 2
-
-        checkbox.setLayoutData(layoutData2)
-        checkbox.setText(title)
-        checkbox
-    }
-
     def setBlockBackgroundImage(imageFile: String) 
     {
         bgImageButton.setToolTipText(imageFile)
