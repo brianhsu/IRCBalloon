@@ -194,5 +194,17 @@ trait SWTHelper
         layoutData.horizontalSpan = span
         label.setLayoutData(layoutData)
     }
+
+    def createCheckBox(parent: Composite, title: String, span: Int = 2) =
+    {
+        val checkbox = new Button(parent, SWT.CHECK)
+        val layoutData2 = new GridData(SWT.FILL, SWT.FILL, true, false)
+        layoutData2.horizontalSpan = 2
+
+        checkbox.setLayoutData(layoutData2)
+        checkbox.setText(title)
+        checkbox
+    }
+
 }
 

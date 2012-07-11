@@ -8,12 +8,52 @@ import org.eclipse.swt.custom.StyledText
 import org.eclipse.swt.custom.StackLayout
 
 import org.eclipse.swt._
+import java.io.File
+import java.io.PrintWriter
+import scala.io.Source
 
 object Preference extends SWTHelper
 {
     import java.util.prefs.Preferences
 
     val preference = Preferences.userNodeForPackage(Preference.getClass)
+    val settingsDir = new File(System.getProperty("user.home") + "/.ircballoon/")
+
+    def readEmotes()
+    {
+        val emoteFile = new File(settingsDir.getPath + "/emotes.txt")
+       
+        for (emote <- Source.fromFile(emoteFile).getLines()) {
+
+            try {
+
+                val Array(text, imagePath) = emote.split("\\|")
+                val image = new Image(Display.getDefault, imagePath)
+
+                Emotes.addEmote(EmoteIcon(text, imagePath))
+
+            } catch {
+                case e =>   // 如果圖片無法讀取，直接忽略
+            }
+        }
+    }
+
+    def saveEmotes()
+    {
+        if (!settingsDir.exists()) {
+            settingsDir.mkdirs()
+        }
+
+        val emoteFile = new File(settingsDir.getPath + "/emotes.txt")
+        val printer = new PrintWriter(emoteFile)
+
+        for (emote <- Emotes.getCustomEmotes) {
+            printer.println("%s|%s" format(emote._1, emote._2))
+        }
+
+        printer.flush()
+        printer.close()
+    }
 
     def read(setting: BlockSetting)
     {
