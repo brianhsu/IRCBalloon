@@ -11,6 +11,7 @@ import org.eclipse.swt.custom.ScrolledComposite
 import org.eclipse.swt._
 import I18N.i18n._
 
+
 object MainWindow extends SWTHelper
 {
     Display.setAppName("IRCBalloon")
@@ -53,13 +54,22 @@ object MainWindow extends SWTHelper
         val optionHeader = new MenuItem(menuBar, SWT.CASCADE)
         val optionMenu = new Menu(shell, SWT.DROP_DOWN)
         val emoteItem = new MenuItem(optionMenu, SWT.PUSH)
+        val avatarItem = new MenuItem(optionMenu, SWT.PUSH)
 
         optionHeader.setMenu(optionMenu)
         optionHeader.setText(tr("&Preference"))
-        emoteItem.setText("Emotes")
+        emoteItem.setText(tr("Emotes"))
         emoteItem.addSelectionListener { e: SelectionEvent =>
             val emotePreference = new EmoteWindow(shell)
             emotePreference.open()
+        }
+
+        avatarItem.setText(tr("Avatar / Nickname"))
+        avatarItem.addSelectionListener { e: SelectionEvent =>
+            /*
+            val avatarPreference = new AvatarWindow(shell)
+            avatarPreference.open()
+            */
         }
 
         shell.setMenuBar(menuBar)
@@ -269,6 +279,7 @@ object MainWindow extends SWTHelper
 
         shell.setText(tr("IRC Notification"))
         shell.setImage(MyIcon.appIcon)
+
         shell.pack()
         shell.addShellListener(new ShellAdapter() {
             override def shellClosed(e: ShellEvent) {
