@@ -19,7 +19,7 @@ trait HasUser
     }
 
     def userDisplay = Avatar(nickname) match {
-        case Some(image) if displayAvatar && onlyAvatar => "[%s]" format(convertedNickname)
+        case Some(image) if displayAvatar && onlyAvatar => "[%s]" format(nickname)
         case Some(image) if displayAvatar => "[%s] %s" format(nickname, convertedNickname)
         case _ => convertedNickname
     }
