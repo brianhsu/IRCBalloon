@@ -10,35 +10,38 @@ object Avatar
     import java.net.URL
 
     var displayAvatar: Boolean = true
-    var onlyAvatar: Boolean = false
-    var usingTwitchAvatar: Boolean = false
+    var onlyAvatar: Boolean = true
+    var usingTwitchAvatar: Boolean = true
 
     private var twitchAvatars: Map[String, Option[Image]] = Map()
+    private var customAvatars: Map[String, Image] = Map()
 
     def getTwitchAvatar(nickname: String): Option[Image] = {
-        
-        def getImage(url: String) = {
-            try {
-                val inputStream = new URL(url).openStream
-                val image = new Image(Display.getDefault, inputStream)
-                inputStream.close()
-                Some(image)
-            } catch {
-                case e => None
-            }
-        }
 
         def isDefault(url: String) = url.contains("404_user")
-
-        val profileURL = "http://api.justin.tv/api/user/show/" + nickname + ".xml"
-        val twitchUserXML = XML.loadString(Source.fromURL(profileURL).mkString)
-        val imageURLTiny = (twitchUserXML \\ "image_url_tiny").map(_.text).filterNot(isDefault)
-        val avatarImage =  imageURLTiny match {
-            case imageURL :: Nil => getImage(imageURL)
-            case _ => None
+        def getImage(url: String) = {
+            val inputStream = new URL(url).openStream
+            val image = new Image(Display.getDefault, inputStream)
+            inputStream.close()
+            Some(image)
         }
 
-        avatarImage
+        try {
+            val profileURL = "http://api.justin.tv/api/user/show/" + nickname + ".xml"
+            val twitchUserXML = XML.loadString(Source.fromURL(profileURL).mkString)
+            val imageURLTiny = 
+                (twitchUserXML \\ "image_url_tiny").map(_.text).filterNot(isDefault)
+
+            val avatarImage =  imageURLTiny match {
+                case imageURL :: Nil => getImage(imageURL)
+                case _ => None
+            }
+
+            avatarImage
+
+        } catch {
+            case _ => None
+        }
     }
 
     def getTwitchAvatarCache(nickname: String): Option[Image] = {
@@ -53,6 +56,9 @@ object Avatar
 
     }
 
-    def apply(nickname: String): Option[Image] = None
+    def apply(nickname: String): Option[Image] = usingTwitchAvatar match {  
+        case true  => customAvatars.get(nickname) orElse getTwitchAvatarCache(nickname)
+        case false => customAvatars.get(nickname)
+    }
 
 }

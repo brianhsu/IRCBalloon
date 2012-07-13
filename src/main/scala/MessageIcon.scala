@@ -67,5 +67,28 @@ trait MessageIcon
 
         styleList.flatten.toList
     }
+
+    def avatarStyles(message: String): List[StyleRange] = {
+        
+        val avatarHolders = """\[(\w)+\]""".r.findAllIn(message).matchData
+
+        avatarHolders.map { data =>
+
+            val nickname = data.matched.drop(1).dropRight(1)
+
+            Avatar(nickname).map { avatar =>
+                val style = new StyleRange
+                style.start = data.start
+                style.length = data.end - data.start
+                style.data = avatar
+                style.metrics = new GlyphMetrics(
+                    avatar.getBounds.height, 0, 
+                    avatar.getBounds.width / data.matched.length
+                )
+                style
+            }
+        }.toList.flatten
+    }
+
 }
 

@@ -127,7 +127,8 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
 
                     val styles = nicknameStyles(message, nicknameColor, nicknameFont) ++
                                   opStyles(message) ++ 
-                                  emoteStyles(message)
+                                  emoteStyles(message) ++
+                                  avatarStyles(message)
 
                     styles.foreach(label.setStyleRange)
                 }

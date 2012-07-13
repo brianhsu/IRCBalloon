@@ -66,10 +66,8 @@ object MainWindow extends SWTHelper
 
         avatarItem.setText(tr("Avatar / Nickname"))
         avatarItem.addSelectionListener { e: SelectionEvent =>
-            /*
             val avatarPreference = new AvatarWindow(shell)
             avatarPreference.open()
-            */
         }
 
         shell.setMenuBar(menuBar)
