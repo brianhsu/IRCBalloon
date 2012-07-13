@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-13 15:35+0800\n"
+"POT-Creation-Date: 2012-07-13 16:18+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -217,7 +217,7 @@ msgstr "連線"
 msgid "IRC Notification"
 msgstr "IRC 通知"
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/IRCMessage.scala:35
+#: /home/brianhsu/IRCBalloon/src/main/scala/IRCMessage.scala:40
 msgid "[Action] %s %s"
 msgstr "[動作] %s %s"
 
@@ -266,17 +266,17 @@ msgid "Use default emote icons"
 msgstr "使用內建的表情圖示"
 
 #: /home/brianhsu/IRCBalloon/src/main/scala/EmoteWindow.scala:180
-#: /home/brianhsu/IRCBalloon/src/main/scala/AvatarWindow.scala:193
+#: /home/brianhsu/IRCBalloon/src/main/scala/AvatarWindow.scala:199
 msgid "Add"
 msgstr "新增"
 
 #: /home/brianhsu/IRCBalloon/src/main/scala/EmoteWindow.scala:195
-#: /home/brianhsu/IRCBalloon/src/main/scala/AvatarWindow.scala:213
+#: /home/brianhsu/IRCBalloon/src/main/scala/AvatarWindow.scala:219
 msgid "Remove"
 msgstr "移除"
 
 #: /home/brianhsu/IRCBalloon/src/main/scala/EmoteWindow.scala:216
-#: /home/brianhsu/IRCBalloon/src/main/scala/AvatarWindow.scala:234
+#: /home/brianhsu/IRCBalloon/src/main/scala/AvatarWindow.scala:240
 msgid "Close"
 msgstr "關閉"
 
@@ -323,8 +323,12 @@ msgstr "顯示大頭貼"
 
 #: /home/brianhsu/IRCBalloon/src/main/scala/AvatarWindow.scala:138
 msgid "Using avatar from Justin.TV / Twitch"
-msgstr "使用 Justin.TV / Twitch 上的頭貼"
+msgstr "使用 Justin.TV / Twitch 上的大頭貼"
 
 #: /home/brianhsu/IRCBalloon/src/main/scala/AvatarWindow.scala:139
 msgid "Don't display nickname when user has Avatar"
 msgstr "當使用者有大頭貼時就不顯示暱稱"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/AvatarWindow.scala:140
+msgid "Use Justin.TV / Twitch nickname "
+msgstr "使用 Justin.TV / Twitch 上的暱稱"

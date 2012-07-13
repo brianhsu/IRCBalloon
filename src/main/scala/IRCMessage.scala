@@ -13,10 +13,15 @@ trait HasUser
     import Avatar.displayAvatar
     import Avatar.onlyAvatar
 
+    def convertedNickname = Avatar.usingTwitchNickname match {
+        case true => Avatar.getTwitchNicknameCache(nickname).getOrElse(nickname)
+        case false => nickname
+    }
+
     def userDisplay = Avatar(nickname) match {
-        case Some(image) if displayAvatar && onlyAvatar => "[%s]" format(nickname)
-        case Some(image) if displayAvatar => "[%s] %s" format(nickname, nickname)
-        case _ => nickname
+        case Some(image) if displayAvatar && onlyAvatar => "[%s]" format(convertedNickname)
+        case Some(image) if displayAvatar => "[%s] %s" format(nickname, convertedNickname)
+        case _ => convertedNickname
     }
 }
 

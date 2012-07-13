@@ -70,6 +70,7 @@ object Preference extends SWTHelper
         Avatar.displayAvatar = preference.getBoolean("displayAvatar", true)
         Avatar.onlyAvatar = preference.getBoolean("onlyAvatar", false)
         Avatar.usingTwitchAvatar = preference.getBoolean("usingTwitchAvatar", false)
+        Avatar.usingTwitchNickname = preference.getBoolean("usingTwitchNickname", false)
 
         if (!avatarFile.exists) {
             return
@@ -106,6 +107,7 @@ object Preference extends SWTHelper
         preference.putBoolean("displayAvatar", Avatar.displayAvatar)
         preference.putBoolean("onlyAvatar", Avatar.onlyAvatar)
         preference.putBoolean("usingTwitchAvatar", Avatar.usingTwitchAvatar)
+        preference.putBoolean("usingTwitchNickname", Avatar.usingTwitchNickname)
     }
 
 
