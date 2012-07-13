@@ -11,21 +11,20 @@ import org.eclipse.swt.custom.ScrolledComposite
 import org.eclipse.swt._
 import I18N.i18n._
 
-case class EmoteIcon(targetText: String, imagePath: String)
-
-class AddEmoteDialog(parent: Shell) extends Dialog(parent, SWT.APPLICATION_MODAL) with SWTHelper
+class AddAvatarDialog(parent: Shell) extends Dialog(parent, SWT.APPLICATION_MODAL) with SWTHelper
 {
-    var result: Option[EmoteIcon] = None
+    var result: Option[(String, String)] = None
 
     val display = parent.getDisplay()
     val shell = new Shell(parent, SWT.DIALOG_TRIM|SWT.APPLICATION_MODAL)
-    val textTarget = createTextTarget()
-    val emoteIcon = createIconField()
+
+    val nickname = createTextTarget()
+    val avatar = createIconField()
     val (okButton, cancelButton) = createButtons()
 
     def setOKButtonState() =
     {
-        (textTarget.getText.trim.length > 0 && emoteIcon.getText.trim.length > 0) match {
+        (nickname.getText.trim.length > 0 && avatar.getText.trim.length > 0) match {
             case true => okButton.setEnabled(true)
             case false => okButton.setEnabled(false)
         }
@@ -34,10 +33,10 @@ class AddEmoteDialog(parent: Shell) extends Dialog(parent, SWT.APPLICATION_MODAL
     def setupListener()
     {
         cancelButton.addSelectionListener { e: SelectionEvent => shell.dispose() }
-        textTarget.addModifyListener { e: ModifyEvent => setOKButtonState() }
-        emoteIcon.addModifyListener { e: ModifyEvent => setOKButtonState() }
+        nickname.addModifyListener { e: ModifyEvent => setOKButtonState() }
+        avatar.addModifyListener { e: ModifyEvent => setOKButtonState() }
         okButton.addSelectionListener { e: SelectionEvent =>
-            result = Some(EmoteIcon(textTarget.getText.trim, emoteIcon.getText.trim))
+            result = Some(nickname.getText.trim, avatar.getText.trim)
             shell.dispose();
         }
     }
@@ -50,7 +49,7 @@ class AddEmoteDialog(parent: Shell) extends Dialog(parent, SWT.APPLICATION_MODAL
 
         layoutData.horizontalSpan = 2
 
-        label.setText(tr("Target text:"))
+        label.setText(tr("Nickname:"))
         text.setLayoutData(layoutData)
 
         text
@@ -63,13 +62,13 @@ class AddEmoteDialog(parent: Shell) extends Dialog(parent, SWT.APPLICATION_MODAL
         val text = new Text(shell, SWT.BORDER)
         val browse = new Button(shell, SWT.PUSH)
 
-        label.setText(tr("Emote Icon:"))
+        label.setText(tr("Avatar:"))
         text.setLayoutData(layoutData)
         browse.setText(tr("Browse..."))
         browse.addSelectionListener { e: SelectionEvent =>
 
             val extensions = Array(
-                "*.png;*.jpg;*.jpeg;*.gif;",
+                "*.png;*.jpg;*.jpeg;*.gif;" + 
                 "*.PNG;*.JPG;*.JPEG;*.GIF"
             )
 
@@ -116,7 +115,7 @@ class AddEmoteDialog(parent: Shell) extends Dialog(parent, SWT.APPLICATION_MODAL
 
         setupListener()
         shell.setLayout(gridLayout)
-        shell.setText(tr("Add Emote Icon"))
+        shell.setText(tr("Add Avatar"))
         shell.pack()
         shell.open()
 
@@ -129,42 +128,62 @@ class AddEmoteDialog(parent: Shell) extends Dialog(parent, SWT.APPLICATION_MODAL
 
 }
 
-class EmoteWindow(parent: Shell) extends SWTHelper
+
+class AvatarWindow(parent: Shell) extends SWTHelper
 {
     val shell = new Shell(parent, SWT.APPLICATION_MODAL|SWT.DIALOG_TRIM)
     val gridLayout = new GridLayout(2, false)
-    val defaultEmotesCheckBox = createCheckBox(shell, tr("Use default emote icons"))
-    val emoteTable = createTable()
+
+    val displayAvatar = createCheckBox(shell, tr("Display avatar"))
+    val usingTwitchAvatar = createCheckBox(shell, tr("Using avatar from Justin.TV / Twitch"))
+    val onlyAvatar = createCheckBox(shell, tr("Don't display nickname when user has Avatar"))
+    val usingTwitchNickname = createCheckBox(shell, tr("Use Justin.TV / Twitch nickname "))
+
+    val avatarTable = createTable()
     val toolBar = createToolBar()
+
     val closeButton = createCloseButton()
 
     def setListener()
     {
-        defaultEmotesCheckBox.addSelectionListener { e: SelectionEvent =>
-            Emotes.useDefault = defaultEmotesCheckBox.getSelection
+        displayAvatar.addSelectionListener { e: SelectionEvent =>
+            Avatar.displayAvatar = displayAvatar.getSelection
         }
+
+        onlyAvatar.addSelectionListener { e:SelectionEvent => 
+            Avatar.onlyAvatar = onlyAvatar.getSelection
+        }
+
+        usingTwitchAvatar.addSelectionListener { e:SelectionEvent => 
+            Avatar.usingTwitchAvatar = usingTwitchAvatar.getSelection
+        }
+
+        usingTwitchNickname.addSelectionListener { e:SelectionEvent => 
+            Avatar.usingTwitchNickname = usingTwitchNickname.getSelection
+        }
+
     }
 
     def createTable() =
     {
         val layoutData = new GridData(SWT.FILL, SWT.FILL, true, true)
         val table = new Table(shell, SWT.FULL_SELECTION|SWT.BORDER)
-        val columns = List("Text", "Image").map { title =>
+        val columns = List("Nickname", "Avatar").map { title =>
             val column = new TableColumn(table, SWT.NONE)
             column.setText(title)
             column
         }
 
-        for (emoteIcon <- Emotes.getCustomEmotes) {
-            val tableItem = new TableItem(table, SWT.NONE)
-            tableItem.setText(Array(emoteIcon._1, emoteIcon._2))
-        }
-
         table.setLinesVisible(true)
         table.setHeaderVisible(true)
         table.setLayoutData(layoutData)
-        table.getColumns.foreach(_.pack())
 
+        Avatar.getCustomAvatars.foreach { case(nickname, (imagePath, image)) =>
+            val tableItem = new TableItem(table, SWT.NONE)
+            tableItem.setText(Array(nickname, imagePath))
+        }
+
+        table.getColumns.foreach(_.pack())
         table
     }
 
@@ -179,14 +198,19 @@ class EmoteWindow(parent: Shell) extends SWTHelper
         addButton.setImage(MyIcon.add)
         addButton.setText(tr("Add"))
         addButton.addSelectionListener { e: SelectionEvent =>
-            val dialog = new AddEmoteDialog(shell)
-
-            for (emoteIcon <- dialog.open()) {
+            val avatarDialog = new AddAvatarDialog(shell)
+            
+            avatarDialog.open().foreach { case(nickname, avatarPath) =>
                 try {
-                    val image = new Image(Display.getDefault, emoteIcon.imagePath)
-                    Emotes.addEmote(emoteIcon)
-                    val tableItem = new TableItem(emoteTable, SWT.NONE)
-                    tableItem.setText(Array(emoteIcon.targetText, emoteIcon.imagePath))
+
+                    val image = new Image(Display.getDefault, avatarPath);
+                    val tableItem = new TableItem(avatarTable, SWT.NONE)
+
+                    tableItem.setText(Array(nickname, avatarPath))
+                    Avatar.addAvatar(nickname, avatarPath)
+                    
+                } catch {
+                    case e =>
                 }
             }
         }
@@ -194,10 +218,10 @@ class EmoteWindow(parent: Shell) extends SWTHelper
         removeButton.setImage(MyIcon.remove)
         removeButton.setText(tr("Remove"))
         removeButton.addSelectionListener { e: SelectionEvent =>
-            for (index <- emoteTable.getSelectionIndices) {
-                val targetText = emoteTable.getItem(index).getText(0)
-                emoteTable.remove(index)
-                Emotes.removeEmote(targetText)
+            for (index <- avatarTable.getSelectionIndices) {
+                val nickname = avatarTable.getItem(index).getText(0)
+                avatarTable.remove(index)
+                Avatar.removeAvatar(nickname)
             }
         }
 
@@ -223,12 +247,15 @@ class EmoteWindow(parent: Shell) extends SWTHelper
 
     def open()
     {
-        defaultEmotesCheckBox.setSelection(Emotes.useDefault)
-
         setListener()
 
+        displayAvatar.setSelection(Avatar.displayAvatar)
+        usingTwitchAvatar.setSelection(Avatar.usingTwitchAvatar)
+        onlyAvatar.setSelection(Avatar.onlyAvatar)
+        usingTwitchNickname.setSelection(Avatar.usingTwitchNickname)
+
         shell.setLayout(gridLayout)
-        shell.setText("Emote Preference")
+        shell.setText("Avatar / Nickname Preference")
         shell.setSize(600, 400)
         shell.open()
     }

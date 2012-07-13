@@ -75,7 +75,6 @@ class IRCBot(hostname: String, port: Int, nickname: String,
         onLog(line)
     }
 
-
     private def connect()
     {
         password match {

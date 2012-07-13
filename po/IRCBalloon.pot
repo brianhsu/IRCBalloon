@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-02 13:18+0800\n"
+"POT-Creation-Date: 2012-07-13 16:18+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -111,14 +111,14 @@ msgid "Select notification Area"
 msgstr ""
 
 #: /home/brianhsu/IRCBalloon/src/main/scala/BalloonSetting.scala:193
-#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:221
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:210
 msgid "Stop Preview"
 msgstr ""
 
 #: /home/brianhsu/IRCBalloon/src/main/scala/BalloonSetting.scala:198
 #: /home/brianhsu/IRCBalloon/src/main/scala/BalloonSetting.scala:209
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:215
 #: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:226
-#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:237
 msgid "Start Preview"
 msgstr ""
 
@@ -154,24 +154,26 @@ msgstr ""
 msgid "Message Limit:"
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:112
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:101
 msgid "Background Image"
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:114
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:103
 msgid "Remove Background Image"
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:116
-#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:122
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:105
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:111
+#: /home/brianhsu/IRCBalloon/src/main/scala/EmoteWindow.scala:68
+#: /home/brianhsu/IRCBalloon/src/main/scala/AvatarWindow.scala:67
 msgid "Browse..."
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:145
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:134
 msgid "* Drag and drop the right-bottom corner of chat window to resize"
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:316
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:305
 msgid "Pinned Chat Window"
 msgstr ""
 
@@ -187,23 +189,35 @@ msgstr ""
 msgid "Display Method"
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/MainWindow.scala:159
+#: /home/brianhsu/IRCBalloon/src/main/scala/MainWindow.scala:60
+msgid "&Preference"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/MainWindow.scala:61
+msgid "Emotes"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/MainWindow.scala:67
+msgid "Avatar / Nickname"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/MainWindow.scala:185
 msgid "Connecting to IRC server, please wait...\n"
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/MainWindow.scala:204
+#: /home/brianhsu/IRCBalloon/src/main/scala/MainWindow.scala:230
 msgid "Error:"
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/MainWindow.scala:229
+#: /home/brianhsu/IRCBalloon/src/main/scala/MainWindow.scala:255
 msgid "Connect"
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/MainWindow.scala:251
+#: /home/brianhsu/IRCBalloon/src/main/scala/MainWindow.scala:279
 msgid "IRC Notification"
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/IRCMessage.scala:11
+#: /home/brianhsu/IRCBalloon/src/main/scala/IRCMessage.scala:40
 msgid "[Action] %s %s"
 msgstr ""
 
@@ -225,6 +239,47 @@ msgstr ""
 msgid "[SYS] %s has joined"
 msgstr ""
 
+#: /home/brianhsu/IRCBalloon/src/main/scala/EmoteWindow.scala:53
+msgid "Target text:"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/EmoteWindow.scala:66
+msgid "Emote Icon:"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/EmoteWindow.scala:105
+#: /home/brianhsu/IRCBalloon/src/main/scala/AvatarWindow.scala:104
+msgid "OK"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/EmoteWindow.scala:108
+#: /home/brianhsu/IRCBalloon/src/main/scala/AvatarWindow.scala:107
+msgid "Cancel"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/EmoteWindow.scala:119
+msgid "Add Emote Icon"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/EmoteWindow.scala:136
+msgid "Use default emote icons"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/EmoteWindow.scala:180
+#: /home/brianhsu/IRCBalloon/src/main/scala/AvatarWindow.scala:199
+msgid "Add"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/EmoteWindow.scala:195
+#: /home/brianhsu/IRCBalloon/src/main/scala/AvatarWindow.scala:219
+msgid "Remove"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/EmoteWindow.scala:216
+#: /home/brianhsu/IRCBalloon/src/main/scala/AvatarWindow.scala:240
+msgid "Close"
+msgstr ""
+
 #: /home/brianhsu/IRCBalloon/src/main/scala/IRCSetting.scala:18
 msgid "IRC Host:"
 msgstr ""
@@ -238,6 +293,7 @@ msgid "IRC Password:"
 msgstr ""
 
 #: /home/brianhsu/IRCBalloon/src/main/scala/IRCSetting.scala:21
+#: /home/brianhsu/IRCBalloon/src/main/scala/AvatarWindow.scala:52
 msgid "Nickname:"
 msgstr ""
 
@@ -249,6 +305,30 @@ msgstr ""
 msgid "IRC Setting is not completed"
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/NotificationBlock.scala:35
+#: /home/brianhsu/IRCBalloon/src/main/scala/NotificationBlock.scala:36
 msgid "Chat:"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/AvatarWindow.scala:65
+msgid "Avatar:"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/AvatarWindow.scala:118
+msgid "Add Avatar"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/AvatarWindow.scala:137
+msgid "Display avatar"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/AvatarWindow.scala:138
+msgid "Using avatar from Justin.TV / Twitch"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/AvatarWindow.scala:139
+msgid "Don't display nickname when user has Avatar"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/AvatarWindow.scala:140
+msgid "Use Justin.TV / Twitch nickname "
 msgstr ""

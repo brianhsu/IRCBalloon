@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-02 13:18+0800\n"
+"POT-Creation-Date: 2012-07-13 16:18+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -111,14 +111,14 @@ msgid "Select notification Area"
 msgstr "選擇通知區域"
 
 #: /home/brianhsu/IRCBalloon/src/main/scala/BalloonSetting.scala:193
-#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:221
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:210
 msgid "Stop Preview"
 msgstr "停止預覽"
 
 #: /home/brianhsu/IRCBalloon/src/main/scala/BalloonSetting.scala:198
 #: /home/brianhsu/IRCBalloon/src/main/scala/BalloonSetting.scala:209
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:215
 #: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:226
-#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:237
 msgid "Start Preview"
 msgstr "開始預覽"
 
@@ -154,24 +154,26 @@ msgstr "顯示下拉捲軸"
 msgid "Message Limit:"
 msgstr "訊息數目："
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:112
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:101
 msgid "Background Image"
 msgstr "背景圖案："
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:114
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:103
 msgid "Remove Background Image"
 msgstr "移除背景圖案"
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:116
-#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:122
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:105
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:111
+#: /home/brianhsu/IRCBalloon/src/main/scala/EmoteWindow.scala:68
+#: /home/brianhsu/IRCBalloon/src/main/scala/AvatarWindow.scala:67
 msgid "Browse..."
 msgstr "瀏覽……"
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:145
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:134
 msgid "* Drag and drop the right-bottom corner of chat window to resize"
 msgstr "註：可以直接托拉視窗邊緣移動位址，或拉右下角改變大小"
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:316
+#: /home/brianhsu/IRCBalloon/src/main/scala/BlockSetting.scala:305
 msgid "Pinned Chat Window"
 msgstr "固定視窗"
 
@@ -187,23 +189,35 @@ msgstr "連線方式"
 msgid "Display Method"
 msgstr "顯示方式"
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/MainWindow.scala:159
+#: /home/brianhsu/IRCBalloon/src/main/scala/MainWindow.scala:60
+msgid "&Preference"
+msgstr "偏好設定(&P)"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/MainWindow.scala:61
+msgid "Emotes"
+msgstr "表情圖示"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/MainWindow.scala:67
+msgid "Avatar / Nickname"
+msgstr "大頭貼與暱稱"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/MainWindow.scala:185
 msgid "Connecting to IRC server, please wait...\n"
 msgstr "連線至 IRC 伺服器，請稍候……\n"
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/MainWindow.scala:204
+#: /home/brianhsu/IRCBalloon/src/main/scala/MainWindow.scala:230
 msgid "Error:"
 msgstr "錯誤："
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/MainWindow.scala:229
+#: /home/brianhsu/IRCBalloon/src/main/scala/MainWindow.scala:255
 msgid "Connect"
 msgstr "連線"
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/MainWindow.scala:251
+#: /home/brianhsu/IRCBalloon/src/main/scala/MainWindow.scala:279
 msgid "IRC Notification"
 msgstr "IRC 通知"
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/IRCMessage.scala:11
+#: /home/brianhsu/IRCBalloon/src/main/scala/IRCMessage.scala:40
 msgid "[Action] %s %s"
 msgstr "[動作] %s %s"
 
@@ -225,6 +239,47 @@ msgstr "[系統] %s 離開聊天室"
 msgid "[SYS] %s has joined"
 msgstr "[系統] %s 進入聊天室"
 
+#: /home/brianhsu/IRCBalloon/src/main/scala/EmoteWindow.scala:53
+msgid "Target text:"
+msgstr "要取代的文字："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/EmoteWindow.scala:66
+msgid "Emote Icon:"
+msgstr "表情圖示："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/EmoteWindow.scala:105
+#: /home/brianhsu/IRCBalloon/src/main/scala/AvatarWindow.scala:104
+msgid "OK"
+msgstr "確定"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/EmoteWindow.scala:108
+#: /home/brianhsu/IRCBalloon/src/main/scala/AvatarWindow.scala:107
+msgid "Cancel"
+msgstr "取消"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/EmoteWindow.scala:119
+msgid "Add Emote Icon"
+msgstr "新增表情圖示"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/EmoteWindow.scala:136
+msgid "Use default emote icons"
+msgstr "使用內建的表情圖示"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/EmoteWindow.scala:180
+#: /home/brianhsu/IRCBalloon/src/main/scala/AvatarWindow.scala:199
+msgid "Add"
+msgstr "新增"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/EmoteWindow.scala:195
+#: /home/brianhsu/IRCBalloon/src/main/scala/AvatarWindow.scala:219
+msgid "Remove"
+msgstr "移除"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/EmoteWindow.scala:216
+#: /home/brianhsu/IRCBalloon/src/main/scala/AvatarWindow.scala:240
+msgid "Close"
+msgstr "關閉"
+
 #: /home/brianhsu/IRCBalloon/src/main/scala/IRCSetting.scala:18
 msgid "IRC Host:"
 msgstr "IRC 伺服器主機："
@@ -238,6 +293,7 @@ msgid "IRC Password:"
 msgstr "IRC 伺服器密碼："
 
 #: /home/brianhsu/IRCBalloon/src/main/scala/IRCSetting.scala:21
+#: /home/brianhsu/IRCBalloon/src/main/scala/AvatarWindow.scala:52
 msgid "Nickname:"
 msgstr "暱稱："
 
@@ -249,6 +305,30 @@ msgstr "聊天頻道："
 msgid "IRC Setting is not completed"
 msgstr "IRC 設定不完整"
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/NotificationBlock.scala:35
+#: /home/brianhsu/IRCBalloon/src/main/scala/NotificationBlock.scala:36
 msgid "Chat:"
 msgstr "聊天："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/AvatarWindow.scala:65
+msgid "Avatar:"
+msgstr "大頭貼："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/AvatarWindow.scala:118
+msgid "Add Avatar"
+msgstr "新增大頭貼："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/AvatarWindow.scala:137
+msgid "Display avatar"
+msgstr "顯示大頭貼"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/AvatarWindow.scala:138
+msgid "Using avatar from Justin.TV / Twitch"
+msgstr "使用 Justin.TV / Twitch 上的大頭貼"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/AvatarWindow.scala:139
+msgid "Don't display nickname when user has Avatar"
+msgstr "當使用者有大頭貼時就不顯示暱稱"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/AvatarWindow.scala:140
+msgid "Use Justin.TV / Twitch nickname "
+msgstr "使用 Justin.TV / Twitch 上的暱稱"

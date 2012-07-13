@@ -66,7 +66,8 @@ trait NotificationBalloon
 
             val styles = nicknameStyles(message.toString, nicknameColor, nicknameFont) ++
                          opStyles(message.toString) ++
-                         emoteStyles(message.toString)
+                         emoteStyles(message.toString) ++
+                         avatarStyles(message.toString)
 
             styles.foreach(label.setStyleRange)
                           
