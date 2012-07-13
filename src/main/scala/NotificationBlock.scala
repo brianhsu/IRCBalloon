@@ -123,7 +123,7 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
                     val message = messages.take(messageSize).
                                   reverse.map(_.toString).mkString("\n")
 
-                    label.setText(message + "\n")
+                    label.setText(message)
 
                     val styles = nicknameStyles(message, nicknameColor, nicknameFont) ++
                                   opStyles(message) ++ 
@@ -131,6 +131,7 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
                                   avatarStyles(message)
 
                     styles.foreach(label.setStyleRange)
+                    label.setTopPixel(Int.MaxValue)
                 }
             }
         })
@@ -148,12 +149,6 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
         label.setFont(font)
         label.setForeground(fontColor)
         label.setLineSpacing(5)
-        label.addModifyListener(new ModifyListener() {
-            override def modifyText(e: ModifyEvent) {
-                label.setTopPixel(Int.MaxValue)
-            }
-        })
-
     }
 
     def setMoveAndResize()

@@ -14,7 +14,9 @@ object Avatar
     var usingTwitchAvatar: Boolean = true
 
     private var twitchAvatars: Map[String, Option[Image]] = Map()
-    private var customAvatars: Map[String, Image] = Map()
+    private var customAvatars: Map[String, (String, Image)] = Map()
+
+    def getCustomAvatars = customAvatars
 
     def getTwitchAvatar(nickname: String): Option[Image] = {
 
@@ -56,9 +58,27 @@ object Avatar
 
     }
 
+    def getImageFile(filePath: String) =
+    {
+        new Image(Display.getDefault, filePath)
+    }
+
+    def addAvatar(nickname: String, imagePath: String)
+    {
+        customAvatars += (nickname -> (imagePath, getImageFile(imagePath)))
+    }
+
+    def removeAvatar(nickname: String)
+    {
+        customAvatars.get(nickname).foreach(_._2.dispose())
+        customAvatars -= nickname
+    }
+
     def apply(nickname: String): Option[Image] = usingTwitchAvatar match {  
-        case true  => customAvatars.get(nickname) orElse getTwitchAvatarCache(nickname)
-        case false => customAvatars.get(nickname)
+        case true  => customAvatars.get(nickname).map(_._2) orElse 
+                      getTwitchAvatarCache(nickname)
+
+        case false => customAvatars.get(nickname).map(_._2)
     }
 
 }
