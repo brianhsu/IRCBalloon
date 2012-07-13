@@ -69,8 +69,8 @@ class AddEmoteDialog(parent: Shell) extends Dialog(parent, SWT.APPLICATION_MODAL
         browse.addSelectionListener { e: SelectionEvent =>
 
             val extensions = Array(
-                "*.png", "*.jpg", "*.jpeg", "*.gif", 
-                "*.PNG", "*.JPG", "*.JPEG", "*.GIF"
+                "*.png;*.jpg;*.jpeg;*.gif;",
+                "*.PNG;*.JPG;*.JPEG;*.GIF"
             )
 
             val fileDialog = new FileDialog(shell, SWT.OPEN)

@@ -178,8 +178,6 @@ class AvatarWindow(parent: Shell) extends SWTHelper
         }
 
         table.getColumns.foreach(_.pack())
-
-
         table
     }
 
@@ -209,9 +207,6 @@ class AvatarWindow(parent: Shell) extends SWTHelper
                     case e =>
                 }
             }
-
-
-
         }
 
         removeButton.setImage(MyIcon.remove)

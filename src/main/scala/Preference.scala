@@ -21,8 +21,14 @@ object Preference extends SWTHelper
 
     def readEmotes()
     {
+        Emotes.useDefault = preference.getBoolean("useDefaultEmote", true)
+
         val emoteFile = new File(settingsDir.getPath + "/emotes.txt")
-       
+
+        if (!emoteFile.exists) {
+            return
+        }
+
         for (emote <- Source.fromFile(emoteFile).getLines()) {
 
             try {
@@ -53,7 +59,55 @@ object Preference extends SWTHelper
 
         printer.flush()
         printer.close()
+
+        preference.putBoolean("useDefaultEmote", Emotes.useDefault)
     }
+
+    def readAvatars()
+    {
+        val avatarFile = new File(settingsDir.getPath + "/avatars.txt")
+
+        Avatar.displayAvatar = preference.getBoolean("displayAvatar", true)
+        Avatar.onlyAvatar = preference.getBoolean("onlyAvatar", false)
+        Avatar.usingTwitchAvatar = preference.getBoolean("usingTwitchAvatar", false)
+
+        if (!avatarFile.exists) {
+            return
+        }
+       
+        Source.fromFile(avatarFile).getLines().foreach { avatar =>
+
+            try {
+                val Array(nickname, imagePath) = avatar.split("\\|")
+                val image = new Image(Display.getDefault, imagePath)
+                Avatar.addAvatar(nickname, imagePath)
+            } catch {
+                case e =>   // 如果圖片無法讀取，直接忽略
+            }
+        }
+    }
+
+    def saveAvatars()
+    {
+        if (!settingsDir.exists()) {
+            settingsDir.mkdirs()
+        }
+
+        val avatarFile = new File(settingsDir.getPath + "/avatars.txt")
+        val printer = new PrintWriter(avatarFile)
+
+        Avatar.getCustomAvatars.foreach { case(nickname, (imageFile, image)) =>
+            printer.println("%s|%s" format(nickname, imageFile))
+        }
+
+        printer.flush()
+        printer.close()
+
+        preference.putBoolean("displayAvatar", Avatar.displayAvatar)
+        preference.putBoolean("onlyAvatar", Avatar.onlyAvatar)
+        preference.putBoolean("usingTwitchAvatar", Avatar.usingTwitchAvatar)
+    }
+
 
     def read(setting: BlockSetting)
     {

@@ -274,6 +274,7 @@ object MainWindow extends SWTHelper
         Preference.read(blockSetting)
         Preference.read(balloonSetting)
         Preference.readEmotes()
+        Preference.readAvatars()
 
         shell.setText(tr("IRC Notification"))
         shell.setImage(MyIcon.appIcon)
@@ -292,6 +293,7 @@ object MainWindow extends SWTHelper
                 Preference.save(blockSetting)
                 Preference.save(balloonSetting)
                 Preference.saveEmotes()
+                Preference.saveAvatars()
             }
         })
         
