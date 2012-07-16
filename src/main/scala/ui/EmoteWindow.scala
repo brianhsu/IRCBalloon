@@ -10,6 +10,7 @@ import org.eclipse.swt.custom.ScrolledComposite
 
 import org.eclipse.swt._
 import I18N.i18n._
+import ImageUtil._
 
 case class EmoteIcon(targetText: String, imagePath: String)
 
@@ -183,7 +184,7 @@ class EmoteWindow(parent: Shell) extends SWTHelper
 
             for (emoteIcon <- dialog.open()) {
                 try {
-                    val image = new Image(Display.getDefault, emoteIcon.imagePath)
+                    val image = loadFromFile(emoteIcon.imagePath).get
                     Emotes.addEmote(emoteIcon)
                     val tableItem = new TableItem(emoteTable, SWT.NONE)
                     tableItem.setText(Array(emoteIcon.targetText, emoteIcon.imagePath))

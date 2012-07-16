@@ -10,6 +10,7 @@ import org.eclipse.swt._
 import scala.math._
 import scala.collection.JavaConversions._
 import I18N.i18n._
+import ImageUtil._
 
 case class NotificationBlock(size: (Int, Int), location: (Int, Int), 
                              borderColor: Color, bgColor: Color, alpha: Int,
@@ -232,13 +233,7 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
 
     def open()
     {
-        val optionBGImage = backgroundImage.flatMap { file => 
-            try { 
-                Some(new Image(display, file))
-            } catch {
-                case e => None
-            }
-        }
+        val optionBGImage = backgroundImage.flatMap { file => loadFromFile(file) }
 
         optionBGImage match {
             case None => setBackground()

@@ -6,19 +6,11 @@ sealed trait IRCMessage
 
 trait HasUser
 {
+    import Preference.displayAvatar
+    import Preference.onlyAvatar
+
     val nickname: String
-
-    import Avatar.displayAvatar
-    import Avatar.onlyAvatar
-
-    /**
-     *  視狀況取代使用者名稱取代為 Twitch 的暱稱
-     *
-     */
-    def convertedNickname = Avatar.usingTwitchNickname match {
-        case true => Avatar.getTwitchNicknameCache(nickname).getOrElse(nickname)
-        case false => nickname
-    }
+    lazy val user = IRCUser(nickname)
 
     /**
      *  加入 Avatar 代碼
@@ -27,10 +19,10 @@ trait HasUser
      *  入 Avatar 控制碼 [nickname]，UI 看到這個控制碼的時
      *  候會取代為使用者的 Avatar。
      */
-    def userDisplay = Avatar(nickname) match {
-        case Some(image) if displayAvatar && onlyAvatar => "[%s]" format(nickname)
-        case Some(image) if displayAvatar => "[%s] %s" format(nickname, convertedNickname)
-        case _ => convertedNickname
+    def userDisplay = user.avatar match {
+        case Some(image) if displayAvatar && onlyAvatar => "[%s]" format(user.username)
+        case Some(image) if displayAvatar => "[%s] %s" format(user.username, user.nickname)
+        case _ => user.nickname
     }
 }
 

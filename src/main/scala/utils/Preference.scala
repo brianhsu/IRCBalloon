@@ -11,10 +11,16 @@ import org.eclipse.swt._
 import java.io.File
 import java.io.PrintWriter
 import scala.io.Source
+import ImageUtil._
 
 object Preference extends SWTHelper
 {
     import java.util.prefs.Preferences
+
+    var displayAvatar: Boolean = true
+    var onlyAvatar: Boolean = false
+    var usingTwitchAvatar: Boolean = false
+    var usingTwitchNickname: Boolean = true
 
     val preference = Preferences.userNodeForPackage(Preference.getClass)
     val settingsDir = new File(System.getProperty("user.home") + "/.ircballoon/")
@@ -34,7 +40,7 @@ object Preference extends SWTHelper
             try {
 
                 val Array(text, imagePath) = emote.split("\\|")
-                val image = new Image(Display.getDefault, imagePath)
+                val image = loadFromFile(imagePath).get
 
                 Emotes.addEmote(EmoteIcon(text, imagePath))
 
@@ -67,10 +73,10 @@ object Preference extends SWTHelper
     {
         val avatarFile = new File(settingsDir.getPath + "/avatars.txt")
 
-        Avatar.displayAvatar = preference.getBoolean("displayAvatar", true)
-        Avatar.onlyAvatar = preference.getBoolean("onlyAvatar", false)
-        Avatar.usingTwitchAvatar = preference.getBoolean("usingTwitchAvatar", false)
-        Avatar.usingTwitchNickname = preference.getBoolean("usingTwitchNickname", false)
+        this.displayAvatar = preference.getBoolean("displayAvatar", true)
+        this.onlyAvatar = preference.getBoolean("onlyAvatar", false)
+        this.usingTwitchAvatar = preference.getBoolean("usingTwitchAvatar", false)
+        this.usingTwitchNickname = preference.getBoolean("usingTwitchNickname", false)
 
         if (!avatarFile.exists) {
             return
@@ -78,12 +84,10 @@ object Preference extends SWTHelper
        
         Source.fromFile(avatarFile).getLines().foreach { avatar =>
 
-            try {
-                val Array(nickname, imagePath) = avatar.split("\\|")
-                val image = new Image(Display.getDefault, imagePath)
-                Avatar.addAvatar(nickname, imagePath)
-            } catch {
-                case e =>   // 如果圖片無法讀取，直接忽略
+            val Array(nickname, imageFile) = avatar.split("\\|")
+
+            loadFromFile(imageFile).foreach { image =>
+                IRCUser.addAvatar(nickname, imageFile)
             }
         }
     }
@@ -97,17 +101,17 @@ object Preference extends SWTHelper
         val avatarFile = new File(settingsDir.getPath + "/avatars.txt")
         val printer = new PrintWriter(avatarFile)
 
-        Avatar.getCustomAvatars.foreach { case(nickname, (imageFile, image)) =>
-            printer.println("%s|%s" format(nickname, imageFile))
+        IRCUser.getAvatars.foreach { case(nickname, avatar) =>
+            printer.println("%s|%s" format(nickname, avatar.file))
         }
 
         printer.flush()
         printer.close()
 
-        preference.putBoolean("displayAvatar", Avatar.displayAvatar)
-        preference.putBoolean("onlyAvatar", Avatar.onlyAvatar)
-        preference.putBoolean("usingTwitchAvatar", Avatar.usingTwitchAvatar)
-        preference.putBoolean("usingTwitchNickname", Avatar.usingTwitchNickname)
+        preference.putBoolean("displayAvatar", this.displayAvatar)
+        preference.putBoolean("onlyAvatar", this.onlyAvatar)
+        preference.putBoolean("usingTwitchAvatar", this.usingTwitchAvatar)
+        preference.putBoolean("usingTwitchNickname", this.usingTwitchNickname)
     }
 
 

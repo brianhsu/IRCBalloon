@@ -74,9 +74,9 @@ trait MessageIcon
 
         avatarHolders.map { data =>
 
-            val nickname = data.matched.drop(1).dropRight(1)
+            val user = IRCUser(data.matched.drop(1).dropRight(1))
 
-            Avatar(nickname).map { avatar =>
+            user.avatar.map { avatar =>
                 val style = new StyleRange
                 style.start = data.start
                 style.length = data.end - data.start

@@ -10,8 +10,10 @@ import org.eclipse.swt.custom.ScrolledComposite
 
 import org.eclipse.swt._
 import I18N.i18n._
+import ImageUtil._
 
-class AddAvatarDialog(parent: Shell) extends Dialog(parent, SWT.APPLICATION_MODAL) with SWTHelper
+class AddAvatarDialog(parent: Shell) extends Dialog(parent, SWT.APPLICATION_MODAL) 
+                                     with SWTHelper
 {
     var result: Option[(String, String)] = None
 
@@ -147,21 +149,20 @@ class AvatarWindow(parent: Shell) extends SWTHelper
     def setListener()
     {
         displayAvatar.addSelectionListener { e: SelectionEvent =>
-            Avatar.displayAvatar = displayAvatar.getSelection
+            Preference.displayAvatar = displayAvatar.getSelection
         }
 
         onlyAvatar.addSelectionListener { e:SelectionEvent => 
-            Avatar.onlyAvatar = onlyAvatar.getSelection
+            Preference.onlyAvatar = onlyAvatar.getSelection
         }
 
         usingTwitchAvatar.addSelectionListener { e:SelectionEvent => 
-            Avatar.usingTwitchAvatar = usingTwitchAvatar.getSelection
+            Preference.usingTwitchAvatar = usingTwitchAvatar.getSelection
         }
 
         usingTwitchNickname.addSelectionListener { e:SelectionEvent => 
-            Avatar.usingTwitchNickname = usingTwitchNickname.getSelection
+            Preference.usingTwitchNickname = usingTwitchNickname.getSelection
         }
-
     }
 
     def createTable() =
@@ -178,9 +179,9 @@ class AvatarWindow(parent: Shell) extends SWTHelper
         table.setHeaderVisible(true)
         table.setLayoutData(layoutData)
 
-        Avatar.getCustomAvatars.foreach { case(nickname, (imagePath, image)) =>
+        IRCUser.getAvatars.foreach { case(nickname, avatar) =>
             val tableItem = new TableItem(table, SWT.NONE)
-            tableItem.setText(Array(nickname, imagePath))
+            tableItem.setText(Array(nickname, avatar.file))
         }
 
         table.getColumns.foreach(_.pack())
@@ -203,11 +204,11 @@ class AvatarWindow(parent: Shell) extends SWTHelper
             avatarDialog.open().foreach { case(nickname, avatarPath) =>
                 try {
 
-                    val image = new Image(Display.getDefault, avatarPath);
+                    val image = loadFromFile(avatarPath).get
                     val tableItem = new TableItem(avatarTable, SWT.NONE)
 
                     tableItem.setText(Array(nickname, avatarPath))
-                    Avatar.addAvatar(nickname, avatarPath)
+                    IRCUser.addAvatar(nickname, avatarPath)
                     
                 } catch {
                     case e =>
@@ -221,7 +222,7 @@ class AvatarWindow(parent: Shell) extends SWTHelper
             for (index <- avatarTable.getSelectionIndices) {
                 val nickname = avatarTable.getItem(index).getText(0)
                 avatarTable.remove(index)
-                Avatar.removeAvatar(nickname)
+                IRCUser.removeAvatar(nickname)
             }
         }
 
@@ -249,10 +250,10 @@ class AvatarWindow(parent: Shell) extends SWTHelper
     {
         setListener()
 
-        displayAvatar.setSelection(Avatar.displayAvatar)
-        usingTwitchAvatar.setSelection(Avatar.usingTwitchAvatar)
-        onlyAvatar.setSelection(Avatar.onlyAvatar)
-        usingTwitchNickname.setSelection(Avatar.usingTwitchNickname)
+        displayAvatar.setSelection(Preference.displayAvatar)
+        usingTwitchAvatar.setSelection(Preference.usingTwitchAvatar)
+        onlyAvatar.setSelection(Preference.onlyAvatar)
+        usingTwitchNickname.setSelection(Preference.usingTwitchNickname)
 
         shell.setLayout(gridLayout)
         shell.setText("Avatar / Nickname Preference")
