@@ -149,7 +149,7 @@ class EmoteWindow(parent: Shell) extends SWTHelper
     {
         val layoutData = new GridData(SWT.FILL, SWT.FILL, true, true)
         val table = new Table(shell, SWT.FULL_SELECTION|SWT.BORDER)
-        val columns = List("Text", "Image").map { title =>
+        val columns = List(tr("Text"), tr("Image")).map { title =>
             val column = new TableColumn(table, SWT.NONE)
             column.setText(title)
             column
@@ -230,7 +230,7 @@ class EmoteWindow(parent: Shell) extends SWTHelper
         setListener()
 
         shell.setLayout(gridLayout)
-        shell.setText("Emote Preference")
+        shell.setText(tr("Emote Preference"))
         shell.setSize(600, 400)
         shell.open()
     }
