@@ -3,6 +3,8 @@ package org.bone.ircballoon
 import org.eclipse.swt.widgets._
 import org.eclipse.swt.graphics._
 
+import ImageUtil._
+
 object Emotes
 {
     var useDefault: Boolean = true
@@ -15,7 +17,10 @@ object Emotes
     def addEmote(emotes: EmoteIcon)
     {
         customEmotes = customEmotes.updated(emotes.targetText, emotes.imagePath)
-        customIcons = customIcons.updated(emotes.targetText, getImageFile(emotes.imagePath))
+        customIcons = customIcons.updated(
+            emotes.targetText,
+            loadFromFile(emotes.imagePath).get
+        )
     }
 
     def removeEmote(targetText: String)
@@ -23,15 +28,6 @@ object Emotes
         customEmotes -= targetText
         customIcons.get(targetText).foreach(_.dispose())
         customIcons -= targetText
-    }
-
-    def getImageFile(filePath: String) =
-    {
-        new Image(Display.getDefault, filePath)
-    }
-
-    def getImage(path: String) = {
-        new Image(Display.getDefault, getClass().getResourceAsStream(path))
     }
 
     def getEmotes: Map[String, Image] = {
@@ -43,13 +39,13 @@ object Emotes
     }
 
     val default = Map(
-        ":)" -> getImage("/emotes/face-smile.png"),
-        ":D" -> getImage("/emotes/face-laugh.png"),
-        ":o" -> getImage("/emotes/face-surprise.png"),
-        ":(" -> getImage("/emotes/face-sad.png"),
-        ":p" -> getImage("/emotes/face-raspberry.png"),
-        "8)" -> getImage("/emotes/face-cool.png"),
-        ":X" -> getImage("/emotes/face-angry.png"),
-        ";)" -> getImage("/emotes/face-wink.png")
+        ":)" -> loadFromResource("/emotes/face-smile.png").get,
+        ":D" -> loadFromResource("/emotes/face-laugh.png").get,
+        ":o" -> loadFromResource("/emotes/face-surprise.png").get,
+        ":(" -> loadFromResource("/emotes/face-sad.png").get,
+        ":p" -> loadFromResource("/emotes/face-raspberry.png").get,
+        "8)" -> loadFromResource("/emotes/face-cool.png").get,
+        ":X" -> loadFromResource("/emotes/face-angry.png").get,
+        ";)" -> loadFromResource("/emotes/face-wink.png").get
     )
 }

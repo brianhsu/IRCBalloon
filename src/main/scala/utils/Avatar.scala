@@ -2,6 +2,7 @@ package org.bone.ircballoon
 
 import org.eclipse.swt.widgets._
 import org.eclipse.swt.graphics._
+import ImageUtil._
 
 object Avatar
 {
@@ -52,12 +53,6 @@ object Avatar
     def getTwitchAvatar(nickname: String): Option[Image] = {
 
         def isDefault(url: String) = url.contains("404_user")
-        def getImage(url: String) = {
-            val inputStream = new URL(url).openStream
-            val image = new Image(Display.getDefault, inputStream)
-            inputStream.close()
-            Some(image)
-        }
 
         try {
             val profileURL = "http://api.justin.tv/api/user/show/" + nickname + ".xml"
@@ -66,7 +61,7 @@ object Avatar
                 (twitchUserXML \\ "image_url_tiny").map(_.text).filterNot(isDefault)
 
             val avatarImage =  imageURLTiny match {
-                case imageURL :: Nil => getImage(imageURL)
+                case imageURL :: Nil => loadFromURL(imageURL)
                 case _ => None
             }
 
@@ -89,14 +84,9 @@ object Avatar
 
     }
 
-    def getImageFile(filePath: String) =
-    {
-        new Image(Display.getDefault, filePath)
-    }
-
     def addAvatar(nickname: String, imagePath: String)
     {
-        customAvatars += (nickname -> (imagePath, getImageFile(imagePath)))
+        customAvatars += (nickname -> (imagePath, loadFromFile(imagePath).get))
     }
 
     def removeAvatar(nickname: String)
