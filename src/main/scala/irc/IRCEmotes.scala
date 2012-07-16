@@ -4,37 +4,34 @@ import org.eclipse.swt.widgets._
 import org.eclipse.swt.graphics._
 
 import ImageUtil._
+import Preference._
 
-object Emotes
+object IRCEmotes
 {
-    var useDefault: Boolean = true
+    case class CustomEmote(file: String, image: Image)
 
-    private var customEmotes: Map[String, String] = Map()
-    private var customIcons: Map[String, Image] = Map()
+    private var customEmotes: Map[String, CustomEmote] = Map()
 
     def getCustomEmotes = customEmotes
 
-    def addEmote(emotes: EmoteIcon)
+    def addEmote(text: String, imageFile: String)
     {
-        customEmotes = customEmotes.updated(emotes.targetText, emotes.imagePath)
-        customIcons = customIcons.updated(
-            emotes.targetText,
-            loadFromFile(emotes.imagePath).get
-        )
+        loadFromFile(imageFile).foreach { image =>
+            customEmotes += (text -> CustomEmote(imageFile, image))
+        }
     }
 
-    def removeEmote(targetText: String)
+    def removeEmote(text: String)
     {
-        customEmotes -= targetText
-        customIcons.get(targetText).foreach(_.dispose())
-        customIcons -= targetText
+        customEmotes.get(text).foreach(_.image.dispose())
+        customEmotes -= text
     }
 
     def getEmotes: Map[String, Image] = {
         
-        useDefault match {
-            case true => default ++ customIcons
-            case false => customIcons
+        usingDefaultEmotes match {
+            case true  => default ++ customEmotes.map{ case(key, value) => (key, value.image) }
+            case false => customEmotes.map{ case(key, value) => (key, value.image) }
         }
     }
 

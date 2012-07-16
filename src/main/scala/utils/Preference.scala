@@ -21,13 +21,14 @@ object Preference extends SWTHelper
     var onlyAvatar: Boolean = false
     var usingTwitchAvatar: Boolean = false
     var usingTwitchNickname: Boolean = true
+    var usingDefaultEmotes: Boolean = true
 
     val preference = Preferences.userNodeForPackage(Preference.getClass)
     val settingsDir = new File(System.getProperty("user.home") + "/.ircballoon/")
 
     def readEmotes()
     {
-        Emotes.useDefault = preference.getBoolean("useDefaultEmote", true)
+        this.usingDefaultEmotes = preference.getBoolean("useDefaultEmote", true)
 
         val emoteFile = new File(settingsDir.getPath + "/emotes.txt")
 
@@ -37,15 +38,10 @@ object Preference extends SWTHelper
 
         for (emote <- Source.fromFile(emoteFile).getLines()) {
 
-            try {
+            val Array(text, imageFile) = emote.split("\\|")
 
-                val Array(text, imagePath) = emote.split("\\|")
-                val image = loadFromFile(imagePath).get
-
-                Emotes.addEmote(EmoteIcon(text, imagePath))
-
-            } catch {
-                case e =>   // 如果圖片無法讀取，直接忽略
+            loadFromFile(imageFile).foreach { image =>
+                IRCEmotes.addEmote(text, imageFile)
             }
         }
     }
@@ -59,14 +55,14 @@ object Preference extends SWTHelper
         val emoteFile = new File(settingsDir.getPath + "/emotes.txt")
         val printer = new PrintWriter(emoteFile)
 
-        for (emote <- Emotes.getCustomEmotes) {
-            printer.println("%s|%s" format(emote._1, emote._2))
+        IRCEmotes.getCustomEmotes.foreach { case(text, imageFile) =>
+            printer.println("%s|%s" format(text, imageFile))
         }
 
         printer.flush()
         printer.close()
 
-        preference.putBoolean("useDefaultEmote", Emotes.useDefault)
+        preference.putBoolean("useDefaultEmote", this.usingDefaultEmotes)
     }
 
     def readAvatars()
