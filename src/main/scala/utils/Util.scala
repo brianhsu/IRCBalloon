@@ -1,14 +1,13 @@
 package org.bone.ircballoon
 
 import org.eclipse.swt._
-import org.eclipse.swt.widgets.{List => SWTList, _}
-import org.eclipse.swt.layout._
-import org.eclipse.swt.events._
+import org.eclipse.swt.widgets.Display
 import org.eclipse.swt.graphics._
-import org.eclipse.swt.custom.StyledText
 
 import org.xnap.commons.i18n.I18nFactory
+
 import java.util.Locale
+import scala.util.control.Exception._
 
 object I18N
 {
@@ -18,8 +17,15 @@ object I18N
 
 object MyIcon
 {
-    val appIcon = new Image(Display.getDefault, getClass().getResourceAsStream("/appIcon.png"))
-    val ircOP = new Image(Display.getDefault, getClass().getResourceAsStream("/opIcon.png"))
+    import ImageUtil.loadFromResource
+
+    val appIcon = loadFromResource("/appIcon.png").get
+    val ircOP = loadFromResource("/opIcon.png").get
+    val preference = loadFromResource("/preference.png").get
+
+    val close = loadFromResource("/close.png").get
+    val add = loadFromResource("/add.png").get
+    val remove = loadFromResource("/remove.png").get
 }
 
 object MyColor
@@ -27,7 +33,6 @@ object MyColor
     lazy val Black = new Color(Display.getDefault, 0, 0, 0)
     lazy val White = new Color(Display.getDefault, 255, 255, 255)
     lazy val Blue = new Color(Display.getDefault, 100, 100, 255)
-
 }
 
 object MyFont
@@ -61,7 +66,5 @@ object MessageSample
         val repeat = (size / samples.length) + 1
         Random.shuffle(List.fill(repeat)(samples).flatten).take(size)
     }
-
-
 }
 

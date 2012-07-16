@@ -19,6 +19,7 @@ trait NotificationBalloon
     case class BalloonWindow(location: (Int, Int), bgColor: Color, borderColor: Color, 
                              message: IRCMessage) extends NotificationTheme 
                                                   with NotificationWindow
+                                                  with MessageIcon
     {
         val display = Display.getDefault
 
@@ -34,39 +35,6 @@ trait NotificationBalloon
 
         def bottomY = {
             shell.getLocation.y + shell.getSize.y + spacing
-        }
-
-        def nicknameStyles(message: String): List[StyleRange] = 
-        {
-            val regex = """\w+:""".r
-
-            regex.findAllIn(message).matchData.map { data => 
-                val style = new StyleRange
-                style.start = data.start
-                style.length = data.end - data.start
-                style.foreground = nicknameColor
-                style.font = nicknameFont
-                style
-            }.toList
-        }
-
-        def opStyles(message: String): List[StyleRange] = 
-        {
-            val regex = """\[OP\] """.r
-
-            regex.findAllIn(message).matchData.map { data => 
-                val style = new StyleRange
-
-                style.start = data.start
-                style.length = data.end - data.start
-                style.data = MyIcon.ircOP
-                style.metrics = new GlyphMetrics(
-                    MyIcon.ircOP.getBounds.height, 0, 
-                    MyIcon.ircOP.getBounds.width / 4
-                )
-
-                style
-            }.toList
         }
 
         def setLayout()
@@ -96,8 +64,13 @@ trait NotificationBalloon
                 }
             })
 
-            nicknameStyles(message.toString).foreach { label.setStyleRange }
-            opStyles(message.toString).foreach { label.setStyleRange }
+            val styles = nicknameStyles(message.toString, nicknameColor, nicknameFont) ++
+                         opStyles(message.toString) ++
+                         emoteStyles(message.toString) ++
+                         avatarStyles(message.toString)
+
+            styles.foreach(label.setStyleRange)
+                          
         }
 
         def setSizeAndLocation()

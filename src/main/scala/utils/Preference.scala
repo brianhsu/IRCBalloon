@@ -8,12 +8,108 @@ import org.eclipse.swt.custom.StyledText
 import org.eclipse.swt.custom.StackLayout
 
 import org.eclipse.swt._
+import java.io.File
+import java.io.PrintWriter
+import scala.io.Source
+import ImageUtil._
 
 object Preference extends SWTHelper
 {
     import java.util.prefs.Preferences
 
+    var displayAvatar: Boolean = true
+    var onlyAvatar: Boolean = false
+    var usingTwitchAvatar: Boolean = false
+    var usingTwitchNickname: Boolean = true
+    var usingDefaultEmotes: Boolean = true
+
     val preference = Preferences.userNodeForPackage(Preference.getClass)
+    val settingsDir = new File(System.getProperty("user.home") + "/.ircballoon/")
+
+    def readEmotes()
+    {
+        this.usingDefaultEmotes = preference.getBoolean("useDefaultEmote", true)
+
+        val emoteFile = new File(settingsDir.getPath + "/emotes.txt")
+
+        if (!emoteFile.exists) {
+            return
+        }
+
+        for (emote <- Source.fromFile(emoteFile).getLines()) {
+
+            val Array(text, imageFile) = emote.split("\\|")
+
+            loadFromFile(imageFile).foreach { image =>
+                IRCEmotes.addEmote(text, imageFile)
+            }
+        }
+    }
+
+    def saveEmotes()
+    {
+        if (!settingsDir.exists()) {
+            settingsDir.mkdirs()
+        }
+
+        val emoteFile = new File(settingsDir.getPath + "/emotes.txt")
+        val printer = new PrintWriter(emoteFile)
+
+        IRCEmotes.getCustomEmotes.foreach { case(text, imageFile) =>
+            printer.println("%s|%s" format(text, imageFile))
+        }
+
+        printer.flush()
+        printer.close()
+
+        preference.putBoolean("useDefaultEmote", this.usingDefaultEmotes)
+    }
+
+    def readAvatars()
+    {
+        val avatarFile = new File(settingsDir.getPath + "/avatars.txt")
+
+        this.displayAvatar = preference.getBoolean("displayAvatar", true)
+        this.onlyAvatar = preference.getBoolean("onlyAvatar", false)
+        this.usingTwitchAvatar = preference.getBoolean("usingTwitchAvatar", false)
+        this.usingTwitchNickname = preference.getBoolean("usingTwitchNickname", false)
+
+        if (!avatarFile.exists) {
+            return
+        }
+       
+        Source.fromFile(avatarFile).getLines().foreach { avatar =>
+
+            val Array(nickname, imageFile) = avatar.split("\\|")
+
+            loadFromFile(imageFile).foreach { image =>
+                IRCUser.addAvatar(nickname, imageFile)
+            }
+        }
+    }
+
+    def saveAvatars()
+    {
+        if (!settingsDir.exists()) {
+            settingsDir.mkdirs()
+        }
+
+        val avatarFile = new File(settingsDir.getPath + "/avatars.txt")
+        val printer = new PrintWriter(avatarFile)
+
+        IRCUser.getAvatars.foreach { case(nickname, avatar) =>
+            printer.println("%s|%s" format(nickname, avatar.file))
+        }
+
+        printer.flush()
+        printer.close()
+
+        preference.putBoolean("displayAvatar", this.displayAvatar)
+        preference.putBoolean("onlyAvatar", this.onlyAvatar)
+        preference.putBoolean("usingTwitchAvatar", this.usingTwitchAvatar)
+        preference.putBoolean("usingTwitchNickname", this.usingTwitchNickname)
+    }
+
 
     def read(setting: BlockSetting)
     {
@@ -96,6 +192,9 @@ object Preference extends SWTHelper
             setting.setBlockBackgroundImage(backgroundImage)
         }
 
+        // Scroll Bar
+        val hasScrollBar = preference.getBoolean("BlockScrollBar", false)
+        setting.scrollBarCheckbox.setSelection(hasScrollBar)
     }
 
     def save(setting: BlockSetting)
@@ -144,9 +243,16 @@ object Preference extends SWTHelper
         preference.putInt("BlockNicknameFontHeight", nicknameFontData.getHeight)
         preference.putInt("BlockNicknameFontStyle", nicknameFontData.getStyle)
 
+        // 訊息數量
         preference.putInt(
             "BlockMessageSize", 
             setting.messageSizeSpinner.getSelection
+        )
+
+        // Scroll Bar
+        preference.putBoolean(
+            "BlockScrollBar",
+            setting.scrollBarCheckbox.getSelection
         )
     }
 

@@ -71,7 +71,7 @@ class BlockSetting(tabFolder: TabFolder, parent: ScrolledComposite,
         messageFont = _
     )
 
-    val spanLabel = createSpanLabel(groupMessageFont, 2)
+    val scrollBarCheckbox = createCheckBox(groupMessageFont, tr("Show scroll bar"))
     val (messageSizeLabel, messageSizeSpinner) = createSpinner(
         groupMessageFont, tr("Message Limit:"), 1, 50
     )
@@ -169,7 +169,8 @@ class BlockSetting(tabFolder: TabFolder, parent: ScrolledComposite,
             borderColor, bgColor, alpha, 
             fontColor, messageFont, 
             nicknameColor, nicknameFont,
-            messageSize, blockBackgroundImage
+            messageSize, scrollBarCheckbox.getSelection,
+            blockBackgroundImage
         )
     }
 

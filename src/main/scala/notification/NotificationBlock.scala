@@ -10,13 +10,15 @@ import org.eclipse.swt._
 import scala.math._
 import scala.collection.JavaConversions._
 import I18N.i18n._
+import ImageUtil._
 
 case class NotificationBlock(size: (Int, Int), location: (Int, Int), 
                              borderColor: Color, bgColor: Color, alpha: Int,
                              fontColor: Color, font: Font, 
                              nicknameColor: Color, nicknameFont: Font,
-                             messageSize: Int, 
+                             messageSize: Int, hasScrollBar: Boolean,
                              backgroundImage: Option[String] = None) extends Notification 
+                                               with MessageIcon
                                                with NotificationTheme 
                                                with NotificationWindow 
                                                with SWTHelper
@@ -48,14 +50,19 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
                     val message = text.getText.trim()
 
                     MainWindow.getIRCBot.foreach { bot => 
+
                         bot.getChannels.foreach { channel =>
+                            val nickname = MainWindow.getNickname
+                            val user = bot.getUser(nickname)
+                            val isOP = user.getChannelsOpIn.contains(channel)
+                            
                             bot.sendMessage(channel, message)
+
+                            NotificationBlock.this.addMessage(
+                                ChatMessage(nickname, isOP, message)
+                            )
                         }
                     }
-
-                    NotificationBlock.this.addMessage(
-                        ChatMessage(MainWindow.getNickname, true, message)
-                    )
 
                     text.setText("")
                 }
@@ -68,9 +75,15 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
     def createContentLabel() = 
     {
         val layoutData = new GridData(SWT.FILL, SWT.FILL, true, true)
-        val label = new StyledText(shell, SWT.MULTI|SWT.READ_ONLY|SWT.WRAP|SWT.NO_FOCUS)
+        val style = hasScrollBar match {
+            case true  => SWT.MULTI|SWT.WRAP|SWT.READ_ONLY|SWT.V_SCROLL|SWT.NO_FOCUS
+            case false => SWT.MULTI|SWT.WRAP|SWT.READ_ONLY|SWT.NO_FOCUS
+        }
+
+        val label = new StyledText(shell, style)
 
         layoutData.horizontalSpan = 2
+        label.setBackgroundMode(SWT.INHERIT_FORCE)
         label.setLayoutData(layoutData)
         label.addPaintObjectListener(new PaintObjectListener() {
             override def paintObject(event: PaintObjectEvent) {
@@ -99,43 +112,10 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
         messages = (newMessage :: messages).take(messageSize)
         updateMessages()
     }
-    
+
     def updateMessages()
     {
         display.syncExec (new Runnable {
-
-            def opStyles(message: String): List[StyleRange] = 
-            {
-                val regex = """\[OP\] """.r
-
-                regex.findAllIn(message).matchData.map { data => 
-                    val style = new StyleRange
-
-                    style.start = data.start
-                    style.length = data.end - data.start
-                    style.data = MyIcon.ircOP
-                    style.metrics = new GlyphMetrics(
-                        MyIcon.ircOP.getBounds.height, 0, 
-                        MyIcon.ircOP.getBounds.width / 4
-                    )
-
-                    style
-                }.toList
-            }
-
-            def nicknameStyles(message: String): List[StyleRange] = 
-            {
-                val regex = """\w+:""".r
-
-                regex.findAllIn(message).matchData.map { data => 
-                    val style = new StyleRange
-                    style.start = data.start
-                    style.length = data.end - data.start
-                    style.foreground = nicknameColor
-                    style.font = nicknameFont
-                    style
-                }.toList
-            }
 
             override def run () 
             {
@@ -146,22 +126,16 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
 
                     label.setText(message)
 
-                    nicknameStyles(message).foreach { label.setStyleRange }
-                    opStyles(message).foreach { label.setStyleRange }
+                    val styles = nicknameStyles(message, nicknameColor, nicknameFont) ++
+                                  opStyles(message) ++ 
+                                  emoteStyles(message) ++
+                                  avatarStyles(message)
+
+                    styles.foreach(label.setStyleRange)
+                    label.setTopPixel(Int.MaxValue)
                 }
             }
         })
-    }
-
-    def this()
-    {
-        this(
-            (300, 448), (100, 100), 
-            MyColor.White, MyColor.Black, 210, 
-            MyColor.White, MyFont.DefaultFont, 
-            MyColor.White, MyFont.DefaultFont,
-            10
-        )
     }
 
     def setLayout()
@@ -176,14 +150,6 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
         label.setFont(font)
         label.setForeground(fontColor)
         label.setLineSpacing(5)
-        label.setEnabled(false)
-        label.addModifyListener(new ModifyListener() {
-            override def modifyText(e: ModifyEvent) {
-                label.setTopPixel(Int.MaxValue)
-                //label.setTopIndex(label.getLineCount)
-            }
-        })
-
     }
 
     def setMoveAndResize()
@@ -267,21 +233,15 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
 
     def open()
     {
-        val optionBGImage = backgroundImage.flatMap { file => 
-            try { 
-                Some(new Image(display, file))
-            } catch {
-                case e => None
-            }
-        }
+        val optionBGImage = backgroundImage.flatMap { file => loadFromFile(file) }
 
         optionBGImage match {
             case None => setBackground()
             case Some(null) => setBackground()
-            case Some(image) => 
-                    shell.setBackgroundImage(image)
-                    shell.setBackgroundMode(SWT.INHERIT_DEFAULT)
+            case Some(image) => shell.setBackgroundImage(image)
         }
+
+        shell.setBackgroundMode(SWT.INHERIT_FORCE)
 
         setLayout()
         setMoveAndResize()

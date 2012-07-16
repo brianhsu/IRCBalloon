@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-28 15:47+0800\n"
+"POT-Creation-Date: 2012-07-16 16:39+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,221 +17,342 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/main/scala/AreaSelectionDialog.scala:42
-msgid "Drag notification area and double click to confirm"
-msgstr "請托出通知區域，並點兩下確認"
-
-#: src/main/scala/BalloonSetting.scala:29 src/main/scala/BlockSetting.scala:31
-msgid "Transparency:"
-msgstr "透明度："
-
-#: src/main/scala/BalloonSetting.scala:33
-msgid "Notification Area Setting"
-msgstr "通知域域設定"
-
-#: src/main/scala/BalloonSetting.scala:34
-msgid "Area X:"
-msgstr "通知區域位置 X："
-
-#: src/main/scala/BalloonSetting.scala:35
-msgid "Area Y:"
-msgstr "通知區域位置 Y："
-
-#: src/main/scala/BalloonSetting.scala:36
-msgid "Area Width:"
-msgstr "通知區域寬度："
-
-#: src/main/scala/BalloonSetting.scala:37
-msgid "Area Height:"
-msgstr "通知區域高度："
-
-#: src/main/scala/BalloonSetting.scala:41 src/main/scala/BlockSetting.scala:36
-msgid "Background Setting"
-msgstr "背景設定"
-
-#: src/main/scala/BalloonSetting.scala:44
-msgid "Border Color:"
-msgstr "邊框顏色："
-
-#: src/main/scala/BalloonSetting.scala:49 src/main/scala/BlockSetting.scala:49
-msgid "Background Color:"
-msgstr "背景顏色："
-
-#: src/main/scala/BalloonSetting.scala:53 src/main/scala/BlockSetting.scala:37
-msgid "Message Setting"
-msgstr "訊息設定"
-
-#: src/main/scala/BalloonSetting.scala:55 src/main/scala/BlockSetting.scala:55
-msgid "Nickname Color:"
-msgstr "暱稱顏色："
-
-#: src/main/scala/BalloonSetting.scala:59 src/main/scala/BlockSetting.scala:59
-msgid "Nickname Font:"
-msgstr "暱稱字型："
-
-#: src/main/scala/BalloonSetting.scala:64 src/main/scala/BlockSetting.scala:65
-msgid "Message Color:"
-msgstr "訊息顏色："
-
-#: src/main/scala/BalloonSetting.scala:68 src/main/scala/BlockSetting.scala:69
-msgid "Message Font:"
-msgstr "訊息字型："
-
-#: src/main/scala/BalloonSetting.scala:73
-msgid "Effect Setting"
-msgstr "效果設定"
-
-#: src/main/scala/BalloonSetting.scala:76
-msgid "Bubble keeps (second):"
-msgstr "泡泡顯示時間："
-
-#: src/main/scala/BalloonSetting.scala:79
-msgid "Animation time (ms):"
-msgstr "動畫效果長度 (ms)："
-
-#: src/main/scala/BalloonSetting.scala:82
-msgid "Space between bubbles:"
-msgstr "泡泡間隔："
-
-#: src/main/scala/BalloonSetting.scala:162
-msgid "Select notification Area"
-msgstr "選擇通知區域"
-
-#: src/main/scala/BalloonSetting.scala:193
-#: src/main/scala/BlockSetting.scala:209
-msgid "Stop Preview"
-msgstr "停止預覽"
-
-#: src/main/scala/BalloonSetting.scala:198
-#: src/main/scala/BalloonSetting.scala:209
-#: src/main/scala/BlockSetting.scala:214 src/main/scala/BlockSetting.scala:225
-msgid "Start Preview"
-msgstr "開始預覽"
-
-#: src/main/scala/BalloonSetting.scala:284
-msgid "Bubble Notification"
-msgstr "泡泡通知"
-
-#: src/main/scala/BlockSetting.scala:35
-msgid "Window Position / Size"
-msgstr "視窗位置與大小"
-
-#: src/main/scala/BlockSetting.scala:39
-msgid "Window X:"
-msgstr "視窗位置 X："
-
-#: src/main/scala/BlockSetting.scala:40
-msgid "Window Y:"
-msgstr "視窗位置 Y："
-
-#: src/main/scala/BlockSetting.scala:41
-msgid "Window Width:"
-msgstr "視窗寬度："
-
-#: src/main/scala/BlockSetting.scala:42
-msgid "Window Height:"
-msgstr "視窗高度："
-
-#: src/main/scala/BlockSetting.scala:76
-msgid "Message Limit:"
-msgstr "訊息數目："
-
-#: src/main/scala/BlockSetting.scala:101
-msgid "Background Image"
-msgstr "背景圖案："
-
-#: src/main/scala/BlockSetting.scala:103
-msgid "Remove Background Image"
-msgstr "移除背景圖案"
-
-#: src/main/scala/BlockSetting.scala:105 src/main/scala/BlockSetting.scala:111
-msgid "Browse..."
-msgstr "瀏覽……"
-
-#: src/main/scala/BlockSetting.scala:134
-msgid "* Drag and drop the right-bottom corner of chat window to resize"
-msgstr "註：可以直接托拉視窗移動位址，或拉右下角改變大小"
-
-#: src/main/scala/BlockSetting.scala:304
-msgid "Pinned Chat Window"
-msgstr "固定視窗"
-
-#: src/main/scala/IRCBot.scala:48 src/main/scala/IRCBot.scala:67
-msgid "[SYS] %s has left"
-msgstr "[系統] %s 離開聊天室"
-
-#: src/main/scala/IRCBot.scala:57 src/main/scala/IRCBot.scala:59
-msgid "[SYS] %s has joined"
-msgstr "[系統] %s 進入聊天室"
-
-#: src/main/scala/IRCMessage.scala:11
-msgid "[Action] %s %s"
-msgstr "[動作] %s %s"
-
-#: src/main/scala/IRCSetting.scala:18
-msgid "IRC Host:"
-msgstr "IRC 伺服器主機："
-
-#: src/main/scala/IRCSetting.scala:19
-msgid "IRC Port:"
-msgstr "IRC 伺服器Port："
-
-#: src/main/scala/IRCSetting.scala:20
-msgid "IRC Password:"
-msgstr "IRC 伺服器密碼："
-
-#: src/main/scala/IRCSetting.scala:21
-msgid "Nickname:"
-msgstr "暱稱："
-
-#: src/main/scala/IRCSetting.scala:22
-msgid "Channel:"
-msgstr "聊天頻道："
-
-#: src/main/scala/IRCSetting.scala:36
-msgid "IRC Setting is not completed"
-msgstr "IRC 設定不完整"
-
-#: src/main/scala/JustinSetting.scala:18
-msgid "Username:"
-msgstr "使用者名稱："
-
-#: src/main/scala/JustinSetting.scala:19
-msgid "Password:"
-msgstr "密碼："
-
-#: src/main/scala/MainWindow.scala:23
-msgid "Login Method"
-msgstr "連線方式"
-
-#: src/main/scala/MainWindow.scala:28
-msgid "Display Method"
-msgstr "顯示方式"
-
-#: src/main/scala/MainWindow.scala:159
-msgid "Connecting to IRC server, please wait...\n"
-msgstr "連線至 IRC 伺服器，請稍候……\n"
-
-#: src/main/scala/MainWindow.scala:204
-msgid "Error:"
-msgstr "錯誤："
-
-#: src/main/scala/MainWindow.scala:229
-msgid "Connect"
-msgstr "連線"
-
-#: src/main/scala/MainWindow.scala:251
-msgid "IRC Notification"
-msgstr "IRC 通知"
-
-#: src/main/scala/NotificationBlock.scala:35
+#: /home/brianhsu/IRCBalloon/src/main/scala/notification/NotificationBlock.scala:37
 msgid "Chat:"
 msgstr "聊天："
 
-#: src/main/scala/SWTHelper.scala:170
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/JustinSetting.scala:18
+msgid "Username:"
+msgstr "使用者名稱："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/JustinSetting.scala:19
+msgid "Password:"
+msgstr "密碼："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BalloonSetting.scala:29
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BlockSetting.scala:31
+msgid "Transparency:"
+msgstr "透明度："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BalloonSetting.scala:33
+msgid "Notification Area Setting"
+msgstr "通知域域設定"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BalloonSetting.scala:34
+msgid "Area X:"
+msgstr "通知區域位置 X："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BalloonSetting.scala:35
+msgid "Area Y:"
+msgstr "通知區域位置 Y："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BalloonSetting.scala:36
+msgid "Area Width:"
+msgstr "通知區域寬度："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BalloonSetting.scala:37
+msgid "Area Height:"
+msgstr "通知區域高度："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BalloonSetting.scala:41
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BlockSetting.scala:36
+msgid "Background Setting"
+msgstr "背景設定"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BalloonSetting.scala:44
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BlockSetting.scala:45
+msgid "Border Color:"
+msgstr "邊框顏色："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BalloonSetting.scala:49
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BlockSetting.scala:49
+msgid "Background Color:"
+msgstr "背景顏色："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BalloonSetting.scala:53
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BlockSetting.scala:37
+msgid "Message Setting"
+msgstr "訊息設定"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BalloonSetting.scala:55
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BlockSetting.scala:55
+msgid "Nickname Color:"
+msgstr "暱稱顏色："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BalloonSetting.scala:59
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BlockSetting.scala:59
+msgid "Nickname Font:"
+msgstr "暱稱字型："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BalloonSetting.scala:64
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BlockSetting.scala:65
+msgid "Message Color:"
+msgstr "訊息顏色："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BalloonSetting.scala:68
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BlockSetting.scala:69
+msgid "Message Font:"
+msgstr "訊息字型："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BalloonSetting.scala:73
+msgid "Effect Setting"
+msgstr "效果設定"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BalloonSetting.scala:76
+msgid "Bubble keeps (second):"
+msgstr "泡泡顯示時間："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BalloonSetting.scala:79
+msgid "Animation time (ms):"
+msgstr "動畫效果長度 (ms)："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BalloonSetting.scala:82
+msgid "Space between bubbles:"
+msgstr "泡泡間隔："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BalloonSetting.scala:162
+msgid "Select notification Area"
+msgstr "選擇通知區域"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BalloonSetting.scala:193
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BlockSetting.scala:210
+msgid "Stop Preview"
+msgstr "停止預覽"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BalloonSetting.scala:198
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BalloonSetting.scala:209
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BlockSetting.scala:215
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BlockSetting.scala:226
+msgid "Start Preview"
+msgstr "開始預覽"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BalloonSetting.scala:284
+msgid "Bubble Notification"
+msgstr "泡泡通知"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BlockSetting.scala:35
+msgid "Window Position / Size"
+msgstr "視窗位置與大小"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BlockSetting.scala:39
+msgid "Window X:"
+msgstr "視窗位置 X："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BlockSetting.scala:40
+msgid "Window Y:"
+msgstr "視窗位置 Y："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BlockSetting.scala:41
+msgid "Window Width:"
+msgstr "視窗寬度："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BlockSetting.scala:42
+msgid "Window Height:"
+msgstr "視窗高度："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BlockSetting.scala:74
+msgid "Show scroll bar"
+msgstr "顯示下拉捲軸"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BlockSetting.scala:76
+msgid "Message Limit:"
+msgstr "訊息數目："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BlockSetting.scala:101
+msgid "Background Image"
+msgstr "背景圖案："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BlockSetting.scala:103
+msgid "Remove Background Image"
+msgstr "移除背景圖案"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BlockSetting.scala:105
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BlockSetting.scala:111
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:68
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:69
+msgid "Browse..."
+msgstr "瀏覽……"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BlockSetting.scala:134
+msgid "* Drag and drop the right-bottom corner of chat window to resize"
+msgstr "註：可以直接托拉視窗邊緣移動位址，或拉右下角改變大小"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/BlockSetting.scala:305
+msgid "Pinned Chat Window"
+msgstr "固定視窗"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AreaSelectionDialog.scala:42
+msgid "Drag notification area and double click to confirm"
+msgstr "請托出通知區域，並點兩下確認"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:25
+msgid "Login Method"
+msgstr "連線方式"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:30
+msgid "Display Method"
+msgstr "顯示方式"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:62
+msgid "&Preference"
+msgstr "偏好設定(&P)"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:63
+msgid "Emotes"
+msgstr "表情圖示"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:69
+msgid "Avatar / Nickname"
+msgstr "大頭貼與暱稱"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:187
+msgid "Connecting to IRC server, please wait...\n"
+msgstr "連線至 IRC 伺服器，請稍候……\n"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:232
+msgid "Error:"
+msgstr "錯誤："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:257
+msgid "Connect"
+msgstr "連線"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:281
+msgid "IRC Notification"
+msgstr "IRC 通知"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/SWTHelper.scala:170
 msgid "Show join message"
 msgstr "顯示加入聊天室訊息"
 
-#: src/main/scala/SWTHelper.scala:171
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/SWTHelper.scala:171
 msgid "Show leave message"
 msgstr "顯示離開聊天室訊息"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:53
+msgid "Target text:"
+msgstr "要取代的文字："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:66
+msgid "Emote Icon:"
+msgstr "表情圖示："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:105
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:106
+msgid "OK"
+msgstr "確定"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:108
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:109
+msgid "Cancel"
+msgstr "取消"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:119
+msgid "Add Emote Icon"
+msgstr "新增表情圖示"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:136
+msgid "Use default emote icons"
+msgstr "使用內建的表情圖示"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:152
+msgid "Text"
+msgstr "表情文字"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:152
+msgid "Image"
+msgstr "表情圖案"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:180
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:200
+msgid "Add"
+msgstr "新增"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:197
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:220
+msgid "Remove"
+msgstr "移除"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:218
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:241
+msgid "Close"
+msgstr "關閉"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:233
+msgid "Emote Preference"
+msgstr "表情圖示偏好設定"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/IRCSetting.scala:18
+msgid "IRC Host:"
+msgstr "IRC 伺服器主機："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/IRCSetting.scala:19
+msgid "IRC Port:"
+msgstr "IRC 伺服器Port："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/IRCSetting.scala:20
+msgid "IRC Password:"
+msgstr "IRC 伺服器密碼："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/IRCSetting.scala:21
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:54
+msgid "Nickname:"
+msgstr "暱稱："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/IRCSetting.scala:22
+msgid "Channel:"
+msgstr "聊天頻道："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/IRCSetting.scala:36
+msgid "IRC Setting is not completed"
+msgstr "IRC 設定不完整"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:67
+msgid "Avatar:"
+msgstr "大頭貼："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:120
+msgid "Add Avatar"
+msgstr "新增大頭貼："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:139
+msgid "Display avatar"
+msgstr "顯示大頭貼"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:140
+msgid "Using avatar from Justin.TV / Twitch"
+msgstr "使用 Justin.TV / Twitch 上的大頭貼"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:141
+msgid "Don't display nickname when user has Avatar"
+msgstr "當使用者有大頭貼時就不顯示暱稱"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:142
+msgid "Use Justin.TV / Twitch nickname "
+msgstr "使用 Justin.TV / Twitch 上的暱稱"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:172
+msgid "Nickname"
+msgstr "暱稱"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:172
+msgid "Avatar"
+msgstr "大頭貼"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:259
+msgid "Avatar / Nickname Preference"
+msgstr "大頭貼與暱稱偏好設定"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/irc/IRCMessage.scala:55
+msgid "[Action] %s %s"
+msgstr "[動作] %s %s"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/irc/IRCBot.scala:62
+#: /home/brianhsu/IRCBalloon/src/main/scala/irc/IRCBot.scala:82
+msgid "[SYS] %s has left"
+msgstr "[系統] %s 離開聊天室"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/irc/IRCBot.scala:72
+#: /home/brianhsu/IRCBalloon/src/main/scala/irc/IRCBot.scala:74
+msgid "[SYS] %s has joined"
+msgstr "[系統] %s 進入聊天室"
