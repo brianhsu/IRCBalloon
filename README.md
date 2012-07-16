@@ -24,10 +24,16 @@ Cons
  - Mouse events are not transparent like NicoLime.
  - No full screen support.
  - File is huge.
- - Fix bugs.
 
 ChangeLog
 ===========
+ - 0.7
+    - Add Emote Icons.
+    - Add Avatar. (From Twitch/Justin.tv or setting using prefernce dialog)
+    - Using twitch nickname instead of IRC nickname.
+    - Add scroll bar setting to chat window.
+    - Fix some bugs.
+
  - 0.6
     - Add icon for IRC OP.
     - Add nickname color / font settings.
@@ -41,9 +47,9 @@ IRCBalloon is released under GNU GPL v3.
 Download
 ==========
 
- - [Windows 32 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-win32-0.6.jar)
- - [Windows 64 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-win64-0.6.jar)
- - [Linux 64 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-linux64-0.6.jar)
+ - [Windows 32 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-win32-0.7.jar)
+ - [Windows 64 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-win64-0.7.jar)
+ - [Linux 64 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-linux64-0.7.jar)
 
 
 IRCBalloon 
@@ -71,6 +77,13 @@ IRCBalloon 是一套 IRC / JustinTV / Twitch 聊天室擷取軟體，他可以�
 
 改版記錄
 =========
+ - 0.7
+    - 新增表情圖示
+    - 新增大頭圖
+    - 新增以 Twitch / Justin.tv 暱稱取代 IRC 暱稱
+    - 「固定聊天視窗」新增下拉捲軸設定
+    - 修正其他小錯誤
+
  - 0.6
     - 新增 IRC 聊天室管理員 (OP) 圖示
     - 新增暱稱字型、顏色設定
@@ -101,7 +114,7 @@ IRCBalloon 採用 GNU GPL v3 做為授權條款
 下載
 =======
 
- - [Windows 32 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-win32-0.6.jar)
- - [Windows 64 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-win64-0.6.jar)
- - [Linux 64 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-linux64-0.6.jar)
+ - [Windows 32 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-win32-0.7.jar)
+ - [Windows 64 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-win64-0.7.jar)
+ - [Linux 64 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-linux64-0.7.jar)
 

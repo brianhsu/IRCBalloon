@@ -59,19 +59,21 @@ class IRCBot(hostname: String, port: Int, nickname: String,
         override def onPart(event: PartEvent[IRCBot])
         {
             if (showLeave) {
-                callback(SystemMessage(tr("[SYS] %s has left") format(event.getUser.getNick)))
+                val user = IRCUser(event.getUser.getNick)
+                callback(SystemMessage(tr("[SYS] %s has left") format(user.nickname)))
             }
         }
 
         override def onJoin(event: JoinEvent[IRCBot])
         {
             val sender = event.getUser.getNick
+            val user = IRCUser(event.getUser.getNick)
 
             showJoin match {
                 case true  => 
-                    callback(SystemMessage(tr("[SYS] %s has joined") format(sender)))
+                    callback(SystemMessage(tr("[SYS] %s has joined") format(user.nickname)))
                 case false if (sender == nickname) => 
-                    callback(SystemMessage(tr("[SYS] %s has joined") format(sender)))
+                    callback(SystemMessage(tr("[SYS] %s has joined") format(user.nickname)))
                 case _ => 
             }
         }

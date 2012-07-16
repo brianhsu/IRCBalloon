@@ -20,9 +20,9 @@ trait HasUser
      *  候會取代為使用者的 Avatar。
      */
     def userDisplay = user.avatar match {
-        case Some(image) if displayAvatar && onlyAvatar => "[%s]" format(user.username)
-        case Some(image) if displayAvatar => "[%s] %s" format(user.username, user.nickname)
-        case _ => user.nickname
+        case Some(image) if displayAvatar && onlyAvatar => "[%s] :" format(user.username)
+        case Some(image) if displayAvatar => "[%s] %s:" format(user.username, user.nickname)
+        case _ => user.nickname + ":"
     }
 }
 
@@ -37,8 +37,8 @@ case class ChatMessage(nickname: String, isOp: Boolean,
                        message: String) extends IRCMessage with HasUser
 {
     override def toString = isOp match {
-        case true => "[OP] %s: %s" format(userDisplay, message)
-        case false => "%s: %s" format(userDisplay, message)
+        case true => "[OP] %s %s" format(userDisplay, message)
+        case false => "%s %s" format(userDisplay, message)
     }
 }
 

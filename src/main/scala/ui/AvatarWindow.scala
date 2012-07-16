@@ -169,7 +169,7 @@ class AvatarWindow(parent: Shell) extends SWTHelper
     {
         val layoutData = new GridData(SWT.FILL, SWT.FILL, true, true)
         val table = new Table(shell, SWT.FULL_SELECTION|SWT.BORDER)
-        val columns = List("Nickname", "Avatar").map { title =>
+        val columns = List(tr("Nickname"), tr("Avatar")).map { title =>
             val column = new TableColumn(table, SWT.NONE)
             column.setText(title)
             column
@@ -256,7 +256,7 @@ class AvatarWindow(parent: Shell) extends SWTHelper
         usingTwitchNickname.setSelection(Preference.usingTwitchNickname)
 
         shell.setLayout(gridLayout)
-        shell.setText("Avatar / Nickname Preference")
+        shell.setText(tr("Avatar / Nickname Preference"))
         shell.setSize(600, 400)
         shell.open()
     }
