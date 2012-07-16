@@ -10,12 +10,12 @@ import org.eclipse.swt.custom.ScrolledComposite
 
 import org.eclipse.swt._
 import I18N.i18n._
+import ImageUtil._
 
-case class EmoteIcon(targetText: String, imagePath: String)
-
-class AddEmoteDialog(parent: Shell) extends Dialog(parent, SWT.APPLICATION_MODAL) with SWTHelper
+class AddEmoteDialog(parent: Shell) extends Dialog(parent, SWT.APPLICATION_MODAL) 
+                                    with SWTHelper
 {
-    var result: Option[EmoteIcon] = None
+    var result: Option[(String, String)] = None
 
     val display = parent.getDisplay()
     val shell = new Shell(parent, SWT.DIALOG_TRIM|SWT.APPLICATION_MODAL)
@@ -37,8 +37,8 @@ class AddEmoteDialog(parent: Shell) extends Dialog(parent, SWT.APPLICATION_MODAL
         textTarget.addModifyListener { e: ModifyEvent => setOKButtonState() }
         emoteIcon.addModifyListener { e: ModifyEvent => setOKButtonState() }
         okButton.addSelectionListener { e: SelectionEvent =>
-            result = Some(EmoteIcon(textTarget.getText.trim, emoteIcon.getText.trim))
-            shell.dispose();
+            result = Some((textTarget.getText.trim, emoteIcon.getText.trim))
+            shell.dispose()
         }
     }
 
@@ -141,7 +141,7 @@ class EmoteWindow(parent: Shell) extends SWTHelper
     def setListener()
     {
         defaultEmotesCheckBox.addSelectionListener { e: SelectionEvent =>
-            Emotes.useDefault = defaultEmotesCheckBox.getSelection
+            Preference.usingDefaultEmotes = defaultEmotesCheckBox.getSelection
         }
     }
 
@@ -155,9 +155,9 @@ class EmoteWindow(parent: Shell) extends SWTHelper
             column
         }
 
-        for (emoteIcon <- Emotes.getCustomEmotes) {
+        IRCEmotes.getCustomEmotes.foreach { case(text, emoteIcon) =>
             val tableItem = new TableItem(table, SWT.NONE)
-            tableItem.setText(Array(emoteIcon._1, emoteIcon._2))
+            tableItem.setText(Array(text, emoteIcon.file))
         }
 
         table.setLinesVisible(true)
@@ -181,12 +181,14 @@ class EmoteWindow(parent: Shell) extends SWTHelper
         addButton.addSelectionListener { e: SelectionEvent =>
             val dialog = new AddEmoteDialog(shell)
 
-            for (emoteIcon <- dialog.open()) {
-                try {
-                    val image = new Image(Display.getDefault, emoteIcon.imagePath)
-                    Emotes.addEmote(emoteIcon)
+            dialog.open().foreach { case(text, imageFile) =>
+                
+                loadFromFile(imageFile).foreach { image =>
+
                     val tableItem = new TableItem(emoteTable, SWT.NONE)
-                    tableItem.setText(Array(emoteIcon.targetText, emoteIcon.imagePath))
+                    tableItem.setText(Array(text, imageFile))
+
+                    IRCEmotes.addEmote(text, imageFile)
                 }
             }
         }
@@ -197,7 +199,7 @@ class EmoteWindow(parent: Shell) extends SWTHelper
             for (index <- emoteTable.getSelectionIndices) {
                 val targetText = emoteTable.getItem(index).getText(0)
                 emoteTable.remove(index)
-                Emotes.removeEmote(targetText)
+                IRCEmotes.removeEmote(targetText)
             }
         }
 
@@ -223,7 +225,7 @@ class EmoteWindow(parent: Shell) extends SWTHelper
 
     def open()
     {
-        defaultEmotesCheckBox.setSelection(Emotes.useDefault)
+        defaultEmotesCheckBox.setSelection(Preference.usingDefaultEmotes)
 
         setListener()
 

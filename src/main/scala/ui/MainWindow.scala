@@ -11,7 +11,9 @@ import org.eclipse.swt.custom.ScrolledComposite
 import org.eclipse.swt._
 import I18N.i18n._
 
-
+/**
+ *  主視窗
+ */
 object MainWindow extends SWTHelper
 {
     Display.setAppName("IRCBalloon")

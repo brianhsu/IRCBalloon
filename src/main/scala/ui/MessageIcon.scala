@@ -48,7 +48,7 @@ trait MessageIcon
 
     def emoteStyles(message: String): List[StyleRange] = {
         
-        val styleList = Emotes.getEmotes.map { case (text, image) =>
+        val styleList = IRCEmotes.getEmotes.map { case (text, image) =>
             val regex = """\Q%s\E""".format(text).r
 
             regex.findAllIn(message).matchData.map { data => 
@@ -74,9 +74,9 @@ trait MessageIcon
 
         avatarHolders.map { data =>
 
-            val nickname = data.matched.drop(1).dropRight(1)
+            val user = IRCUser(data.matched.drop(1).dropRight(1))
 
-            Avatar(nickname).map { avatar =>
+            user.avatar.map { avatar =>
                 val style = new StyleRange
                 style.start = data.start
                 style.length = data.end - data.start
