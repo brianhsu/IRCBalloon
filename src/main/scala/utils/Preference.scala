@@ -55,8 +55,8 @@ object Preference extends SWTHelper
         val emoteFile = new File(settingsDir.getPath + "/emotes.txt")
         val printer = new PrintWriter(emoteFile)
 
-        IRCEmotes.getCustomEmotes.foreach { case(text, imageFile) =>
-            printer.println("%s|%s" format(text, imageFile))
+        IRCEmotes.getCustomEmotes.foreach { case(text, emote) =>
+            printer.println("%s|%s" format(text, emote.file))
         }
 
         printer.flush()
@@ -79,12 +79,8 @@ object Preference extends SWTHelper
         }
        
         Source.fromFile(avatarFile).getLines().foreach { avatar =>
-
             val Array(nickname, imageFile) = avatar.split("\\|")
-
-            loadFromFile(imageFile).foreach { image =>
-                IRCUser.addAvatar(nickname, imageFile)
-            }
+            IRCUser.addAvatar(nickname, imageFile)
         }
     }
 
