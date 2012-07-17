@@ -76,7 +76,7 @@ class IRCUser(val username: String)
 
     def avatar: Option[Image] = {
 
-        val customAvatar = IRCUser.customAvatars.get(nickname).map(_.image)
+        val customAvatar = IRCUser.customAvatars.get(username).map(_.image)
 
         Preference.usingTwitchAvatar match {  
             case true  => customAvatar orElse twitchAvatar
