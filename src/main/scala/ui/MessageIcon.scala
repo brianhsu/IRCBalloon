@@ -57,8 +57,8 @@ trait MessageIcon
                 style.length = data.end - data.start
                 style.data = image
                 style.metrics = new GlyphMetrics(
-                    MyIcon.ircOP.getBounds.height, 0, 
-                    MyIcon.ircOP.getBounds.width / text.length
+                    image.getBounds.height, 0, 
+                    image.getBounds.width / text.length
                 )
 
                 style
