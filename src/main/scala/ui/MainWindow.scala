@@ -185,7 +185,7 @@ object MainWindow extends SWTHelper
     }
   }
 
-  def displayError(exception: Exception, callback: () => Any)
+  def displayError(exception: Exception)
   {
     display.syncExec(new Runnable() {
       def outputToLogTextArea()
@@ -202,7 +202,7 @@ object MainWindow extends SWTHelper
         outputToLogTextArea()
         dialog.setMessage(tr("Error:") + exception.getMessage)
         dialog.open()
-        callback()
+        connectButton.setSelection(!connectButton.getSelection)
         setUIEnabled(true)
       }
     })

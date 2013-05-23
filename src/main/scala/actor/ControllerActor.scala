@@ -51,6 +51,12 @@ class ControllerActor extends Actor {
     case SendIRCMessage(message) => sendMessage(message)
     case m: NotificationMessage => notificationActor ! m
     case m: IRCMessage => notificationActor ! m
+    case IRCLog(line) => MainWindow.appendLog(line)
+    case IRCException(exception) => {
+      self ! StopIRCBot
+      self ! StopNotification
+      MainWindow.displayError(exception)
+    }
     case _ => log.info("Unknow message") 
   }
 

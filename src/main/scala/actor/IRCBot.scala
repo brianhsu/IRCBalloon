@@ -11,7 +11,7 @@ import org.pircbotx.hooks.events._
 
 import scala.collection.JavaConverters._
 
-class IRCBot(info: IRCInfo, ircActor: ActorRef) extends PircBotX {
+class IRCBot(info: IRCInfo, controllerActor: ActorRef) extends PircBotX {
 
   object Handlers extends ListenerAdapter[IRCBot] {
 
@@ -29,32 +29,37 @@ class IRCBot(info: IRCInfo, ircActor: ActorRef) extends PircBotX {
     }
 
     override def onMessage(event: MessageEvent[IRCBot]) {
-      ircActor ! Message(event.getMessage, toIRCUser(event.getUser, event.getChannel))
+      controllerActor ! Message(event.getMessage, toIRCUser(event.getUser, event.getChannel))
     }
 
     override def onAction(event: ActionEvent[IRCBot]) {
-      ircActor ! Action(event.getAction, toIRCUser(event.getUser, event.getChannel))
+      controllerActor ! Action(event.getAction, toIRCUser(event.getUser, event.getChannel))
     }
 
     override def onPart(event: PartEvent[IRCBot]) {
       if (info.showLeave) {
-        ircActor ! Part(event.getReason, event.getChannel.getName, toIRCUser(event.getUser, event.getChannel))
+        controllerActor ! Part(event.getReason, event.getChannel.getName, toIRCUser(event.getUser, event.getChannel))
       }
     }
 
     override def onJoin(event: JoinEvent[IRCBot]) {
       if (info.showJoin || event.getUser.getNick == info.nickname) {
-        ircActor ! Join(event.getChannel.getName, toIRCUser(event.getUser, event.getChannel))
+        controllerActor ! Join(event.getChannel.getName, toIRCUser(event.getUser, event.getChannel))
       }
     }
 
     override def onQuit(event: QuitEvent[IRCBot]) {
       if (info.showLeave) {
-        ircActor ! Quit(IRCUser(event.getUser.getNick, false, false), event.getReason)
+        controllerActor ! Quit(IRCUser(event.getUser.getNick, false, false), event.getReason)
       }
     }
   }
   
+  override def log(line: String) {
+    super.log(line)
+    controllerActor ! IRCLog(line)
+  }
+
   def connect()
   {
     info.password match {
@@ -68,13 +73,17 @@ class IRCBot(info: IRCInfo, ircActor: ActorRef) extends PircBotX {
   }
 
   def startBot() {
-    IRCBot.this.setAutoNickChange(true)
-    IRCBot.this.setVerbose(true)
-    IRCBot.this.setName(info.nickname)
-    IRCBot.this.setEncoding("UTF-8")
-    IRCBot.this.connect()
-    IRCBot.this.getListenerManager.addListener(Handlers)
-    IRCBot.this.joinChannel(info.channel)
+    try {
+      IRCBot.this.setAutoNickChange(true)
+      IRCBot.this.setVerbose(true)
+      IRCBot.this.setName(info.nickname)
+      IRCBot.this.setEncoding("UTF-8")
+      IRCBot.this.connect()
+      IRCBot.this.getListenerManager.addListener(Handlers)
+      IRCBot.this.joinChannel(info.channel)
+    } catch {
+      case e: Exception => controllerActor ! IRCException(e)
+    }
   }
 }
 
