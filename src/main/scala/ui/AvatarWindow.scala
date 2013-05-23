@@ -211,7 +211,7 @@ class AvatarWindow(parent: Shell) extends SWTHelper
                     IRCUser.addAvatar(nickname, avatarPath)
                     
                 } catch {
-                    case e =>
+                    case e: Exception =>
                 }
             }
         }
