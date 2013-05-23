@@ -1,6 +1,6 @@
 package org.bone.ircballoon
 
-import org.bone.ircballoon.actor.model.IRCInfo
+import org.bone.ircballoon.model.IRCInfo
 
 import org.eclipse.swt.widgets.{List => SWTList, _}
 import org.eclipse.swt.layout._
@@ -26,7 +26,10 @@ class JustinSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends
     val password = Some(this.password.getText.trim)
     val channel = "#%s" format(username.getText)
 
-    IRCInfo(hostname, 6667, username.getText, channel, password)
+    IRCInfo(
+      hostname, 6667, username.getText, channel, password, 
+      onJoinButton.getSelection, onLeaveButton.getSelection
+    )
   }
 
   def isSettingOK = {

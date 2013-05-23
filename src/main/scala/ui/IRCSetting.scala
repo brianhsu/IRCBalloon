@@ -1,6 +1,6 @@
 package org.bone.ircballoon
 
-import org.bone.ircballoon.actor.model.IRCInfo
+import org.bone.ircballoon.model.IRCInfo
 
 import org.eclipse.swt.widgets.{List => SWTList, _}
 import org.eclipse.swt.layout._
@@ -33,11 +33,9 @@ class IRCSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends
     }
 
     IRCInfo(
-      hostText.getText, 
-      portText.getText.toInt, 
-      nickname.getText, 
-      channel.getText,
-      getPassword
+      hostText.getText, portText.getText.toInt, nickname.getText, 
+      channel.getText, getPassword,
+      onJoinButton.getSelection, onLeaveButton.getSelection
     )
 
   }

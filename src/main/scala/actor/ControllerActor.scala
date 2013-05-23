@@ -3,7 +3,7 @@ package org.bone.ircballoon.actor
 import org.bone.ircballoon.MainWindow
 
 import org.bone.ircballoon.actor.message._
-import org.bone.ircballoon.actor.model._ 
+import org.bone.ircballoon.model._ 
 
 import akka.actor._
 import akka.event.Logging

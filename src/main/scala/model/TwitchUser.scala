@@ -1,4 +1,4 @@
-package org.bone.ircballoon.actor.model
+package org.bone.ircballoon.model
 
 import org.eclipse.swt.widgets._
 import org.eclipse.swt.graphics._

@@ -1,6 +1,6 @@
 package org.bone.ircballoon.actor.message
 
-import org.bone.ircballoon.actor.model.IRCInfo
+import org.bone.ircballoon.model.IRCInfo
 
 sealed trait IRCControl
 

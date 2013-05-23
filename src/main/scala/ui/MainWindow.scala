@@ -167,6 +167,7 @@ object MainWindow extends SWTHelper
       logTextArea.setText(connectMessage)
       controller ! SetNotification(createNotificationService)
       controller ! StartIRCBot(getIRCInfo)
+      controller ! SystemNotice(connectMessage)
     }
   
     def stopBot()

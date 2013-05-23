@@ -1,7 +1,7 @@
 package org.bone.ircballoon.actor
 
 import org.bone.ircballoon.actor.message._
-import org.bone.ircballoon.actor.model._ 
+import org.bone.ircballoon.model._ 
 
 import akka.actor._
 
@@ -37,15 +37,21 @@ class IRCBot(info: IRCInfo, ircActor: ActorRef) extends PircBotX {
     }
 
     override def onPart(event: PartEvent[IRCBot]) {
-      ircActor ! Part(event.getReason, event.getChannel.getName, toIRCUser(event.getUser, event.getChannel))
+      if (info.showLeave) {
+        ircActor ! Part(event.getReason, event.getChannel.getName, toIRCUser(event.getUser, event.getChannel))
+      }
     }
 
     override def onJoin(event: JoinEvent[IRCBot]) {
-      ircActor ! Join(event.getChannel.getName, toIRCUser(event.getUser, event.getChannel))
+      if (info.showJoin || event.getUser.getNick == info.nickname) {
+        ircActor ! Join(event.getChannel.getName, toIRCUser(event.getUser, event.getChannel))
+      }
     }
 
     override def onQuit(event: QuitEvent[IRCBot]) {
-      ircActor ! Quit(IRCUser(event.getUser.getNick, false, false), event.getReason)
+      if (info.showLeave) {
+        ircActor ! Quit(IRCUser(event.getUser.getNick, false, false), event.getReason)
+      }
     }
   }
   
