@@ -1,5 +1,6 @@
 package org.bone.ircballoon
 
+import org.bone.ircballoon.actor.model._
 import org.eclipse.swt.widgets.{List => SWTList, _}
 import org.eclipse.swt.layout._
 import org.eclipse.swt.events._
@@ -179,7 +180,7 @@ class AvatarWindow(parent: Shell) extends SWTHelper
         table.setHeaderVisible(true)
         table.setLayoutData(layoutData)
 
-        IRCUser.getAvatars.foreach { case(nickname, avatar) =>
+        TwitchUser.getAvatars.foreach { case(nickname, avatar) =>
             val tableItem = new TableItem(table, SWT.NONE)
             tableItem.setText(Array(nickname, avatar.file))
         }
@@ -208,7 +209,7 @@ class AvatarWindow(parent: Shell) extends SWTHelper
                     val tableItem = new TableItem(avatarTable, SWT.NONE)
 
                     tableItem.setText(Array(nickname, avatarPath))
-                    IRCUser.addAvatar(nickname, avatarPath)
+                    TwitchUser.addAvatar(nickname, avatarPath)
                     
                 } catch {
                     case e: Exception =>
@@ -222,7 +223,7 @@ class AvatarWindow(parent: Shell) extends SWTHelper
             for (index <- avatarTable.getSelectionIndices) {
                 val nickname = avatarTable.getItem(index).getText(0)
                 avatarTable.remove(index)
-                IRCUser.removeAvatar(nickname)
+                TwitchUser.removeAvatar(nickname)
             }
         }
 

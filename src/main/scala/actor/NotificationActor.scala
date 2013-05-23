@@ -1,6 +1,5 @@
 package org.bone.ircballoon.actor
 
-import org.bone.ircballoon.ChatMessage
 import org.bone.ircballoon.Notification
 
 import org.bone.ircballoon.actor.message._
@@ -29,7 +28,7 @@ class NotificationActor extends Actor {
     case SetNotification(notification) => openNotification(notification)
     case StopNotification => closeNotification()
     case ToggleNotification => notification.foreach(_.onTrayIconClicked())
-    case m: Message => notification.foreach(_.addMessage(ChatMessage(m.user.nickname, m.user.isOP, m.message)))
+    case m: Message => notification.foreach(_.addMessage(m))
     case _ => log.info("NotificationActor: Unknow message") 
   }
 

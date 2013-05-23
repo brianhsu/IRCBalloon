@@ -1,5 +1,7 @@
 package org.bone.ircballoon
 
+import org.bone.ircballoon.actor.message._
+
 import org.eclipse.swt.widgets.{List => SWTList, _}
 import org.eclipse.swt.layout._
 import org.eclipse.swt.events._
@@ -150,7 +152,7 @@ class BlockSetting(tabFolder: TabFolder, parent: ScrolledComposite,
 
             while (!shouldStop) {
                 val message = MessageSample.random(1).head
-                notificationBlock.addMessage(SystemMessage("[%d] %s" format(count, message)))
+                notificationBlock.addMessage(SystemNotice("[%d] %s" format(count, message)))
                 count = (count + 1)
                 Thread.sleep(1000)
             }

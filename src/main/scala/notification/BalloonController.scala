@@ -1,5 +1,7 @@
 package org.bone.ircballoon
 
+import org.bone.ircballoon.actor.message._
+
 import org.eclipse.swt.widgets.{List => SWTList, _}
 import org.eclipse.swt.layout._
 import org.eclipse.swt.events._
