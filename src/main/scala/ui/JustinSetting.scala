@@ -29,21 +29,6 @@ class JustinSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends
     IRCInfo(hostname, 6667, username.getText, channel, password)
   }
 
-  def createIRCBot(callback: IRCMessage => Any, 
-                   onLog: String => Any, 
-                   onError: Exception => Any) =
-  {
-    val hostname = "%s.jtvirc.com" format(username.getText)
-    val password = Some(this.password.getText.trim)
-    val channel = "#%s" format(username.getText)
-    new IRCBot(
-      hostname, 6667, username.getText, 
-      password, channel, callback, onLog, onError, 
-      onJoinButton.getSelection, 
-      onLeaveButton.getSelection
-    )
-  }
-
   def isSettingOK = {
     val username = this.username.getText.trim
     val password = this.password.getText.trim

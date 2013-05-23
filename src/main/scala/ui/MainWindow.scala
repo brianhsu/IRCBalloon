@@ -150,14 +150,6 @@ object MainWindow extends SWTHelper
     case 1 => justinSetting.getIRCInfo
   }
 
-  def createIRCBot(callback: IRCMessage => Any, onError: Exception => Any) =
-  {
-    logginTab.getSelectionIndex match {
-      case 0 => ircSetting.createIRCBot(callback, appendLog _, onError)
-      case 1 => justinSetting.createIRCBot(callback, appendLog _, onError)
-    }
-  }
-
   def createNotificationService() = {
     displayTab.getSelectionIndex match {
       case 0 => blockSetting.createNotificationBlock

@@ -42,26 +42,6 @@ class IRCSetting(parent: TabFolder, onModify: ModifyEvent => Any) extends
 
   }
 
-  def createIRCBot(callback: IRCMessage => Any, 
-                   onLog: String => Any, 
-                   onError: Exception => Any) = 
-  {
-
-    if (!isSettingOK) {
-      throw new Exception(tr("IRC Setting is not completed"))
-    }
-
-    new IRCBot(
-      hostText.getText, 
-      portText.getText.toInt, 
-      nickname.getText, 
-      getPassword, channel.getText, 
-      callback, onLog, onError,
-      onJoinButton.getSelection, 
-      onLeaveButton.getSelection
-    )
-  }
-
   def isSettingOK = {
     val hostname = this.hostText.getText.trim
     val port = this.portText.getText.trim
