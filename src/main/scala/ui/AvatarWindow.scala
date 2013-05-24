@@ -140,7 +140,6 @@ class AvatarWindow(parent: Shell) extends SWTHelper
   val displayAvatar = createCheckBox(shell, tr("Display avatar"))
   val usingTwitchAvatar = createCheckBox(shell, tr("Using avatar from Justin.TV / Twitch"))
   val onlyAvatar = createCheckBox(shell, tr("Don't display nickname when user has Avatar"))
-  val usingTwitchNickname = createCheckBox(shell, tr("Use Justin.TV / Twitch nickname "))
 
   val avatarTable = createTable()
   val toolBar = createToolBar()
@@ -159,10 +158,6 @@ class AvatarWindow(parent: Shell) extends SWTHelper
 
     usingTwitchAvatar.addSelectionListener { e:SelectionEvent => 
       Preference.usingTwitchAvatar = usingTwitchAvatar.getSelection
-    }
-
-    usingTwitchNickname.addSelectionListener { e:SelectionEvent => 
-      Preference.usingTwitchNickname = usingTwitchNickname.getSelection
     }
   }
 
@@ -254,7 +249,6 @@ class AvatarWindow(parent: Shell) extends SWTHelper
     displayAvatar.setSelection(Preference.displayAvatar)
     usingTwitchAvatar.setSelection(Preference.usingTwitchAvatar)
     onlyAvatar.setSelection(Preference.onlyAvatar)
-    usingTwitchNickname.setSelection(Preference.usingTwitchNickname)
 
     shell.setLayout(gridLayout)
     shell.setText(tr("Avatar / Nickname Preference"))

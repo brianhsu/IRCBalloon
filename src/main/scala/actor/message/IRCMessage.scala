@@ -22,8 +22,8 @@ trait HasUser
    */
   def userDisplay = twitchUser.avatar match {
     case Some(image) if displayAvatar && onlyAvatar => s"[${twitchUser.username}] :"
-    case Some(image) if displayAvatar => s"[${twitchUser.username}] ${twitchUser.nickname}:"
-    case _ => twitchUser.nickname + ":"
+    case Some(image) if displayAvatar => s"[${twitchUser.username}] ${twitchUser.username}:"
+    case _ => s"${twitchUser.username}:"
   }
 }
 

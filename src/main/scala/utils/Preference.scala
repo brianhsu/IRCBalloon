@@ -22,7 +22,6 @@ object Preference extends SWTHelper
   var displayAvatar: Boolean = true
   var onlyAvatar: Boolean = false
   var usingTwitchAvatar: Boolean = false
-  var usingTwitchNickname: Boolean = true
   var usingDefaultEmotes: Boolean = true
 
   val preference = Preferences.userNodeForPackage(Preference.getClass)
@@ -74,7 +73,6 @@ object Preference extends SWTHelper
     this.displayAvatar = preference.getBoolean("displayAvatar", true)
     this.onlyAvatar = preference.getBoolean("onlyAvatar", false)
     this.usingTwitchAvatar = preference.getBoolean("usingTwitchAvatar", false)
-    this.usingTwitchNickname = preference.getBoolean("usingTwitchNickname", false)
 
     if (!avatarFile.exists) {
       return
@@ -105,7 +103,6 @@ object Preference extends SWTHelper
     preference.putBoolean("displayAvatar", this.displayAvatar)
     preference.putBoolean("onlyAvatar", this.onlyAvatar)
     preference.putBoolean("usingTwitchAvatar", this.usingTwitchAvatar)
-    preference.putBoolean("usingTwitchNickname", this.usingTwitchNickname)
   }
 
   def read(setting: BlockSetting)
