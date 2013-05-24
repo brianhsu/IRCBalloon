@@ -24,9 +24,9 @@ trait HasUser
    *  候會取代為使用者的 Avatar。
    */
   def userDisplay = twitchUser.avatar match {
-    case Some(image) if displayAvatar && onlyAvatar => s"[${twitchUser.username}] :"
-    case Some(image) if displayAvatar => s"[${twitchUser.username}] ${twitchUser.username}:"
-    case _ => s"${twitchUser.username}:"
+    case Some(image) if displayAvatar && onlyAvatar => s"[${twitchUser.username}]"
+    case Some(image) if displayAvatar => s"[${twitchUser.username}] ${twitchUser.username}"
+    case _ => s"${twitchUser.username}"
   }
 }
 
@@ -50,8 +50,8 @@ case class Message(message: String, user: IRCUser) extends IRCMessage with HasUs
   val timestamp: Date = new Date
    
   override def toString = user.isOP || user.isBroadcaster match {
-    case true  => s"[OP] ${userDisplay} ${message}"
-    case false => s"${userDisplay} ${message}"
+    case true  => s"[OP] ${userDisplay}: ${message}"
+    case false => s"${userDisplay}: ${message}"
   }
 }
 
