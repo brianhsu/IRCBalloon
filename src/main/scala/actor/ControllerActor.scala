@@ -10,6 +10,7 @@ import akka.event.Logging
 import scala.concurrent._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.collection.JavaConverters._
+import scala.concurrent.duration._
 
 class ControllerActor extends Actor {
 
@@ -25,8 +26,16 @@ class ControllerActor extends Actor {
   }
 
   def startBot(info: IRCInfo) {
+
+    if (ircBot != None) {
+      stopBot()
+    }
+
     ircBot = Some(new IRCBot(info, self))
-    future { ircBot.foreach(_.startBot()) }
+    future { 
+      ircBot.foreach(_.startBot()) 
+      self ! CheckIRCAlive
+    }
   }
 
   def sendMessage(message: String) = future {
@@ -45,9 +54,25 @@ class ControllerActor extends Actor {
 
   val log = Logging(context.system, this)
 
+  def checkIRCAlive() {
+    
+    ircBot.foreach { bot =>
+      println("bot.hasTimeouted:" + bot.hasTimeouted)
+      if (bot.hasTimeouted) {
+        self ! SystemNotice("[SYS] IRC Disconnected. Pelease restart it again.")
+      }
+    }
+
+    context.system.scheduler.scheduleOnce(180.seconds) {
+      self ! CheckIRCAlive
+    }
+
+  }
+
   def receive = {
     case StartIRCBot(info) => startBot(info)
     case StopIRCBot => stopBot()
+    case CheckIRCAlive => checkIRCAlive()
     case SendIRCMessage(message) => sendMessage(message)
     case m: NotificationMessage => notificationActor ! m
     case m: IRCMessage => notificationActor ! m

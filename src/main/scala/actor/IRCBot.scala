@@ -13,6 +13,9 @@ import scala.collection.JavaConverters._
 
 class IRCBot(info: IRCInfo, controllerActor: ActorRef) extends PircBotX {
 
+  private var isWatching: Boolean = false
+  private var lastServerResponseTime: Long = System.currentTimeMillis
+
   object Handlers extends ListenerAdapter[IRCBot] {
 
     private def isBroadcaster(user: User): Boolean = {
@@ -28,8 +31,17 @@ class IRCBot(info: IRCInfo, controllerActor: ActorRef) extends PircBotX {
       IRCUser(user.getNick, isOP(user, channel), isBroadcaster(user))
     }
 
+    override def onServerResponse(event: ServerResponseEvent[IRCBot]) {
+      println("server:" + event)
+    }
+
     override def onMessage(event: MessageEvent[IRCBot]) {
+      
       controllerActor ! Message(event.getMessage, toIRCUser(event.getUser, event.getChannel))
+
+      if (event.getMessage == "aaa") {
+        IRCBot.this.sendCTCPCommand(event.getChannel, "PING")
+      }
     }
 
     override def onAction(event: ActionEvent[IRCBot]) {
@@ -55,10 +67,17 @@ class IRCBot(info: IRCInfo, controllerActor: ActorRef) extends PircBotX {
     }
   }
   
+  override def handleLine(line: String) {
+    super.handleLine(line)
+    this.lastServerResponseTime = System.currentTimeMillis
+  }
+
   override def log(line: String) {
     super.log(line)
     controllerActor ! IRCLog(line)
   }
+
+  def hasTimeouted = ((System.currentTimeMillis - this.lastServerResponseTime) / 1000) > 60 * 10
 
   def connect()
   {
@@ -81,6 +100,7 @@ class IRCBot(info: IRCInfo, controllerActor: ActorRef) extends PircBotX {
       IRCBot.this.connect()
       IRCBot.this.getListenerManager.addListener(Handlers)
       IRCBot.this.joinChannel(info.channel)
+      IRCBot.this.setSocketTimeout(1000 * 30)
     } catch {
       case e: Exception => controllerActor ! IRCException(e)
     }
