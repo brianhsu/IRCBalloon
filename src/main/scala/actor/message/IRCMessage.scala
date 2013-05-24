@@ -4,6 +4,9 @@ import org.bone.ircballoon.model.TwitchUser
 import org.bone.ircballoon.model.IRCUser
 import org.bone.ircballoon.I18N.i18n._
 
+import java.util.Date
+import java.text.SimpleDateFormat
+
 trait HasUser
 {
   import org.bone.ircballoon.Preference.displayAvatar
@@ -27,13 +30,25 @@ trait HasUser
   }
 }
 
-sealed trait IRCMessage
+sealed trait IRCMessage {
+  val timestamp: Date
+
+  def formattedTimestamp = {
+    new SimpleDateFormat("HH:mm").format(timestamp)
+  }
+}
 
 case class SystemNotice(message: String) extends IRCMessage {
+
+  val timestamp: Date = new Date
+
   override def toString = message
 }
 
 case class Message(message: String, user: IRCUser) extends IRCMessage with HasUser {
+
+  val timestamp: Date = new Date
+   
   override def toString = user.isOP || user.isBroadcaster match {
     case true  => s"[OP] ${userDisplay} ${message}"
     case false => s"${userDisplay} ${message}"
@@ -41,18 +56,26 @@ case class Message(message: String, user: IRCUser) extends IRCMessage with HasUs
 }
 
 case class Action(action: String, user: IRCUser) extends IRCMessage with HasUser {
+  val timestamp: Date = new Date
+
   override def toString = tr("[Action] %s %s") format(userDisplay, action)
 }
 
 case class Part(reason: String, channel: String, user: IRCUser) extends IRCMessage with HasUser {
+  val timestamp: Date = new Date
+
   override def toString = tr("[SYS] %s has left") format(userDisplay)
 }
 
 case class Join(channel: String, user: IRCUser) extends IRCMessage with HasUser {
+  val timestamp: Date = new Date
+
   override def toString = tr("[SYS] %s has joined") format(userDisplay)
 }
 
 case class Quit(user: IRCUser, reason: String) extends IRCMessage with HasUser {
+  val timestamp: Date = new Date
+
   override def toString = tr("[SYS] %s has left") format(userDisplay)
 }
 

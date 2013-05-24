@@ -166,7 +166,8 @@ class BlockSetting(tabFolder: TabFolder, parent: ScrolledComposite,
       fontColor, messageFont, 
       nicknameColor, nicknameFont,
       messageSize, scrollBarCheckbox.getSelection,
-      blockBackgroundImage
+      blockBackgroundImage,
+      showTimestamp = true
     )
   }
 

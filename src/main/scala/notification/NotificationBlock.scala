@@ -21,7 +21,8 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
                              fontColor: Color, font: Font, 
                              nicknameColor: Color, nicknameFont: Font,
                              messageSize: Int, hasScrollBar: Boolean,
-                             backgroundImage: Option[String] = None) extends Notification 
+                             backgroundImage: Option[String] = None,
+                             showTimestamp: Boolean) extends Notification 
                                                with MessageIcon
                                                with NotificationTheme 
                                                with NotificationWindow 
@@ -110,7 +111,10 @@ case class NotificationBlock(size: (Int, Int), location: (Int, Int),
     runByThread {
       if (!shell.isDisposed) {
 
-        val message = messages.take(messageSize).reverse.map(_.toString).mkString("\n")
+        val message = messages.take(messageSize).reverse.map { m =>
+          if (showTimestamp) s"[${m.formattedTimestamp}] ${m.toString}" else m.toString
+        }.mkString("\n")
+
         label.setText(message)
 
         val styles = 

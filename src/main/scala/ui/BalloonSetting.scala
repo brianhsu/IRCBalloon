@@ -112,7 +112,8 @@ class BalloonSetting(tabFolder: TabFolder, parent: ScrolledComposite,
       nicknameColor, nicknameFont,
       displayTimeSpinner.getSelection * 1000, 
       fadeTimeSpinner.getSelection,
-      spacingSpinner.getSelection
+      spacingSpinner.getSelection,
+      showTimestamp = true
     )
   }
 
