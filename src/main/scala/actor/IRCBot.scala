@@ -31,16 +31,18 @@ class IRCBot(info: IRCInfo, controllerActor: ActorRef) extends PircBotX {
       IRCUser(user.getNick, isOP(user, channel), isBroadcaster(user))
     }
 
-    override def onServerResponse(event: ServerResponseEvent[IRCBot]) {
-      println("server:" + event)
-    }
-
     override def onMessage(event: MessageEvent[IRCBot]) {
       
       controllerActor ! Message(event.getMessage, toIRCUser(event.getUser, event.getChannel))
 
       if (event.getMessage == "aaa") {
         IRCBot.this.sendCTCPCommand(event.getChannel, "PING")
+      }
+
+      val votingRegex = """(\d+)\+\+""".r
+      val vote = votingRegex.findAllMatchIn(event.getMessage).map(_.group(0).dropRight(2)).toList
+      vote.foreach { voteTo =>
+        controllerActor ! Vote(toIRCUser(event.getUser, event.getChannel), voteTo.toInt)
       }
     }
 
