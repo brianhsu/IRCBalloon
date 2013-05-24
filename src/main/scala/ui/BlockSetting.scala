@@ -74,6 +74,7 @@ class BlockSetting(tabFolder: TabFolder, parent: ScrolledComposite,
   val (messageSizeLabel, messageSizeSpinner) = createSpinner(groupMessageFont, tr("Message Limit:"), 1, 50)
 
   val (transparentLabel, transparentScale) = createScaleChooser(this, alphaTitle)
+  val showTimestampCheckbox = createCheckBox(groupMessageFont, tr("Show timestamp"))
   val previewButton = createPreviewButton()
   val noticeLabel = createNoticeLabel()
 
@@ -167,7 +168,7 @@ class BlockSetting(tabFolder: TabFolder, parent: ScrolledComposite,
       nicknameColor, nicknameFont,
       messageSize, scrollBarCheckbox.getSelection,
       blockBackgroundImage,
-      showTimestamp = true
+      showTimestampCheckbox.getSelection
     )
   }
 

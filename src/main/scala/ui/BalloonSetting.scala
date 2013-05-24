@@ -66,6 +66,7 @@ class BalloonSetting(tabFolder: TabFolder, parent: ScrolledComposite,
 
   val (fgLabel, fgButton) = createColorChooser(fontGroup, tr("Message Color:"), fontColor, fontColor = _)
   val (fontLabel, fontButton) = createFontChooser(fontGroup, tr("Message Font:"), messageFont, messageFont = _)
+  val showTimestampCheckbox = createCheckBox(fontGroup, tr("Show timestamp"))
   val effectGroup = createGroup(this, tr("Effect Setting"))
   val (transparentLabel, transparentScale) = createScaleChooser(effectGroup, alphaTitle)
   val (displayTimeLabel, displayTimeSpinner) = createSpinner(effectGroup, tr("Bubble keeps (second):"), 1, 120)
@@ -113,7 +114,7 @@ class BalloonSetting(tabFolder: TabFolder, parent: ScrolledComposite,
       displayTimeSpinner.getSelection * 1000, 
       fadeTimeSpinner.getSelection,
       spacingSpinner.getSelection,
-      showTimestamp = true
+      showTimestampCheckbox.getSelection
     )
   }
 
