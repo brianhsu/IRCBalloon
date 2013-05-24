@@ -184,7 +184,10 @@ object Preference extends SWTHelper
 
     // Scroll Bar
     val hasScrollBar = preference.getBoolean("BlockScrollBar", false)
+    val showTimestamp = preference.getBoolean("BlockShowTimestamp", false)
+
     setting.scrollBarCheckbox.setSelection(hasScrollBar)
+    setting.showTimestampCheckbox.setSelection(showTimestamp)
   }
 
   def save(setting: BlockSetting)
@@ -233,8 +236,9 @@ object Preference extends SWTHelper
     // 訊息數量
     preference.putInt("BlockMessageSize", setting.messageSizeSpinner.getSelection)
 
-    // Scroll Bar
+    // Scroll Bar / 時間標記
     preference.putBoolean("BlockScrollBar", setting.scrollBarCheckbox.getSelection)
+    preference.putBoolean("BlockShowTimestamp", setting.showTimestampCheckbox.getSelection)
   }
 
   def read(setting: BalloonSetting)
@@ -310,6 +314,9 @@ object Preference extends SWTHelper
     setting.displayTimeSpinner.setSelection(preference.getInt("BalloonDisplayTime", 5))
     setting.fadeTimeSpinner.setSelection(preference.getInt("BalloonFadeTime", 500))
     setting.spacingSpinner.setSelection(preference.getInt("BalloonSpacing", 5))
+
+    val showTimestamp = preference.getBoolean("BalloonShowTimestamp", false)
+    setting.showTimestampCheckbox.setSelection(showTimestamp)
   }
 
 
@@ -351,6 +358,7 @@ object Preference extends SWTHelper
     preference.putInt("BalloonDisplayTime", setting.displayTimeSpinner.getSelection)
     preference.putInt("BalloonFadeTime", setting.fadeTimeSpinner.getSelection)
     preference.putInt("BalloonSpacing", setting.spacingSpinner.getSelection)
+    preference.putBoolean("BalloonShowTimestamp", setting.showTimestampCheckbox.getSelection)
   }
 
   def read(ircSetting: IRCSetting)

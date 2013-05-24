@@ -16,7 +16,7 @@ case class BalloonController(size: (Int, Int), location: (Int, Int),
                              fontColor: Color, font: Font,
                              nicknameColor: Color, nicknameFont: Font,
                              displayTime: Int, fadeTime: Int,
-                             spacing: Int) extends 
+                             spacing: Int, showTimestamp: Boolean) extends 
             Notification with NotificationBalloon with SWTHelper
 {
 
@@ -83,7 +83,7 @@ case class BalloonController(size: (Int, Int), location: (Int, Int),
   def addMessage(message: IRCMessage)
   {
     runByThread {
-      val notification = new BalloonWindow(location, bgColor, borderColor, message)
+      val notification = new BalloonWindow(location, bgColor, borderColor, message, showTimestamp)
       notification.prepare()
 
       val locationY = calculateLocationY

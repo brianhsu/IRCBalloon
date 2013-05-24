@@ -19,7 +19,8 @@ trait NotificationBalloon
   val FadeTick = fadeTime / (alpha / 5)
 
   case class BalloonWindow(location: (Int, Int), bgColor: Color, borderColor: Color, 
-                           message: IRCMessage) extends NotificationTheme 
+                           message: IRCMessage, 
+                           showTimestamp: Boolean) extends NotificationTheme 
                                                 with NotificationWindow
                                                 with MessageIcon
                                                 with SWTHelper
@@ -38,6 +39,11 @@ trait NotificationBalloon
 
     def bottomY = shell.getLocation.y + shell.getSize.y + spacing
 
+    def formattedMessage = showTimestamp match {
+      case true  => s"[${message.formattedTimestamp}] ${message.toString}" 
+      case false => message.toString
+    }
+
     def setLayout()
     {
       val layout = new GridLayout(1, false)
@@ -51,7 +57,7 @@ trait NotificationBalloon
       label.setFont(font)
       label.setLineSpacing(5)
       label.setEnabled(false)
-      label.setText(message.toString)
+      label.setText(formattedMessage)
       label.addPaintObjectListener(new PaintObjectListener() {
         override def paintObject(event: PaintObjectEvent) {
           event.style.data match {
@@ -66,9 +72,10 @@ trait NotificationBalloon
       })
 
       val styles = 
-        nicknameStyles(message.toString, nicknameColor, nicknameFont) ++
-        opStyles(message.toString) ++ emoteStyles(message.toString) ++
-        avatarStyles(message.toString)
+        nicknameStyles(formattedMessage.toString, nicknameColor, nicknameFont) ++
+        opStyles(formattedMessage.toString) ++ 
+        emoteStyles(formattedMessage.toString) ++
+        avatarStyles(formattedMessage.toString)
 
       styles.foreach(label.setStyleRange)
                           
