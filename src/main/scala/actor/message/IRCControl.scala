@@ -11,6 +11,7 @@ case object StopIRCBot extends IRCControl
 case class IRCLog(line: String) extends IRCControl
 case class IRCException(exception: Exception) extends IRCControl
 case object CheckIRCAlive extends IRCControl
+case object IsConnected extends IRCControl
 
 sealed trait VotingMessage
 case class StartVoting(candidate: List[String], durationInMinute: Int) extends VotingMessage
