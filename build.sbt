@@ -6,7 +6,7 @@ seq(assemblySettings: _*)
 
 name := "IRCBalloon"
 
-version := "0.7.1"
+version := "0.8.0"
 
 scalaVersion := "2.10.1"
 
