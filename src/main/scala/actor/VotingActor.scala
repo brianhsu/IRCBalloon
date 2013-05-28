@@ -21,7 +21,8 @@ class VotingActor extends Actor {
   private var voteStatus: Map[String, Int] = Map()
   private var isVoting: Boolean = false
 
-  def startVoting(candidate: List[String], durationInMinute: Int) {
+  def startVoting(candidate: List[String], durationInMinute: Int)
+  {
 
     this.candidate = candidate
     this.voteStatus = Map()
@@ -66,9 +67,9 @@ class VotingActor extends Actor {
   }
 
   def receive = {
-    case StartVoting(candidate: List[String], durationInMinute: Int) => startVoting(candidate, durationInMinute)
+    case StartVoting(candidate, durationInMinute, _) => startVoting(candidate, durationInMinute)
     case StopVoting => stopVoting()
-    case Vote(user: IRCUser, voteTo: Int) => vote(user, voteTo)
+    case Vote(user, voteTo) => vote(user, voteTo)
     case x => log.info("votingActor/ Unknow message:" + x)
   }
 }

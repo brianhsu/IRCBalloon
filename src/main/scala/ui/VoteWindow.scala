@@ -135,8 +135,10 @@ class VoteWindow(parent: Shell) extends SWTHelper
       } else if (!isIRCConnected) {
         displayError(tr("You need connect to IRC chatroom before start voting."))
       } else {
-        MainWindow.controller ! StartVoting(options, this.spinner.getSelection)
+        val voteStatusWin = new VoteStatusWin(parent, options)
+        MainWindow.controller ! StartVoting(options, this.spinner.getSelection, voteStatusWin)
         shell.dispose()
+        voteStatusWin.open()
       }
 
     }

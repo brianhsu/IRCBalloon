@@ -1,6 +1,7 @@
 package org.bone.ircballoon.actor
 
 import org.bone.ircballoon.MainWindow
+import org.bone.ircballoon.VoteStatusWin
 
 import org.bone.ircballoon.actor.message._
 import org.bone.ircballoon.model._ 
@@ -21,6 +22,8 @@ class ControllerActor extends Actor {
   private var ircBot: Option[IRCBot] = None
   private val notificationActor = context.actorOf(Props[NotificationActor])
   private val votingActor = context.actorOf(Props[VotingActor])
+
+  private var voteStatusWin: Option[VoteStatusWin] = None
 
   def stopBot() {
     future {
@@ -44,14 +47,6 @@ class ControllerActor extends Actor {
   }
 
   def sendMessage(message: String) = {
-
-
-    if (message == "testvote") {
-      votingActor ! StartVoting(List("南燕", "螢", "姐姐"), 10)
-    } else if (message == "stopvote") {
-      votingActor ! StopVoting
-    }
-
     for {
       bot <- ircBot
       channel <- bot.getChannels.asScala
@@ -79,7 +74,14 @@ class ControllerActor extends Actor {
 
   }
 
-  def showFinalVoting(result: List[(String, Int)]) {
+  def updateVotingStatus(result: List[(String, Int)])
+  {
+    voteStatusWin.filterNot(_.shell.isDisposed).
+                  foreach(_.updateVoteBar(result))
+  }
+
+  def showFinalVoting(result: List[(String, Int)]) 
+  {
     
     def byVoting(x: ((String, Int), Int), y: ((String, Int), Int)): Boolean = {
       val ((xName, xVote), xNo) = x
@@ -98,21 +100,31 @@ class ControllerActor extends Actor {
     }
 
     self ! SendIRCMessage("============================")
-   
-
   }
 
-  def receive = {
+  def startVoting(votingMessage: StartVoting)
+  {
+    this.voteStatusWin = Some(votingMessage.statusWindow)
+    votingActor ! votingMessage
+  }
+
+  def receive = 
+  {
     case StartIRCBot(info) => startBot(info)
     case StopIRCBot => stopBot()
     case CheckIRCAlive => checkIRCAlive()
-    case SendIRCMessage(message) => sendMessage(message)
-    case VoteCurrent(result) => println("vote current:" + result)
-    case VoteResult(result) => showFinalVoting(result)
     case IsConnected => sender ! (!ircBot.isEmpty && !ircBot.get.hasTimeouted)
+
+    case SendIRCMessage(message) => sendMessage(message)
+
+    case VoteCurrent(result) => updateVotingStatus(result)
+    case VoteResult(result) => showFinalVoting(result)
+    case v: StartVoting => startVoting(v)
+    case v: VotingMessage => votingActor ! v
+
     case m: IRCMessage => notificationActor ! m
     case n: NotificationMessage => notificationActor ! n
-    case v: VotingMessage => votingActor ! v
+
     case IRCLog(line) => MainWindow.appendLog(line)
     case IRCException(exception) => {
       self ! StopIRCBot
