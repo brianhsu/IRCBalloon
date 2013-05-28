@@ -1,6 +1,8 @@
 package org.bone.ircballoon.actor
 
 import org.bone.ircballoon.MainWindow
+import org.bone.ircballoon.SoundUtils
+import org.bone.ircballoon.I18N.i18n._
 
 import org.bone.ircballoon.actor.message._
 import org.bone.ircballoon.model._ 
@@ -12,9 +14,6 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 
 import scala.collection.JavaConverters._
-import javax.sound.sampled.AudioInputStream
-import javax.sound.sampled.AudioSystem
-import javax.sound.sampled.Clip
 
 class VotingActor extends Actor {
 
@@ -25,19 +24,6 @@ class VotingActor extends Actor {
   private var candidate: List[String] = Nil
   private var voteStatus: Map[String, Int] = Map()
   private var isVoting: Boolean = false
-
-  def playSound()
-  {
-    val thread = new Thread() {
-      override def run() {
-        val audioIn = AudioSystem.getAudioInputStream(getClass.getResource("/vote.wav"))
-        val clip = AudioSystem.getClip()
-        clip.open(audioIn)
-        clip.start()
-      }
-    }
-    thread.start()
-  }
 
   def resetTime()
   {
@@ -59,18 +45,20 @@ class VotingActor extends Actor {
     this.candidate = candidate
     this.voteStatus = Map()
 
-    val candidateListing: List[String] = candidate.zipWithIndex.map { case(name, index) => s"  ${index}. $name" }
-    val messages = List(
-      "============================",
-      "開始投票！",
-      "",
-      s"投票時間為 ${durationInMinutes} 分鐘，選項如下："
-    ) ++ candidateListing ++ List(
-      "請使用 1++ 此格式投票，重覆投票以最後一票計",
-      "============================"
-    )
+    val candidateList: List[String] = candidate.zipWithIndex.map { case(name, index) => 
+      s"  ${index}. $name" 
+    }
 
-    messages.foreach(m => sender ! SendIRCMessage(m))
+    sender ! SendIRCMessage("============================")
+    sender ! SendIRCMessage(tr("Start Voting!"))
+    sender ! SendIRCMessage("")
+    sender ! SendIRCMessage(tr("Vote duration is %d minutes").format(durationInMinutes))
+    sender ! SendIRCMessage(tr("Candidate are:"))
+    candidateList.foreach(m => sender ! SendIRCMessage(m))
+    sender ! SendIRCMessage(tr("Please use format like 1++ to vote."))
+    sender ! SendIRCMessage(tr("If you vote mutliple times, only last vote is counted."))
+    sender ! SendIRCMessage("============================")
+
     this.isVoting = true
 
     this.durationInMinutes = durationInMinutes
@@ -92,7 +80,7 @@ class VotingActor extends Actor {
   def vote(user: IRCUser, voteTo: Int) {
     if (isVoting && voteTo < candidate.size) {
       voteStatus = voteStatus.updated(user.nickname, voteTo).filter(_._2 < candidate.size)
-      playSound()
+      SoundUtils.playSound("/sound/vote.wav")
       sender ! VoteCurrent(getVoteResult)
     }
   }

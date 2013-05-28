@@ -40,6 +40,21 @@ class VoteStatusWin(parent: Shell, candidates: List[String], duration: Int) exte
   val stopVoteButton: Button = createStopVoteButton()
   val closeButton: Button = createCloseButton()
 
+  def displayFinishWindow()
+  {
+    val thread = new Thread() {
+      override def run() {
+        runByThread {
+          val messageBox = new MessageBox(shell, SWT.OK|SWT.ICON_INFORMATION)
+          SoundUtils.playSound("/sound/finish.wav")
+          messageBox.setMessage(tr("Vote finsihed!"))
+          messageBox.open()
+        }
+      }
+    }
+    thread.start()
+  }
+
   def stopVote()
   {
     isVoting = false
@@ -48,6 +63,7 @@ class VoteStatusWin(parent: Shell, candidates: List[String], duration: Int) exte
     resetTimeButton.setEnabled(false)
     stopVoteButton.setEnabled(false)
     closeButton.setEnabled(true)
+    displayFinishWindow()
   }
   
   def formatTime(timeInSeconds: Int): String = 
@@ -145,8 +161,8 @@ class VoteStatusWin(parent: Shell, candidates: List[String], duration: Int) exte
   def updateFinalVote(voteStatus: List[(String, Int)])
   {
     runByThread {
-      stopVote()
       updateVoteBar(voteStatus)
+      stopVote()
     }
   }
 

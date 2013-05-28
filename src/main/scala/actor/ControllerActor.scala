@@ -2,6 +2,7 @@ package org.bone.ircballoon.actor
 
 import org.bone.ircballoon.MainWindow
 import org.bone.ircballoon.VoteStatusWin
+import org.bone.ircballoon.I18N.i18n._
 
 import org.bone.ircballoon.actor.message._
 import org.bone.ircballoon.model._ 
@@ -64,7 +65,7 @@ class ControllerActor extends Actor {
     ircBot.foreach { bot =>
       println("bot.hasTimeouted:" + bot.hasTimeouted)
       if (bot.hasTimeouted) {
-        self ! SystemNotice("[SYS] IRC Disconnected. Pelease restart it again.")
+        self ! SystemNotice(tr("[SYS] IRC Disconnected. Pelease restart it again."))
       }
     }
 
@@ -81,10 +82,7 @@ class ControllerActor extends Actor {
   }
 
   def showFinalVoting(result: List[(String, Int)]) 
-  {
-    voteStatusWin.filterNot(_.shell.isDisposed).
-                  foreach(_.updateFinalVote(result))
-   
+  {   
     def byVoting(x: ((String, Int), Int), y: ((String, Int), Int)): Boolean = {
       val ((xName, xVote), xNo) = x
       val ((yName, yVote), yNo) = y
@@ -94,13 +92,15 @@ class ControllerActor extends Actor {
 
     val sortedVote = result.zipWithIndex.sortWith(byVoting)
 
-    self ! SendIRCMessage("======== 投票結果 ==========")
-
+    self ! SendIRCMessage(tr("======== Vote Result =========="))
     sortedVote.foreach { case((name, vote), no) =>
       val plusSign = List.fill(vote)("+").mkString
-      self ! SendIRCMessage(s"${no}. ${name}\t\t${plusSign}\t${vote} 票")
+      self ! SendIRCMessage(tr("%d. %s\t\t%s\t%d votes").format(no, name, plusSign, vote))
     }
-    self ! SendIRCMessage("============================")
+    self ! SendIRCMessage(tr("==============================="))
+
+    voteStatusWin.filterNot(_.shell.isDisposed).
+                  foreach(_.updateFinalVote(result))
 
     voteStatusWin = None
   }

@@ -123,12 +123,10 @@ class VoteWindow(parent: Shell) extends SWTHelper
     val gridData = new GridData(SWT.RIGHT, SWT.FILL, true, false)
     val button = new Button(shell, SWT.PUSH)
 
-    button.setText("Start")
+    button.setText(tr("Start"))
     button.setImage(MyIcon.vote)
     button.setLayoutData(gridData)
     button.addSelectionListener { e: SelectionEvent =>
-
-      println("Here...:" + isAllOptionsNotEmpty)
 
       if (!isAllOptionsNotEmpty) {
         displayError(tr("Vote options cannot have empty value."))
