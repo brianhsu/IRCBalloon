@@ -179,13 +179,14 @@ trait SWTHelper
     (onJoinButton, onLeaveButton)
   }
 
-  def createGroup(parent: Composite, title: String) =
+  def createGroup(parent: Composite, title: String, columnInside: Int = 4, 
+                  spanOutside: Int = 4) =
   {
-    val gridLayout = new GridLayout(4, false)
+    val gridLayout = new GridLayout(columnInside, false)
     val layoutData = new GridData(SWT.FILL, SWT.FILL, true, false)
     val group = new Group(parent, SWT.SHADOW_IN)
 
-    layoutData.horizontalSpan = 4
+    layoutData.horizontalSpan = spanOutside
     group.setText(title)
     group.setLayout(gridLayout)
     group.setLayoutData(layoutData)

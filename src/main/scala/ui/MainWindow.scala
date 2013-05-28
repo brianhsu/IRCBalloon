@@ -46,16 +46,12 @@ object MainWindow extends SWTHelper
   lazy val actorSystem = ActorSystem("IRCBalloon")
   lazy val controller = actorSystem.actorOf(Props[ControllerActor])
 
-  def createMenu() =
+  def createOptionMenu(optionHeader: MenuItem) =
   {
-    val menuBar = new Menu(shell, SWT.BAR)
-    val optionHeader = new MenuItem(menuBar, SWT.CASCADE)
     val optionMenu = new Menu(shell, SWT.DROP_DOWN)
     val emoteItem = new MenuItem(optionMenu, SWT.PUSH)
     val avatarItem = new MenuItem(optionMenu, SWT.PUSH)
 
-    optionHeader.setMenu(optionMenu)
-    optionHeader.setText(tr("&Preference"))
     emoteItem.setText(tr("Emotes"))
     emoteItem.addSelectionListener { e: SelectionEvent =>
       val emotePreference = new EmoteWindow(shell)
@@ -67,6 +63,35 @@ object MainWindow extends SWTHelper
       val avatarPreference = new AvatarWindow(shell)
       avatarPreference.open()
     }
+
+    optionMenu
+  }
+
+  def createVoteMenu(voteHeader: MenuItem) = 
+  {
+    val voteMenu = new Menu(shell, SWT.DROP_DOWN)
+    val startVoteItem = new MenuItem(voteMenu, SWT.PUSH)
+
+    startVoteItem.setText(tr("Start Vote"))
+    startVoteItem.addSelectionListener { e: SelectionEvent =>
+      val voteWindow = new VoteWindow(shell)
+      voteWindow.open()
+    }
+
+    voteMenu
+  }
+
+  def createMenu() =
+  {
+    val menuBar = new Menu(shell, SWT.BAR)
+    val optionHeader = new MenuItem(menuBar, SWT.CASCADE)
+    val voteHeader = new MenuItem(menuBar, SWT.CASCADE)
+
+    optionHeader.setText(tr("&Preference"))
+    voteHeader.setText(tr("&Vote"))
+
+    optionHeader.setMenu(createOptionMenu(optionHeader))
+    voteHeader.setMenu(createVoteMenu(voteHeader))
 
     shell.setMenuBar(menuBar)
     menuBar

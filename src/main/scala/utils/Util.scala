@@ -7,12 +7,33 @@ import org.eclipse.swt.graphics._
 import org.xnap.commons.i18n.I18nFactory
 
 import java.util.Locale
+
+import javax.sound.sampled.AudioInputStream
+import javax.sound.sampled.AudioSystem
+import javax.sound.sampled.Clip
+
 import scala.util.control.Exception._
 
 object I18N
 {
   val flags = I18nFactory.FALLBACK|I18nFactory.READ_PROPERTIES
   val i18n = I18nFactory.getI18n(getClass(), Locale.getDefault, flags)
+}
+
+object SoundUtils
+{
+  def playSound(file: String)
+  {
+    val thread = new Thread() {
+      override def run() {
+        val audioIn = AudioSystem.getAudioInputStream(getClass.getResource(file))
+        val clip = AudioSystem.getClip()
+        clip.open(audioIn)
+        clip.start()
+      }
+    }
+    thread.start()
+  }
 }
 
 object MyIcon
@@ -26,6 +47,7 @@ object MyIcon
   val close = loadFromResource("/close.png").get
   val add = loadFromResource("/add.png").get
   val remove = loadFromResource("/remove.png").get
+  val vote = loadFromResource("/vote.png").get
 }
 
 object MyColor

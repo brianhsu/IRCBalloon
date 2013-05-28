@@ -1,21 +1,30 @@
 package org.bone.ircballoon.actor
 
 import org.bone.ircballoon.MainWindow
+import org.bone.ircballoon.VoteStatusWin
+import org.bone.ircballoon.I18N.i18n._
 
 import org.bone.ircballoon.actor.message._
 import org.bone.ircballoon.model._ 
 
 import akka.actor._
 import akka.event.Logging
+
 import scala.concurrent._
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.collection.JavaConverters._
 import scala.concurrent.duration._
+
+import scala.collection.JavaConverters._
 
 class ControllerActor extends Actor {
 
+  private val log = Logging(context.system, this)
+
   private var ircBot: Option[IRCBot] = None
   private val notificationActor = context.actorOf(Props[NotificationActor])
+  private val votingActor = context.actorOf(Props[VotingActor])
+
+  private var voteStatusWin: Option[VoteStatusWin] = None
 
   def stopBot() {
     future {
@@ -38,8 +47,7 @@ class ControllerActor extends Actor {
     }
   }
 
-  def sendMessage(message: String) = future {
-    
+  def sendMessage(message: String) = {
     for {
       bot <- ircBot
       channel <- bot.getChannels.asScala
@@ -52,14 +60,12 @@ class ControllerActor extends Actor {
     }
   }
 
-  val log = Logging(context.system, this)
-
   def checkIRCAlive() {
     
     ircBot.foreach { bot =>
       println("bot.hasTimeouted:" + bot.hasTimeouted)
       if (bot.hasTimeouted) {
-        self ! SystemNotice("[SYS] IRC Disconnected. Pelease restart it again.")
+        self ! SystemNotice(tr("[SYS] IRC Disconnected. Pelease restart it again."))
       }
     }
 
@@ -69,21 +75,68 @@ class ControllerActor extends Actor {
 
   }
 
-  def receive = {
+  def updateVotingStatus(result: List[(String, Int)])
+  {
+    voteStatusWin.filterNot(_.shell.isDisposed).
+                  foreach(_.updateVoteBar(result))
+  }
+
+  def showFinalVoting(result: List[(String, Int)]) 
+  {   
+    def byVoting(x: ((String, Int), Int), y: ((String, Int), Int)): Boolean = {
+      val ((xName, xVote), xNo) = x
+      val ((yName, yVote), yNo) = y
+
+      xVote > yVote
+    }
+
+    val sortedVote = result.zipWithIndex.sortWith(byVoting)
+
+    self ! SendIRCMessage(tr("======== Vote Result =========="))
+    sortedVote.foreach { case((name, vote), no) =>
+      val plusSign = List.fill(vote)("+").mkString
+      self ! SendIRCMessage(tr("%d. %s\t\t%s\t%d votes").format(no, name, plusSign, vote))
+    }
+    self ! SendIRCMessage(tr("==============================="))
+
+    voteStatusWin.filterNot(_.shell.isDisposed).
+                  foreach(_.updateFinalVote(result))
+
+    voteStatusWin = None
+  }
+
+  def startVoting(votingMessage: StartVoting)
+  {
+    this.voteStatusWin = Some(votingMessage.statusWindow)
+    votingActor ! votingMessage
+  }
+
+  def receive = 
+  {
     case StartIRCBot(info) => startBot(info)
     case StopIRCBot => stopBot()
     case CheckIRCAlive => checkIRCAlive()
+    case IsConnected => sender ! (!ircBot.isEmpty && !ircBot.get.hasTimeouted)
+
     case SendIRCMessage(message) => sendMessage(message)
-    case m: NotificationMessage => notificationActor ! m
+
+    case VoteCurrent(result) => updateVotingStatus(result)
+    case VoteResult(result) => showFinalVoting(result)
+    case v: StartVoting => startVoting(v)
+    case v: VotingMessage => votingActor ! v
+
     case m: IRCMessage => notificationActor ! m
+    case n: NotificationMessage => notificationActor ! n
+
     case IRCLog(line) => MainWindow.appendLog(line)
     case IRCException(exception) => {
       self ! StopIRCBot
       self ! StopNotification
       MainWindow.displayError(exception)
     }
-    case _ => log.info("Unknow message") 
+    case _ => log.info("controllerActor/ Unknow message") 
   }
 
 }
+
 
