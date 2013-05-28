@@ -32,7 +32,7 @@ class VoteWindow(parent: Shell) extends SWTHelper
     }
   }
 
-  val shell = new Shell(parent, SWT.APPLICATION_MODAL|SWT.DIALOG_TRIM)
+  val shell = new Shell(parent, SWT.DIALOG_TRIM|SWT.RESIZE)
   val gridLayout = new GridLayout(3, false)
   var options: List[String] = List("")
   var optionsWidget: List[VoteOption] = Nil
@@ -135,7 +135,7 @@ class VoteWindow(parent: Shell) extends SWTHelper
       } else if (!isIRCConnected) {
         displayError(tr("You need connect to IRC chatroom before start voting."))
       } else {
-        val voteStatusWin = new VoteStatusWin(parent, options)
+        val voteStatusWin = new VoteStatusWin(parent, options, this.spinner.getSelection)
         MainWindow.controller ! StartVoting(options, this.spinner.getSelection, voteStatusWin)
         shell.dispose()
         voteStatusWin.open()

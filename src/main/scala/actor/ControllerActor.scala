@@ -82,7 +82,9 @@ class ControllerActor extends Actor {
 
   def showFinalVoting(result: List[(String, Int)]) 
   {
-    
+    voteStatusWin.filterNot(_.shell.isDisposed).
+                  foreach(_.updateFinalVote(result))
+   
     def byVoting(x: ((String, Int), Int), y: ((String, Int), Int)): Boolean = {
       val ((xName, xVote), xNo) = x
       val ((yName, yVote), yNo) = y
@@ -98,8 +100,9 @@ class ControllerActor extends Actor {
       val plusSign = List.fill(vote)("+").mkString
       self ! SendIRCMessage(s"${no}. ${name}\t\t${plusSign}\t${vote} 票")
     }
-
     self ! SendIRCMessage("============================")
+
+    voteStatusWin = None
   }
 
   def startVoting(votingMessage: StartVoting)

@@ -22,22 +22,82 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import org.eclipse.swt._
 import scala.collection.mutable.ListBuffer
 
-class VoteStatusWin(parent: Shell, candidates: List[String]) extends SWTHelper
+class VoteStatusWin(parent: Shell, candidates: List[String], duration: Int) extends SWTHelper
 {
   case class VoteBar(label: Label, bar: ProgressBar, votes: Label)
 
   implicit val display = Display.getDefault
-  val shell = new Shell(parent, SWT.APPLICATION_MODAL|SWT.DIALOG_TRIM)
+
+  var timeRemaining: Int = duration * 60
+  var isVoting: Boolean = true
+
+  val shell = new Shell(parent, SWT.DIALOG_TRIM|SWT.RESIZE)
+  val candidateGroup = createGroup(shell, tr("Votes Status"), 3)
   val gridLayout = new GridLayout(3, false)
   val voteBars: Vector[VoteBar] = createVoteBar(candidates)
+  val timeLabel: Label = createTimeLabel()
+  val stopVoteButton: Button = createStopVoteButton()
+  val closeButton: Button = createCloseButton()
 
-  def createVoteBar(candidate: List[String]): Vector[VoteBar] = {
-    
+  def stopVote()
+  {
+    isVoting = false
+    timeRemaining = 0
+    timeLabel.setText(tr("Vote finished"))
+    stopVoteButton.setEnabled(false)
+    closeButton.setEnabled(true)
+  }
+  
+  def formatTime(timeInSeconds: Int): String = 
+  {
+    def addPrefixZero(value: Int) = if (value < 10) "0" + value.toString else value.toString
+
+    val seconds = timeInSeconds % 60
+    val minutes = timeInSeconds / 60
+
+    addPrefixZero(minutes) + ":" + addPrefixZero(seconds)
+  }
+
+  def createTimeLabel(): Label = 
+  {
+    val label = new Label(shell, SWT.LEFT)
+    label.setText(tr("Time Remaining: %s") format(formatTime(duration * 60)))
+    label
+  }
+
+  def createCloseButton(): Button = 
+  {
+    val data = new GridData(SWT.RIGHT, SWT.FILL, false, false)
+    val button = new Button(shell, SWT.PUSH)
+    button.setLayoutData(data)
+    button.setText(tr("Close"))
+    button.setImage(MyIcon.close)
+    button.addSelectionListener { e: SelectionEvent =>
+      shell.dispose()
+    }
+    button.setEnabled(false)
+    button
+  }
+
+  def createStopVoteButton(): Button =
+  {
+    val data = new GridData(SWT.RIGHT, SWT.FILL, true, false)
+    val button = new Button(shell, SWT.PUSH)
+    button.setLayoutData(data)
+    button.setText(tr("Stop Vote"))
+    button.addSelectionListener { e: SelectionEvent =>
+      MainWindow.controller ! StopVoting
+    }
+    button
+  }
+
+  def createVoteBar(candidate: List[String]): Vector[VoteBar] = 
+  {
     candidates.zipWithIndex.map { case (option, i) =>
       val barData = new GridData(SWT.FILL, SWT.NONE, true, false)
-      val label = new Label(shell, SWT.LEFT)
-      val bar = new ProgressBar(shell, SWT.SMOOTH|SWT.HORIZONTAL)
-      val votes = new Label(shell, SWT.LEFT)
+      val label = new Label(candidateGroup, SWT.LEFT)
+      val bar = new ProgressBar(candidateGroup, SWT.SMOOTH|SWT.HORIZONTAL)
+      val votes = new Label(candidateGroup, SWT.LEFT)
 
       label.setText(s"$i. $option")
       bar.setSelection(0)
@@ -50,16 +110,32 @@ class VoteStatusWin(parent: Shell, candidates: List[String]) extends SWTHelper
 
   }
 
+  def decreaseTimeLabel()
+  {
+    if (isVoting && timeRemaining > 0) {
+      display.timerExec(1000, new Runnable() {
+        override def run() {
+          if (!timeLabel.isDisposed && timeRemaining > 0 && isVoting) {
+            timeRemaining -= 1
+            timeLabel.setText(tr("Time Remaining: %s") format(formatTime(timeRemaining)))
+            decreaseTimeLabel()
+          }
+        }
+      })
+    }
+  }
+
   def updateFinalVote(voteStatus: List[(String, Int)])
   {
-    updateVoteBar(voteStatus)
+    runByThread {
+      stopVote()
+      updateVoteBar(voteStatus)
+    }
   }
 
   def updateVoteBar(voteStatus: List[(String, Int)])
   {
     runByThread {
-      println("voteStatus in status win:" + voteStatus)
-
       val totalVotes = voteStatus.map(_._2).sum.toDouble
 
       for (((voteTo, votes), i) <- voteStatus.zipWithIndex) {
@@ -73,9 +149,10 @@ class VoteStatusWin(parent: Shell, candidates: List[String]) extends SWTHelper
   def open()
   {
     shell.setLayout(gridLayout)
-    shell.setText(tr("Start Vote"))
+    shell.setText(tr("Vote Status"))
     shell.setSize(600, 400)
     shell.open()
+    decreaseTimeLabel()
   }
 
 }
