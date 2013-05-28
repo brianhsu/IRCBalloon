@@ -20,4 +20,5 @@ case class Vote(user: IRCUser, voteTo: Int) extends VotingMessage
 case object StopVoting extends VotingMessage
 case class VoteResult(result: List[(String, Int)]) extends VotingMessage
 case class VoteCurrent(result: List[(String, Int)]) extends VotingMessage
+case object ResetTime extends VotingMessage
 

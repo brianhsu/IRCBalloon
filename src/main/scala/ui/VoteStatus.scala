@@ -32,10 +32,11 @@ class VoteStatusWin(parent: Shell, candidates: List[String], duration: Int) exte
   var isVoting: Boolean = true
 
   val shell = new Shell(parent, SWT.DIALOG_TRIM|SWT.RESIZE)
-  val candidateGroup = createGroup(shell, tr("Votes Status"), 3)
-  val gridLayout = new GridLayout(3, false)
+  val candidateGroup = createGroup(shell, tr("Votes Status"), 3, 4)
+  val gridLayout = new GridLayout(4, false)
   val voteBars: Vector[VoteBar] = createVoteBar(candidates)
   val timeLabel: Label = createTimeLabel()
+  val resetTimeButton: Button = createResetTimeButton()
   val stopVoteButton: Button = createStopVoteButton()
   val closeButton: Button = createCloseButton()
 
@@ -44,6 +45,7 @@ class VoteStatusWin(parent: Shell, candidates: List[String], duration: Int) exte
     isVoting = false
     timeRemaining = 0
     timeLabel.setText(tr("Vote finished"))
+    resetTimeButton.setEnabled(false)
     stopVoteButton.setEnabled(false)
     closeButton.setEnabled(true)
   }
@@ -81,13 +83,28 @@ class VoteStatusWin(parent: Shell, candidates: List[String], duration: Int) exte
 
   def createStopVoteButton(): Button =
   {
-    val data = new GridData(SWT.RIGHT, SWT.FILL, true, false)
+    val data = new GridData(SWT.RIGHT, SWT.FILL, false, false)
     val button = new Button(shell, SWT.PUSH)
     button.setLayoutData(data)
     button.setText(tr("Stop Vote"))
     button.addSelectionListener { e: SelectionEvent =>
       MainWindow.controller ! StopVoting
     }
+    button
+  }
+
+  def createResetTimeButton(): Button =
+  {
+    val data = new GridData(SWT.RIGHT, SWT.FILL, true, false)
+    val button = new Button(shell, SWT.PUSH)
+    button.setLayoutData(data)
+    button.setText(tr("Reset Time"))
+    button.addSelectionListener { e: SelectionEvent =>
+      MainWindow.controller ! ResetTime
+      timeRemaining = duration * 60
+      timeLabel.setText(tr("Time Remaining: %s") format(formatTime(timeRemaining)))
+    }
+    button.setEnabled(true)
     button
   }
 
