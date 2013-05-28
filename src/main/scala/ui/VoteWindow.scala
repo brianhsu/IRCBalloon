@@ -33,13 +33,14 @@ class VoteWindow(parent: Shell) extends SWTHelper
   }
 
   val shell = new Shell(parent, SWT.APPLICATION_MODAL|SWT.DIALOG_TRIM)
-  val gridLayout = new GridLayout(1, false)
+  val gridLayout = new GridLayout(3, false)
   var options: List[String] = List("")
   var optionsWidget: List[VoteOption] = Nil
 
   val optionFrame = createGroup(shell, tr("Vote Options"), 3)
   var addButton: Button = null
   var startButton: Button = null
+  var spinner: Spinner = null
 
   def createVoteOption(): (List[VoteOption], Button) = {
     
@@ -119,8 +120,12 @@ class VoteWindow(parent: Shell) extends SWTHelper
   }
 
   def addStartButton(): Button = {
+    val gridData = new GridData(SWT.RIGHT, SWT.FILL, true, false)
     val button = new Button(shell, SWT.PUSH)
+
     button.setText("Start")
+    button.setImage(MyIcon.vote)
+    button.setLayoutData(gridData)
     button.addSelectionListener { e: SelectionEvent =>
 
       println("Here...:" + isAllOptionsNotEmpty)
@@ -130,7 +135,7 @@ class VoteWindow(parent: Shell) extends SWTHelper
       } else if (!isIRCConnected) {
         displayError(tr("You need connect to IRC chatroom before start voting."))
       } else {
-        MainWindow.controller ! StartVoting(options, 2)
+        MainWindow.controller ! StartVoting(options, this.spinner.getSelection)
         shell.dispose()
       }
 
@@ -138,9 +143,21 @@ class VoteWindow(parent: Shell) extends SWTHelper
     button
   }
 
+  def createDurationSpinner(): Spinner = 
+  {
+    val label = new Label(shell, SWT.LEFT)
+    val spinner = new Spinner(shell, SWT.NONE)
+    label.setText(tr("Vote duration (minutes):"))
+    spinner.setMaximum(180)
+    spinner.setMinimum(2)
+
+    spinner
+  }
+
   def open()
   {
     updateOptionArea(createVoteOption())
+    this.spinner = createDurationSpinner()
     this.startButton = addStartButton()
 
     shell.setLayout(gridLayout)

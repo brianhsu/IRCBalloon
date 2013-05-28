@@ -26,6 +26,7 @@ object MyIcon
   val close = loadFromResource("/close.png").get
   val add = loadFromResource("/add.png").get
   val remove = loadFromResource("/remove.png").get
+  val vote = loadFromResource("/vote.png").get
 }
 
 object MyColor
