@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-28 14:28+0800\n"
+"POT-Creation-Date: 2014-05-20 10:06+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,82 +20,54 @@ msgstr ""
 msgid "Chat:"
 msgstr "聊天："
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:30
-msgid "Login Method"
-msgstr "連線方式"
+#: /home/brianhsu/IRCBalloon/src/main/scala/actor/ControllerActor.scala:68
+msgid "[SYS] IRC Disconnected. Pelease restart it again."
+msgstr "[系統] IRC 聊天室已斷線，請嚐試重新連線。"
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:35
-msgid "Display Method"
-msgstr "顯示方式"
+#: /home/brianhsu/IRCBalloon/src/main/scala/actor/ControllerActor.scala:95
+msgid "======== Vote Result =========="
+msgstr "========== 投票結果 ==========="
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:55
-msgid "Emotes"
-msgstr "表情圖示"
+#: /home/brianhsu/IRCBalloon/src/main/scala/actor/ControllerActor.scala:98
+msgid "%d. %s\t\t%s\t%d votes"
+msgstr "%d. %s\t\t%s\t%d 票"
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:61
-msgid "Avatar / Nickname"
-msgstr "大頭貼與暱稱"
+#: /home/brianhsu/IRCBalloon/src/main/scala/actor/ControllerActor.scala:100
+msgid "==============================="
+msgstr "==============================="
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:75
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteWindow.scala:164
-msgid "Start Vote"
-msgstr "開始投票"
+#: /home/brianhsu/IRCBalloon/src/main/scala/actor/VotingActor.scala:53
+msgid "Start Voting!"
+msgstr "開始投票！"
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:90
-msgid "&Preference"
-msgstr "偏好設定(&P)"
+#: /home/brianhsu/IRCBalloon/src/main/scala/actor/VotingActor.scala:55
+msgid "Vote duration is %d minutes"
+msgstr "投票時間為 %d 分鐘"
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:91
-msgid "&Vote"
-msgstr "投票(&V)"
+#: /home/brianhsu/IRCBalloon/src/main/scala/actor/VotingActor.scala:56
+msgid "Candidate are:"
+msgstr "選項如下："
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:189
-msgid "Connecting to IRC server, please wait...\n"
-msgstr "連線至 IRC 伺服器，請稍候……\n"
+#: /home/brianhsu/IRCBalloon/src/main/scala/actor/VotingActor.scala:58
+msgid "Please use format like 1++ to vote."
+msgstr "請使用 1++ 此格式投票"
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:228
-msgid "Error:"
-msgstr "錯誤："
+#: /home/brianhsu/IRCBalloon/src/main/scala/actor/VotingActor.scala:59
+msgid "If you vote mutliple times, only last vote is counted."
+msgstr "若重覆投票，則僅計算最後一次選擇的選項"
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:253
-msgid "Connect"
-msgstr "連線"
+#: /home/brianhsu/IRCBalloon/src/main/scala/actor/message/IRCMessage.scala:61
+msgid "[Action] %s %s"
+msgstr "[動作] %s %s"
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:277
-msgid "IRC Notification"
-msgstr "IRC 通知"
+#: /home/brianhsu/IRCBalloon/src/main/scala/actor/message/IRCMessage.scala:67
+#: /home/brianhsu/IRCBalloon/src/main/scala/actor/message/IRCMessage.scala:79
+msgid "[SYS] %s has left"
+msgstr "[系統] %s 離開聊天室"
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteWindow.scala:40
-msgid "Vote Options"
-msgstr "投票選項"
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteWindow.scala:68
-msgid "Remove this option"
-msgstr "移除此選項"
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteWindow.scala:87
-msgid "Add vote option"
-msgstr "新增投票選項"
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteWindow.scala:126
-msgid "Start"
-msgstr "開始投票"
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteWindow.scala:132
-msgid "Vote options cannot have empty value."
-msgstr "投票選項裡不能有空的。"
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteWindow.scala:134
-msgid "You need connect to IRC chatroom before start voting."
-msgstr "開始投票前請先連線至 IRC 聊天室。"
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteWindow.scala:150
-msgid "Vote duration (minutes):"
-msgstr "投票時間（分鐘）："
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AreaSelectionDialog.scala:42
-msgid "Drag notification area and double click to confirm"
-msgstr "請托出通知區域，並點兩下確認"
+#: /home/brianhsu/IRCBalloon/src/main/scala/actor/message/IRCMessage.scala:73
+msgid "[SYS] %s has joined"
+msgstr "[系統] %s 進入聊天室"
 
 #: /home/brianhsu/IRCBalloon/src/main/scala/ui/BalloonSetting.scala:31
 #: /home/brianhsu/IRCBalloon/src/main/scala/ui/BlockSetting.scala:33
@@ -203,54 +175,25 @@ msgstr "開始預覽"
 msgid "Bubble Notification"
 msgstr "泡泡通知"
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/JustinSetting.scala:20
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/TwitchSetting.scala:39
+msgid "Twitch Authorization"
+msgstr "Twitch 認證視窗"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/TwitchSetting.scala:75
+msgid "Cannot get IRC OAuth access token"
+msgstr "無法從 Twitch 取得 IRC 的密碼"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/TwitchSetting.scala:95
 msgid "Username:"
 msgstr "使用者名稱："
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/JustinSetting.scala:21
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/TwitchSetting.scala:97
 msgid "Password:"
 msgstr "密碼："
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:35
-msgid "Votes Status"
-msgstr "投票狀況"
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:50
-msgid "Vote finsihed!"
-msgstr "投票結束！"
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:62
-msgid "Vote finished"
-msgstr "投票已結束"
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:82
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:121
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:153
-msgid "Time Remaining: %s"
-msgstr "剩餘時間：%s"
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:91
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:215
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:237
-msgid "Close"
-msgstr "關閉"
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:105
-msgid "Stop Vote"
-msgstr "停止投票"
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:117
-msgid "Reset Time"
-msgstr "重新計時"
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:139
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:177
-msgid "%s votes"
-msgstr "共 %s 票"
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:185
-msgid "Vote Status"
-msgstr "投票狀態"
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/TwitchSetting.scala:101
+msgid "Login Twitch"
+msgstr "登入 Twitch"
 
 #: /home/brianhsu/IRCBalloon/src/main/scala/ui/BlockSetting.scala:37
 msgid "Window Position / Size"
@@ -290,8 +233,8 @@ msgstr "移除背景圖案"
 
 #: /home/brianhsu/IRCBalloon/src/main/scala/ui/BlockSetting.scala:102
 #: /home/brianhsu/IRCBalloon/src/main/scala/ui/BlockSetting.scala:108
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:70
 #: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:70
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:70
 msgid "Browse..."
 msgstr "瀏覽……"
 
@@ -303,90 +246,57 @@ msgstr "註：可以直接托拉視窗邊緣移動位址，或拉右下角改變
 msgid "Pinned Chat Window"
 msgstr "固定視窗"
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/SWTHelper.scala:176
-msgid "Show join message"
-msgstr "顯示加入聊天室訊息"
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteWindow.scala:40
+msgid "Vote Options"
+msgstr "投票選項"
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/SWTHelper.scala:177
-msgid "Show leave message"
-msgstr "顯示離開聊天室訊息"
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteWindow.scala:68
+msgid "Remove this option"
+msgstr "移除此選項"
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/IRCSetting.scala:20
-msgid "IRC Host:"
-msgstr "IRC 伺服器主機："
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteWindow.scala:87
+msgid "Add vote option"
+msgstr "新增投票選項"
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/IRCSetting.scala:21
-msgid "IRC Port:"
-msgstr "IRC 伺服器Port："
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteWindow.scala:126
+msgid "Start"
+msgstr "開始投票"
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/IRCSetting.scala:22
-msgid "IRC Password:"
-msgstr "IRC 伺服器密碼："
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteWindow.scala:132
+msgid "Vote options cannot have empty value."
+msgstr "投票選項裡不能有空的。"
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/IRCSetting.scala:23
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteWindow.scala:134
+msgid "You need connect to IRC chatroom before start voting."
+msgstr "開始投票前請先連線至 IRC 聊天室。"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteWindow.scala:150
+msgid "Vote duration (minutes):"
+msgstr "投票時間（分鐘）："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteWindow.scala:164
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:76
+msgid "Start Vote"
+msgstr "開始投票"
+
 #: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:55
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/IRCSetting.scala:23
 msgid "Nickname:"
 msgstr "暱稱："
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/IRCSetting.scala:24
-msgid "Channel:"
-msgstr "聊天頻道："
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/IRCSetting.scala:32
-msgid "IRC Setting is not completed"
-msgstr "IRC 設定不完整"
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:55
-msgid "Target text:"
-msgstr "要取代的文字："
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:68
-msgid "Emote Icon:"
-msgstr "表情圖示："
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:103
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:107
-msgid "OK"
-msgstr "確定"
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:106
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:110
-msgid "Cancel"
-msgstr "取消"
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:117
-msgid "Add Emote Icon"
-msgstr "新增表情圖示"
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:133
-msgid "Use default emote icons"
-msgstr "使用內建的表情圖示"
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:149
-msgid "Text"
-msgstr "表情文字"
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:149
-msgid "Image"
-msgstr "表情圖案"
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:177
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:196
-msgid "Add"
-msgstr "新增"
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:194
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:216
-msgid "Remove"
-msgstr "移除"
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:230
-msgid "Emote Preference"
-msgstr "表情圖示偏好設定"
 
 #: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:68
 msgid "Avatar:"
 msgstr "大頭貼："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:107
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:103
+msgid "OK"
+msgstr "確定"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:110
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:106
+msgid "Cancel"
+msgstr "取消"
 
 #: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:121
 msgid "Add Avatar"
@@ -412,55 +322,157 @@ msgstr "暱稱"
 msgid "Avatar"
 msgstr "大頭貼"
 
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:196
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:177
+msgid "Add"
+msgstr "新增"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:216
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:194
+msgid "Remove"
+msgstr "移除"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:237
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:215
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:91
+msgid "Close"
+msgstr "關閉"
+
 #: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:254
 msgid "Avatar / Nickname Preference"
 msgstr "大頭貼與暱稱偏好設定"
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/actor/VotingActor.scala:53
-msgid "Start Voting!"
-msgstr "開始投票！"
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/IRCSetting.scala:20
+msgid "IRC Host:"
+msgstr "IRC 伺服器主機："
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/actor/VotingActor.scala:55
-msgid "Vote duration is %d minutes"
-msgstr "投票時間為 %d 分鐘"
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/IRCSetting.scala:21
+msgid "IRC Port:"
+msgstr "IRC 伺服器Port："
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/actor/VotingActor.scala:56
-msgid "Candidate are:"
-msgstr "選項如下："
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/IRCSetting.scala:22
+msgid "IRC Password:"
+msgstr "IRC 伺服器密碼："
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/actor/VotingActor.scala:58
-msgid "Please use format like 1++ to vote."
-msgstr "請使用 1++ 此格式投票"
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/IRCSetting.scala:24
+msgid "Channel:"
+msgstr "聊天頻道："
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/actor/VotingActor.scala:59
-msgid "If you vote mutliple times, only last vote is counted."
-msgstr "若重覆投票，則僅計算最後一次選擇的選項"
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/IRCSetting.scala:32
+msgid "IRC Setting is not completed"
+msgstr "IRC 設定不完整"
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/actor/ControllerActor.scala:68
-msgid "[SYS] IRC Disconnected. Pelease restart it again."
-msgstr "[系統] IRC 聊天室已斷線，請嚐試重新連線。"
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/SWTHelper.scala:176
+msgid "Show join message"
+msgstr "顯示加入聊天室訊息"
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/actor/ControllerActor.scala:95
-msgid "======== Vote Result =========="
-msgstr "========== 投票結果 ==========="
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/SWTHelper.scala:177
+msgid "Show leave message"
+msgstr "顯示離開聊天室訊息"
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/actor/ControllerActor.scala:98
-msgid "%d. %s\t\t%s\t%d votes"
-msgstr "%d. %s\t\t%s\t%d 票"
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:30
+msgid "Login Method"
+msgstr "連線方式"
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/actor/ControllerActor.scala:100
-msgid "==============================="
-msgstr "==============================="
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:36
+msgid "Display Method"
+msgstr "顯示方式"
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/actor/message/IRCMessage.scala:61
-msgid "[Action] %s %s"
-msgstr "[動作] %s %s"
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:56
+msgid "Emotes"
+msgstr "表情圖示"
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/actor/message/IRCMessage.scala:67
-#: /home/brianhsu/IRCBalloon/src/main/scala/actor/message/IRCMessage.scala:79
-msgid "[SYS] %s has left"
-msgstr "[系統] %s 離開聊天室"
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:62
+msgid "Avatar / Nickname"
+msgstr "大頭貼與暱稱"
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/actor/message/IRCMessage.scala:73
-msgid "[SYS] %s has joined"
-msgstr "[系統] %s 進入聊天室"
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:91
+msgid "&Preference"
+msgstr "偏好設定(&P)"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:92
+msgid "&Vote"
+msgstr "投票(&V)"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:190
+msgid "Connecting to IRC server, please wait...\n"
+msgstr "連線至 IRC 伺服器，請稍候……\n"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:229
+msgid "Error:"
+msgstr "錯誤："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:254
+msgid "Connect"
+msgstr "連線"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:278
+msgid "IRC Notification"
+msgstr "IRC 通知"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AreaSelectionDialog.scala:42
+msgid "Drag notification area and double click to confirm"
+msgstr "請托出通知區域，並點兩下確認"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:55
+msgid "Target text:"
+msgstr "要取代的文字："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:68
+msgid "Emote Icon:"
+msgstr "表情圖示："
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:117
+msgid "Add Emote Icon"
+msgstr "新增表情圖示"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:133
+msgid "Use default emote icons"
+msgstr "使用內建的表情圖示"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:149
+msgid "Text"
+msgstr "表情文字"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:149
+msgid "Image"
+msgstr "表情圖案"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:230
+msgid "Emote Preference"
+msgstr "表情圖示偏好設定"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:35
+msgid "Votes Status"
+msgstr "投票狀況"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:50
+msgid "Vote finsihed!"
+msgstr "投票結束！"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:62
+msgid "Vote finished"
+msgstr "投票已結束"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:82
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:121
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:153
+msgid "Time Remaining: %s"
+msgstr "剩餘時間：%s"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:105
+msgid "Stop Vote"
+msgstr "停止投票"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:117
+msgid "Reset Time"
+msgstr "重新計時"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:139
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:177
+msgid "%s votes"
+msgstr "共 %s 票"
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:185
+msgid "Vote Status"
+msgstr "投票狀態"

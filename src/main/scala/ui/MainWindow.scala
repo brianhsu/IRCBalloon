@@ -28,9 +28,10 @@ object MainWindow extends SWTHelper
 
   val menu = createMenu()
   val logginLabel = createLabel(tr("Login Method"))
+  import org.eclipse.swt.browser._
   val logginTab = createTabFolder()
   val ircSetting = new IRCSetting(logginTab, e => updateConnectButtonState())
-  val justinSetting = new JustinSetting(logginTab, e => updateConnectButtonState())
+  val twitchSetting = new TwitchSetting(logginTab, e => updateConnectButtonState())
 
   val displayLabel = createLabel(tr("Display Method"))
   val displayTab = createTabFolder(true)
@@ -161,7 +162,7 @@ object MainWindow extends SWTHelper
   {
     val connectSettingOK = 
       (logginTab.getSelectionIndex == 0 && ircSetting.isSettingOK) ||
-      (logginTab.getSelectionIndex == 1 && justinSetting.isSettingOK)
+      (logginTab.getSelectionIndex == 1 && twitchSetting.isSettingOK)
 
     val displayStettingOK = 
       (displayTab.getSelectionIndex == 0 && blockSetting.isSettingOK) ||
@@ -172,7 +173,7 @@ object MainWindow extends SWTHelper
 
   def getIRCInfo = logginTab.getSelectionIndex match {
     case 0 => ircSetting.getIRCInfo
-    case 1 => justinSetting.getIRCInfo
+    case 1 => twitchSetting.getIRCInfo
   }
 
   def createNotificationService() = {
@@ -238,7 +239,7 @@ object MainWindow extends SWTHelper
     logginTab.setEnabled(isEnabled)
     displayTab.setEnabled(isEnabled)
     ircSetting.setUIEnabled(isEnabled)
-    justinSetting.setUIEnabled(isEnabled)
+    twitchSetting.setUIEnabled(isEnabled)
     blockSetting.setUIEnabled(isEnabled)
     balloonSetting.setUIEnabled(isEnabled)
   }
@@ -268,7 +269,7 @@ object MainWindow extends SWTHelper
     setTrayIcon()
 
     Preference.read(ircSetting)
-    Preference.read(justinSetting)
+    Preference.read(twitchSetting)
     Preference.read(blockSetting)
     Preference.read(balloonSetting)
     Preference.readEmotes()
@@ -281,7 +282,7 @@ object MainWindow extends SWTHelper
     shell.addShellListener(new ShellAdapter() {
       override def shellClosed(e: ShellEvent) {
         Preference.save(ircSetting)
-        Preference.save(justinSetting)
+        Preference.save(twitchSetting)
         Preference.save(blockSetting)
         Preference.save(balloonSetting)
         Preference.saveEmotes()

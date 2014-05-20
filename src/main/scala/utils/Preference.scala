@@ -383,18 +383,18 @@ object Preference extends SWTHelper
     preference.putBoolean("IRCOnLeave", ircSetting.onLeaveButton.getSelection)
   }
 
-  def read(justinSetting: JustinSetting)
+  def read(twitchSetting: TwitchSetting)
   {
-    justinSetting.username.setText(preference.get("JTVUsername", ""))
-    justinSetting.onJoinButton.setSelection(preference.getBoolean("JTVOnJoin", false))
-    justinSetting.onLeaveButton.setSelection(preference.getBoolean("JTVOnLeave", false))
+    twitchSetting.username.setText(preference.get("TwitchUsername", ""))
+    twitchSetting.onJoinButton.setSelection(preference.getBoolean("TwitchOnJoin", false))
+    twitchSetting.onLeaveButton.setSelection(preference.getBoolean("TwitchOnLeave", false))
   }
 
-  def save(justinSetting: JustinSetting)
+  def save(twitchSetting: TwitchSetting)
   {
-    preference.put("JTVUsername", justinSetting.username.getText)
-    preference.putBoolean("JTVOnJoin", justinSetting.onJoinButton.getSelection)
-    preference.putBoolean("JTVOnLeave", justinSetting.onLeaveButton.getSelection)
+    preference.put("TwitchUsername", twitchSetting.username.getText)
+    preference.putBoolean("TwitchOnJoin", twitchSetting.onJoinButton.getSelection)
+    preference.putBoolean("TwitchOnLeave", twitchSetting.onLeaveButton.getSelection)
   }
 }
 
