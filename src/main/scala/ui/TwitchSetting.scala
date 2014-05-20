@@ -25,6 +25,8 @@ class TwitchAuthDialog(parent: Shell) extends Dialog(parent, SWT.APPLICATION_MOD
   val display = parent.getDisplay()
   val shell = new Shell(parent, SWT.DIALOG_TRIM|SWT.APPLICATION_MODAL)
   val browser = new Browser(shell, SWT.NONE)
+  val callbackURL = "http://www.example.com/auth"
+  val appKey = "jcb3b04wnxtizw0syccalv3s801yzlz"
 
   def displayError(message: String) {
     val messageBox = new MessageBox(shell, SWT.ERROR|SWT.OK)
@@ -41,39 +43,47 @@ class TwitchAuthDialog(parent: Shell) extends Dialog(parent, SWT.APPLICATION_MOD
     shell.setSize(640, 480)
     shell.open()
 
-    browser.setUrl("https://api.twitch.tv/kraken/oauth2/authorize?response_type=token&client_id=jcb3b04wnxtizw0syccalv3s801yzlz&redirect_uri=http://localhost/auth&scope=chat_login&user_read")
+    def getAccessToken(url: String) {
+      try {
+        if (url.startsWith(callbackURL)) {
+          val accessToken = url.drop(callbackURL.length+1).split("&").map(_.split("=")).filter(x => x(0) == "access_token").flatten
+          val token = accessToken(1).trim
+          val httpURLConnection = new URL("https://api.twitch.tv/kraken/user").openConnection
+          httpURLConnection.addRequestProperty("Accept", "application/vnd.twitchtv.v2+json")
+          httpURLConnection.addRequestProperty("Authorization", "OAuth "+token)
+          httpURLConnection.addRequestProperty("Client-ID", appKey)
+          httpURLConnection.connect()
+          val userInfoJSON = Source.fromInputStream(httpURLConnection.getInputStream)("UTF-8").mkString
+          val userInfoHolder = JSON.parseFull(userInfoJSON)
+
+          for (userInfo <- userInfoHolder) {
+            userInfo match {
+              case x: Map[_, _] => 
+                val name = x.asInstanceOf[Map[String,Any]]("name").toString
+                result = Some((name, token))
+              case _ =>
+            }
+          }
+
+          shell.dispose()
+        }
+      } catch {
+        case e: Exception => 
+          displayError(tr("Cannot get IRC OAuth access token"))
+          e.printStackTrace();
+      }
+    }
+
+    browser.setUrl(s"https://api.twitch.tv/kraken/oauth2/authorize?response_type=token&client_id=${appKey}&redirect_uri=${callbackURL}&scope=chat_login&user_read")
     browser.addLocationListener(new LocationListener() {
       override def changed(event: LocationEvent) {        
+        println("[1] event.location:" + event.location);
+        getAccessToken(event.location);
       }
 
       override def changing(event: LocationEvent) {
-        val url = event.location
-        try {
-          if (url.startsWith("http://localhost/auth")) {
-            val accessToken = url.drop(22).split("&").map(_.split("=")).filter(x => x(0) == "access_token").flatten
-            val token = accessToken(1).trim
-            val httpURLConnection = new URL("https://api.twitch.tv/kraken/user").openConnection
-            httpURLConnection.addRequestProperty("Accept", "application/vnd.twitchtv.v2+json")
-            httpURLConnection.addRequestProperty("Authorization", "OAuth "+token)
-            httpURLConnection.addRequestProperty("Client-ID", "jcb3b04wnxtizw0syccalv3s801yzlz&redirect_uri")
-            httpURLConnection.connect()
-            val userInfoJSON = Source.fromInputStream(httpURLConnection.getInputStream)("UTF-8").mkString
-            val userInfoHolder = JSON.parseFull(userInfoJSON)
-
-            for (userInfo <- userInfoHolder) {
-              userInfo match {
-                case x: Map[_, _] => 
-                  val name = x.asInstanceOf[Map[String,Any]]("name").toString
-                  result = Some((name, token))
-                case _ =>
-              }
-            }
-
-            shell.dispose()
-          }
-        } catch {
-          case e: Exception => displayError(tr("Cannot get IRC OAuth access token"))
-        }
+        println("[2] event.location:" + event.location);
+        getAccessToken(event.location);
       }
     })
 

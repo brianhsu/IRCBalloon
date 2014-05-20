@@ -1,20 +1,19 @@
 IRCBalloon 
 ===========
 
-IRCBalloon is a IRC / Justin.tv / Twtich chat room notification application, 
+IRCBalloon is a IRC / Twtich chat room notification application, 
 it could fetch the dialog in chatroom and display it using either a pinned
 chat window or a bubble pop up notification.
 
 You could use IRCBalloon to fetch your chatroom and put it into your bradcast
-screen when you are broadcasting using Justin.tv / Twitch.
+screen when you are broadcasting using Twitch.
 
-Since Justin.tv / Twitch are using IRC protocol, this could be also used on
-any IRC chatroom.
+Since Twitch are using IRC protocol, this could be also used on any IRC chatroom.
 
 Props
 ======
 
- - It's easy, just enter your Justin.tv username and password!
+ - It's easy, just click a button and authorize it on Twitch site!
  - You need only one program, no more need for LimeChat and Growl.
  - You could fine tuning the location of chatroom window and bubble notification area
 
@@ -55,9 +54,9 @@ IRCBalloon is released under GNU GPL v3.
 Download
 ==========
 
- - [Windows 32 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-win32-0.8.1.jar)
- - [Windows 64 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-win64-0.8.1.jar)
- - [Linux 64 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-linux64-0.8.1.jar)
+ - [Windows 32 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-win32-0.8.1-fix1.jar)
+ - [Windows 64 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-win64-0.8.1-fix1.jar)
+ - [Linux 64 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-linux64-0.8.1-fix1.jar)
 
 
 IRCBalloon 
@@ -129,7 +128,7 @@ IRCBalloon 採用 GNU GPL v3 做為授權條款
 下載
 =======
 
- - [Windows 32 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-win32-0.8.1.jar)
- - [Windows 64 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-win64-0.8.1.jar)
- - [Linux 64 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-linux64-0.8.1.jar)
+ - [Windows 32 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-win32-0.8.1-fix1.jar)
+ - [Windows 64 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-win64-0.8.1-fix1.jar)
+ - [Linux 64 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-linux64-0.8.1-fix1.jar)
 
