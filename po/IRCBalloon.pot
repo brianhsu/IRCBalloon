@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-28 14:28+0800\n"
+"POT-Creation-Date: 2014-05-20 10:06+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,81 +21,53 @@ msgstr ""
 msgid "Chat:"
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:30
-msgid "Login Method"
+#: /home/brianhsu/IRCBalloon/src/main/scala/actor/ControllerActor.scala:68
+msgid "[SYS] IRC Disconnected. Pelease restart it again."
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:35
-msgid "Display Method"
+#: /home/brianhsu/IRCBalloon/src/main/scala/actor/ControllerActor.scala:95
+msgid "======== Vote Result =========="
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:55
-msgid "Emotes"
+#: /home/brianhsu/IRCBalloon/src/main/scala/actor/ControllerActor.scala:98
+msgid "%d. %s\t\t%s\t%d votes"
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:61
-msgid "Avatar / Nickname"
+#: /home/brianhsu/IRCBalloon/src/main/scala/actor/ControllerActor.scala:100
+msgid "==============================="
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:75
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteWindow.scala:164
-msgid "Start Vote"
+#: /home/brianhsu/IRCBalloon/src/main/scala/actor/VotingActor.scala:53
+msgid "Start Voting!"
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:90
-msgid "&Preference"
+#: /home/brianhsu/IRCBalloon/src/main/scala/actor/VotingActor.scala:55
+msgid "Vote duration is %d minutes"
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:91
-msgid "&Vote"
+#: /home/brianhsu/IRCBalloon/src/main/scala/actor/VotingActor.scala:56
+msgid "Candidate are:"
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:189
-msgid "Connecting to IRC server, please wait...\n"
+#: /home/brianhsu/IRCBalloon/src/main/scala/actor/VotingActor.scala:58
+msgid "Please use format like 1++ to vote."
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:228
-msgid "Error:"
+#: /home/brianhsu/IRCBalloon/src/main/scala/actor/VotingActor.scala:59
+msgid "If you vote mutliple times, only last vote is counted."
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:253
-msgid "Connect"
+#: /home/brianhsu/IRCBalloon/src/main/scala/actor/message/IRCMessage.scala:61
+msgid "[Action] %s %s"
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:277
-msgid "IRC Notification"
+#: /home/brianhsu/IRCBalloon/src/main/scala/actor/message/IRCMessage.scala:67
+#: /home/brianhsu/IRCBalloon/src/main/scala/actor/message/IRCMessage.scala:79
+msgid "[SYS] %s has left"
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteWindow.scala:40
-msgid "Vote Options"
-msgstr ""
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteWindow.scala:68
-msgid "Remove this option"
-msgstr ""
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteWindow.scala:87
-msgid "Add vote option"
-msgstr ""
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteWindow.scala:126
-msgid "Start"
-msgstr ""
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteWindow.scala:132
-msgid "Vote options cannot have empty value."
-msgstr ""
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteWindow.scala:134
-msgid "You need connect to IRC chatroom before start voting."
-msgstr ""
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteWindow.scala:150
-msgid "Vote duration (minutes):"
-msgstr ""
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AreaSelectionDialog.scala:42
-msgid "Drag notification area and double click to confirm"
+#: /home/brianhsu/IRCBalloon/src/main/scala/actor/message/IRCMessage.scala:73
+msgid "[SYS] %s has joined"
 msgstr ""
 
 #: /home/brianhsu/IRCBalloon/src/main/scala/ui/BalloonSetting.scala:31
@@ -204,53 +176,24 @@ msgstr ""
 msgid "Bubble Notification"
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/JustinSetting.scala:20
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/TwitchSetting.scala:39
+msgid "Twitch Authorization"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/TwitchSetting.scala:75
+msgid "Cannot get IRC OAuth access token"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/TwitchSetting.scala:95
 msgid "Username:"
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/JustinSetting.scala:21
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/TwitchSetting.scala:97
 msgid "Password:"
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:35
-msgid "Votes Status"
-msgstr ""
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:50
-msgid "Vote finsihed!"
-msgstr ""
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:62
-msgid "Vote finished"
-msgstr ""
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:82
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:121
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:153
-msgid "Time Remaining: %s"
-msgstr ""
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:91
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:215
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:237
-msgid "Close"
-msgstr ""
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:105
-msgid "Stop Vote"
-msgstr ""
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:117
-msgid "Reset Time"
-msgstr ""
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:139
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:177
-msgid "%s votes"
-msgstr ""
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:185
-msgid "Vote Status"
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/TwitchSetting.scala:101
+msgid "Login Twitch"
 msgstr ""
 
 #: /home/brianhsu/IRCBalloon/src/main/scala/ui/BlockSetting.scala:37
@@ -291,8 +234,8 @@ msgstr ""
 
 #: /home/brianhsu/IRCBalloon/src/main/scala/ui/BlockSetting.scala:102
 #: /home/brianhsu/IRCBalloon/src/main/scala/ui/BlockSetting.scala:108
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:70
 #: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:70
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:70
 msgid "Browse..."
 msgstr ""
 
@@ -304,89 +247,56 @@ msgstr ""
 msgid "Pinned Chat Window"
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/SWTHelper.scala:176
-msgid "Show join message"
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteWindow.scala:40
+msgid "Vote Options"
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/SWTHelper.scala:177
-msgid "Show leave message"
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteWindow.scala:68
+msgid "Remove this option"
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/IRCSetting.scala:20
-msgid "IRC Host:"
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteWindow.scala:87
+msgid "Add vote option"
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/IRCSetting.scala:21
-msgid "IRC Port:"
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteWindow.scala:126
+msgid "Start"
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/IRCSetting.scala:22
-msgid "IRC Password:"
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteWindow.scala:132
+msgid "Vote options cannot have empty value."
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/IRCSetting.scala:23
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteWindow.scala:134
+msgid "You need connect to IRC chatroom before start voting."
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteWindow.scala:150
+msgid "Vote duration (minutes):"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteWindow.scala:164
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:76
+msgid "Start Vote"
+msgstr ""
+
 #: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:55
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/IRCSetting.scala:23
 msgid "Nickname:"
-msgstr ""
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/IRCSetting.scala:24
-msgid "Channel:"
-msgstr ""
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/IRCSetting.scala:32
-msgid "IRC Setting is not completed"
-msgstr ""
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:55
-msgid "Target text:"
-msgstr ""
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:68
-msgid "Emote Icon:"
-msgstr ""
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:103
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:107
-msgid "OK"
-msgstr ""
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:106
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:110
-msgid "Cancel"
-msgstr ""
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:117
-msgid "Add Emote Icon"
-msgstr ""
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:133
-msgid "Use default emote icons"
-msgstr ""
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:149
-msgid "Text"
-msgstr ""
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:149
-msgid "Image"
-msgstr ""
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:177
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:196
-msgid "Add"
-msgstr ""
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:194
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:216
-msgid "Remove"
-msgstr ""
-
-#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:230
-msgid "Emote Preference"
 msgstr ""
 
 #: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:68
 msgid "Avatar:"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:107
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:103
+msgid "OK"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:110
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:106
+msgid "Cancel"
 msgstr ""
 
 #: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:121
@@ -413,55 +323,157 @@ msgstr ""
 msgid "Avatar"
 msgstr ""
 
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:196
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:177
+msgid "Add"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:216
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:194
+msgid "Remove"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:237
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:215
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:91
+msgid "Close"
+msgstr ""
+
 #: /home/brianhsu/IRCBalloon/src/main/scala/ui/AvatarWindow.scala:254
 msgid "Avatar / Nickname Preference"
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/actor/VotingActor.scala:53
-msgid "Start Voting!"
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/IRCSetting.scala:20
+msgid "IRC Host:"
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/actor/VotingActor.scala:55
-msgid "Vote duration is %d minutes"
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/IRCSetting.scala:21
+msgid "IRC Port:"
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/actor/VotingActor.scala:56
-msgid "Candidate are:"
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/IRCSetting.scala:22
+msgid "IRC Password:"
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/actor/VotingActor.scala:58
-msgid "Please use format like 1++ to vote."
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/IRCSetting.scala:24
+msgid "Channel:"
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/actor/VotingActor.scala:59
-msgid "If you vote mutliple times, only last vote is counted."
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/IRCSetting.scala:32
+msgid "IRC Setting is not completed"
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/actor/ControllerActor.scala:68
-msgid "[SYS] IRC Disconnected. Pelease restart it again."
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/SWTHelper.scala:176
+msgid "Show join message"
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/actor/ControllerActor.scala:95
-msgid "======== Vote Result =========="
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/SWTHelper.scala:177
+msgid "Show leave message"
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/actor/ControllerActor.scala:98
-msgid "%d. %s\t\t%s\t%d votes"
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:30
+msgid "Login Method"
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/actor/ControllerActor.scala:100
-msgid "==============================="
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:36
+msgid "Display Method"
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/actor/message/IRCMessage.scala:61
-msgid "[Action] %s %s"
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:56
+msgid "Emotes"
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/actor/message/IRCMessage.scala:67
-#: /home/brianhsu/IRCBalloon/src/main/scala/actor/message/IRCMessage.scala:79
-msgid "[SYS] %s has left"
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:62
+msgid "Avatar / Nickname"
 msgstr ""
 
-#: /home/brianhsu/IRCBalloon/src/main/scala/actor/message/IRCMessage.scala:73
-msgid "[SYS] %s has joined"
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:91
+msgid "&Preference"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:92
+msgid "&Vote"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:190
+msgid "Connecting to IRC server, please wait...\n"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:229
+msgid "Error:"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:254
+msgid "Connect"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/MainWindow.scala:278
+msgid "IRC Notification"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/AreaSelectionDialog.scala:42
+msgid "Drag notification area and double click to confirm"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:55
+msgid "Target text:"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:68
+msgid "Emote Icon:"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:117
+msgid "Add Emote Icon"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:133
+msgid "Use default emote icons"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:149
+msgid "Text"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:149
+msgid "Image"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/EmoteWindow.scala:230
+msgid "Emote Preference"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:35
+msgid "Votes Status"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:50
+msgid "Vote finsihed!"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:62
+msgid "Vote finished"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:82
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:121
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:153
+msgid "Time Remaining: %s"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:105
+msgid "Stop Vote"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:117
+msgid "Reset Time"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:139
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:177
+msgid "%s votes"
+msgstr ""
+
+#: /home/brianhsu/IRCBalloon/src/main/scala/ui/VoteStatusWin.scala:185
+msgid "Vote Status"
 msgstr ""
