@@ -27,6 +27,10 @@ Cons
 
 ChangeLog
 ===========
+ - 0.8.1
+
+    - Support Twitch OAuth login
+
  - 0.8
     - Add timestamp option in Pinned / Balloon window setting section
     - Add voting system
@@ -51,9 +55,9 @@ IRCBalloon is released under GNU GPL v3.
 Download
 ==========
 
- - [Windows 32 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-win32-0.8.0.jar)
- - [Windows 64 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-win64-0.8.0.jar)
- - [Linux 64 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-linux64-0.8.0.jar)
+ - [Windows 32 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-win32-0.8.1.jar)
+ - [Windows 64 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-win64-0.8.1.jar)
+ - [Linux 64 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-linux64-0.8.1.jar)
 
 
 IRCBalloon 
@@ -81,6 +85,9 @@ IRCBalloon 是一套 IRC / JustinTV / Twitch 聊天室擷取軟體，他可以�
 
 改版記錄
 =========
+ - 0.8.1
+    - 支援直接一鍵登入 Twitch 聊天室
+
  - 0.8
     - 新增固定視窗／泡泡通知中顯示時間戳記的設定
     - 新增投票系統
@@ -122,7 +129,7 @@ IRCBalloon 採用 GNU GPL v3 做為授權條款
 下載
 =======
 
- - [Windows 32 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-win32-0.8.0.jar)
- - [Windows 64 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-win64-0.8.0.jar)
- - [Linux 64 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-linux64-0.8.0.jar)
+ - [Windows 32 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-win32-0.8.1.jar)
+ - [Windows 64 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-win64-0.8.1.jar)
+ - [Linux 64 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-linux64-0.8.1.jar)
 
