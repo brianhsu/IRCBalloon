@@ -23,10 +23,26 @@ class TwitchAuthDialog(parent: Shell) extends Dialog(parent, SWT.APPLICATION_MOD
 {
   var result: Option[(String, String)] = None // (username, accessToken)
   val display = parent.getDisplay()
-  val shell = new Shell(parent, SWT.DIALOG_TRIM|SWT.APPLICATION_MODAL)
-  val browser = new Browser(shell, SWT.NONE)
+  val shell = new Shell(parent, SWT.DIALOG_TRIM|SWT.APPLICATION_MODAL|SWT.RESIZE)
+  val browser = createBrowser
+  val loggingArea = createLogginArea
   val callbackURL = "http://www.example.com/auth"
   val appKey = "jcb3b04wnxtizw0syccalv3s801yzlz"
+
+  def createBrowser = {
+    val browser = new Browser(shell, SWT.NONE)
+    val layoutData = new GridData(SWT.FILL, SWT.FILL, true, true)
+    browser.setLayoutData(layoutData)
+    browser
+  }
+
+  def createLogginArea = {
+    val logginArea = new Text(shell, SWT.MULTI|SWT.V_SCROLL|SWT.H_SCROLL)
+    val layoutData = new GridData(SWT.FILL, SWT.FILL, true, true)
+    layoutData.heightHint = 20
+    logginArea.setLayoutData(layoutData)
+    logginArea
+  }
 
   def displayError(message: String) {
     val messageBox = new MessageBox(shell, SWT.ERROR|SWT.OK)
@@ -36,17 +52,22 @@ class TwitchAuthDialog(parent: Shell) extends Dialog(parent, SWT.APPLICATION_MOD
 
   def open() =
   {
-    val layout = new FillLayout
+    val layout = new GridLayout(1, true)
     shell.setLayout(layout)
     shell.setText(tr("Twitch Authorization"))
-    shell.pack()
-    shell.setSize(640, 480)
+    shell.setSize(800, 600)
     shell.open()
 
-    def getAccessToken(url: String) {
+    def getAccessToken(url: String, tag: String) {
+
       try {
+
         if (url.startsWith(callbackURL)) {
-          val accessToken = url.drop(callbackURL.length+1).split("&").map(_.split("=")).filter(x => x(0) == "access_token").flatten
+          val dropedURL = url.drop(callbackURL.length+1)
+          val splitedURL = dropedURL.split("&")
+          val mappedURL = splitedURL.map(_.split("=").toList)
+          val filteredURL = mappedURL.filter(x => x(0) == "access_token")
+          val accessToken = filteredURL.flatten
           val token = accessToken(1).trim
           val httpURLConnection = new URL("https://api.twitch.tv/kraken/user").openConnection
           httpURLConnection.addRequestProperty("Accept", "application/vnd.twitchtv.v2+json")
@@ -69,21 +90,23 @@ class TwitchAuthDialog(parent: Shell) extends Dialog(parent, SWT.APPLICATION_MOD
         }
       } catch {
         case e: Exception => 
+          import java.io._
+          val sw = new StringWriter
+          e.printStackTrace(new PrintWriter(sw))
+          loggingArea.append(sw.toString + "\n")
           displayError(tr("Cannot get IRC OAuth access token"))
           e.printStackTrace();
       }
     }
 
-    browser.setUrl(s"https://api.twitch.tv/kraken/oauth2/authorize?response_type=token&client_id=${appKey}&redirect_uri=${callbackURL}&scope=chat_login&user_read")
+    browser.setUrl(s"https://api.twitch.tv/kraken/oauth2/authorize?response_type=token&client_id=${appKey}&redirect_uri=${callbackURL}&scope=chat_login+user_read")
     browser.addLocationListener(new LocationListener() {
       override def changed(event: LocationEvent) {        
-        println("[1] event.location:" + event.location);
-        getAccessToken(event.location);
+        getAccessToken(event.location, "inChanged")
       }
 
       override def changing(event: LocationEvent) {
-        println("[2] event.location:" + event.location);
-        getAccessToken(event.location);
+        getAccessToken(event.location, "inChanging")
       }
     })
 
