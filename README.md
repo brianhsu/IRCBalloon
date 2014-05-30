@@ -54,9 +54,9 @@ IRCBalloon is released under GNU GPL v3.
 Download
 ==========
 
- - [Windows 32 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-win32-0.8.1-fix1.jar)
- - [Windows 64 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-win64-0.8.1-fix1.jar)
- - [Linux 64 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-linux64-0.8.1-fix1.jar)
+ - [Windows 32 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-win32-0.8.1-fix2.jar)
+ - [Windows 64 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-win64-0.8.1-fix2.jar)
+ - [Linux 64 bit](http://bone.twbbs.org.tw/download/IRCBalloon/IRCBalloon-linux64-0.8.1-fix2.jar)
 
 
 IRCBalloon 
